@@ -4,7 +4,11 @@
     <div class="description">{{ presentation.description }}</div>
     <br />
     <br />
-    <p-button class="work-with-me" label="Work with Me" />
+    <p-button
+      class="work-with-me"
+      label="Work with Me"
+      [routerLink]="'contact'"
+    />
   </div>
   <div class="image">
     <img [src]="presentation.image" alt="David Chiriac" />
