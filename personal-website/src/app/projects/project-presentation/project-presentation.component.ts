@@ -8,5 +8,5 @@ import { IProject } from '../../shared/interfaces/project.interface';
   styleUrl: './project-presentation.component.scss',
 })
 export class ProjectPresentationComponent {
-  @Input() project!: IProject;
+  project!: IProject;
 }

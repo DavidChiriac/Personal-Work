@@ -3,4 +3,6 @@ export interface IProject {
   description: string;
   url: string;
   image: string;
+  id: number;
+  slug: string;
 }

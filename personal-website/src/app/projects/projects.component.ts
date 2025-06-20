@@ -14,18 +14,24 @@ export class ProjectsComponent {
       description: 'mindit.io website',
       url: 'https://mindit.io',
       image: 'assets/images/mindit.io.png',
+      id: 0,
+      slug: '',
     },
     {
       title: 'mindit.io',
       description: 'mindit.io website',
       url: 'https://mindit.io',
       image: 'assets/images/mindit.io.png',
+      id: 1,
+      slug: '',
     },
     {
       title: 'mindit.io',
       description: 'mindit.io website',
       url: 'https://mindit.io',
       image: 'assets/images/mindit.io.png',
+      id: 2,
+      slug: '',
     },
   ];
 }
