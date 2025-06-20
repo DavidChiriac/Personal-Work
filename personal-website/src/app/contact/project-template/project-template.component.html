@@ -1,0 +1,21 @@
+<div
+  class="project"
+  [ngClass]="
+    index % 2 === 0 ? 'flex-row image-right' : 'flex-row-reverse image-left'
+  "
+>
+  <div class="presentation">
+    <div class="header">{{ project.title }}</div>
+    <div class="description">{{ project.description }}</div>
+    <br />
+    <br />
+    <p-button
+      [routerLink]="project.url"
+      class="view-project"
+      [label]="'View Project'"
+    />
+  </div>
+  <div class="image">
+    <img [src]="project.image" />
+  </div>
+</div>

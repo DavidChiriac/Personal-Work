@@ -39,3 +39,17 @@
     color: vars.$color4;
   }
 }
+
+.view-project .p-button {
+  background: vars.$color1;
+  color: vars.$color4;
+  border: 1px solid vars.$color1;
+  padding: 20px 100px;
+  font-size: 1.3rem;
+  border-radius: 100px;
+
+  &:hover {
+    background: vars.$color2;
+    color: vars.$color4;
+  }
+}

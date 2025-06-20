@@ -1,1 +1,8 @@
-<p>projects works!</p>
+<div class="projects">
+  @for (project of projects; track $index) {
+  <app-project-template
+    [project]="project"
+    [index]="$index"
+  ></app-project-template
+  >}
+</div>

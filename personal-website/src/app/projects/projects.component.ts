@@ -1,11 +1,32 @@
 import { Component } from '@angular/core';
+import { IProject } from '../shared/interfaces/project.interface';
+import { ProjectTemplateComponent } from '../contact/project-template/project-template.component';
 
 @Component({
   selector: 'app-projects',
-  imports: [],
+  imports: [ProjectTemplateComponent],
   templateUrl: './projects.component.html',
-  styleUrl: './projects.component.scss'
+  styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent {
-
+  projects: IProject[] = [
+    {
+      title: 'mindit.io',
+      description: 'mindit.io website',
+      url: 'https://mindit.io',
+      image: 'assets/images/mindit.io.png',
+    },
+    {
+      title: 'mindit.io',
+      description: 'mindit.io website',
+      url: 'https://mindit.io',
+      image: 'assets/images/mindit.io.png',
+    },
+    {
+      title: 'mindit.io',
+      description: 'mindit.io website',
+      url: 'https://mindit.io',
+      image: 'assets/images/mindit.io.png',
+    },
+  ];
 }

@@ -1,0 +1,56 @@
+@use "../../shared/overrides/variables.scss" as vars;
+
+.project {
+  height: 80%;
+  padding: 100px 70px;
+  overflow: hidden;
+  border-top: 1px solid vars.$color2;
+  border-bottom: 1px solid vars.$color2;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+
+  .presentation {
+    min-width: 50%;
+    width: 50%;
+
+    .header {
+      font-size: 6rem;
+    }
+
+    .description {
+      font-size: 1.5rem;
+    }
+  }
+
+  .image {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: fit-content;
+      height: 100%;
+      border-radius: 50px;
+
+      object-fit: contain;
+    }
+  }
+}
+
+.image-right {
+  background: vars.$color4;
+}
+
+.image-left {
+  background: vars.$color3;
+
+  .presentation {
+    text-align: end;
+  }
+}
