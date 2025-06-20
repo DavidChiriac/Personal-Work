@@ -1,0 +1,38 @@
+.home-page {
+  height: 80%;
+  padding: 100px 70px;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 30px;
+
+  .presentation {
+    min-width: 50%;
+    width: 60%;
+
+    .header {
+      font-size: 5rem;
+    }
+
+    .description {
+      font-size: 2rem;
+    }
+  }
+
+  .image {
+    width: fit-content;
+    min-width: fit-content;
+    height: 100%;
+    overflow: hidden;
+
+    img {
+      width: fit-content;
+      height: 100%;
+      border-radius: 50px;
+
+      object-fit: contain;
+    }
+  }
+}
