@@ -1,0 +1,41 @@
+@use "./variables.scss" as vars;
+
+.p-button {
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background: transparent;
+  border: none;
+  color: black;
+}
+
+.contact .p-button {
+  border-radius: 20px;
+  background: vars.$color4;
+
+  &:hover {
+    background: vars.$color2;
+    color: vars.$color4;
+  }
+}
+
+.projects .p-button {
+  &:hover {
+    background: vars.$color2;
+    color: vars.$color4;
+  }
+}
+
+.work-with-me .p-button {
+  background: vars.$color2;
+  color: vars.$color4;
+  border: 1px solid vars.$color1;
+  padding: 20px 100px;
+  font-size: 1.3rem;
+  border-radius: 100px;
+
+  &:hover {
+    background: vars.$color2;
+    color: vars.$color4;
+  }
+}
