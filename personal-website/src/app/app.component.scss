@@ -1,0 +1,5 @@
+@use "./shared/overrides/variables.scss" as vars;
+.router-outlet {
+  height: calc(100vh - 100px);
+  background: vars.$color4;
+}
