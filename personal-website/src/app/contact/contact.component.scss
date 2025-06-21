@@ -1,0 +1,63 @@
+@use "../shared/overrides/variables.scss" as vars;
+
+.contact {
+  display: flex;
+  border-top: 3px solid vars.$color3;
+  height: 100%;
+
+  .header {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    font-size: 6rem;
+    padding-left: 70px;
+    padding-right: 30px;
+  }
+
+  .details {
+    height: 100%;
+    width: 50%;
+    background: vars.$color3;
+    padding-right: 50px;
+    padding-left: 50px;
+    display: flex;
+    align-items: center;
+
+    .details-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      row-gap: 50px;
+      margin-bottom: 200px;
+      padding: 50px;
+      border: 1px solid vars.$color1;
+
+      div {
+        width: 48%;
+        height: fit-content;
+        font-size: 2rem;
+
+        span {
+          font-size: 1.3rem;
+          color: rgb(0, 0, 0, 0.5);
+        }
+      }
+
+      div:last-child {
+        align-self: flex-start;
+
+        a {
+          text-decoration: none;
+          color: black;
+
+          &:hover {
+            color: vars.$color4;
+          }
+        }
+      }
+    }
+  }
+}

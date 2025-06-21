@@ -1,1 +1,17 @@
-<p>contact works!</p>
+<div class="contact">
+  <div class="header">Let's Work Together</div>
+  <div class="details">
+    <div class="details-container">
+      <div>Full Name:<br /><span>David Chiriac</span></div>
+      <div>
+        Email: <br /><span>{{ contact.email }}</span>
+      </div>
+      <div>
+        Based in <br /><span>{{ contact.location }}</span>
+      </div>
+      <div>
+        <a [href]="contact.linkedIn">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</div>
