@@ -5,4 +5,5 @@ export interface IProject {
   image: string;
   id: number;
   slug: string;
+  presentationImages?: string[];
 }

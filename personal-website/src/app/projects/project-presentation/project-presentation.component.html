@@ -1,1 +1,16 @@
-<div class="project"></div>
+<div class="project">
+  <div class="header">
+    <div class="title">{{ project.title }}</div>
+    <div class="presentation">{{ project.description }}</div>
+  </div>
+  <div class="images">
+    <div class="cover-image">
+      <img [src]="project.image" [alt]="project.title" />
+    </div>
+    <div class="small-images">
+      @for (image of project.presentationImages; track $index) {
+      <img [src]="image" [alt]="project.title" />
+      }
+    </div>
+  </div>
+</div>

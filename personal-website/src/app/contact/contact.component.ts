@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
 
+interface IContact {
+  email: string;
+  location: string;
+  linkedIn: string;
+}
+
 @Component({
   selector: 'app-contact',
   imports: [],
@@ -7,9 +13,5 @@ import { Component } from '@angular/core';
   styleUrl: './contact.component.scss',
 })
 export class ContactComponent {
-  contact = {
-    email: 'chiriacdavid74@gmail.com',
-    location: 'Suceava, Romania',
-    linkedIn: 'https://www.linkedin.com/in/david-chiriac-85a321214/',
-  };
+  contact!: IContact;
 }
