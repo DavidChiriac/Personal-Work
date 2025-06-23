@@ -27,8 +27,6 @@ export class HomePageComponent {
   isMobile!: boolean;
 
   constructor(private readonly deviceService: DeviceService) {
-    this.isMobile = deviceService.isMobile();
-
-    console.log(this.isMobile);
+    this.isMobile = deviceService.isMobile;
   }
 }
