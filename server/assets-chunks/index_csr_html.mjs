@@ -1,0 +1,15 @@
+export default `<!DOCTYPE html>
+<html lang="en" data-beasties-container="">
+  <head>
+    <meta charset="utf-8">
+    <title>PersonalWebsite</title>
+    <base href="https://davidchiriac.github.io/Personal-Website/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css">
+  <style>body{margin:0;font-size:20px}</style><link rel="stylesheet" href="styles-HKT7SJK5.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-HKT7SJK5.css"></noscript></head>
+  <body ngcm="">
+    <app-root></app-root>
+  <link rel="modulepreload" href="chunk-KUSXM6ZM.js"><script src="polyfills-B6TNHZQ6.js" type="module"></script><script src="main-64PLJR5G.js" type="module"></script></body>
+</html>
+`;

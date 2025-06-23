@@ -1,0 +1,21 @@
+{
+  "projects": [
+    {
+      "title": "mindit.io website",
+      "description": "This project is the official website of mindit.io. Other colleagues of mine, alongside myself created this website to serve as the face of our company.",
+      "slug": "mindit.io",
+      "image": "mindit.io.png",
+      "id": 1,
+      "presentationImages": [
+        "1.png",
+        "2.png",
+        "3.png",
+        "4.png",
+        "5.png",
+        "6.png",
+        "7.png",
+        "8.png"
+      ]
+    }
+  ]
+}
