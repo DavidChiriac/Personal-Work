@@ -1,13 +1,15 @@
-<div class="navbar px-5">
+<div [ngClass]="isMobile ? 'navbar-mobile px-2' : 'navbar px-5'">
   <h1 class="title" [routerLink]="''">Home</h1>
   <div class="navigation">
     <p-button
-      class="projects nav-tab"
+      class="projects"
+      [ngClass]="{ mobile: isMobile }"
       label="Projects"
       [routerLink]="'/projects'"
     />
     <p-button
-      class="contact nav-tab"
+      class="contact"
+      [ngClass]="{ mobile: isMobile }"
       label="Contact"
       [routerLink]="'/contact'"
     />

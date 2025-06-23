@@ -19,7 +19,26 @@
   }
 }
 
+.mobile .p-button {
+  font-size: 1rem;
+  padding: 5px 10px;
+}
+
 .projects .p-button {
+  &:hover {
+    background: vars.$color2;
+    color: vars.$color4;
+  }
+}
+
+.work-with-me-mobile .p-button {
+  background: vars.$color2;
+  color: vars.$color4;
+  border: 1px solid vars.$color1;
+  padding: 10px 50px;
+  font-size: 1rem;
+  border-radius: 50px;
+
   &:hover {
     background: vars.$color2;
     color: vars.$color4;

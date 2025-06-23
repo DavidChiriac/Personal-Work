@@ -1,16 +1,29 @@
-<div class="home-page">
+<div [ngClass]="isMobile ? 'home-page-mobile' : 'home-page'">
   <div class="presentation">
     <div class="header">{{ presentation.header }}</div>
     <div class="description">{{ presentation.description }}</div>
     <br />
     <br />
+    @if (!isMobile) {
     <p-button
       class="work-with-me"
       label="Work with Me"
       [routerLink]="'contact'"
     />
+    }
   </div>
   <div class="image">
     <img [src]="presentation.image" alt="David Chiriac" />
   </div>
+  @if (isMobile) {
+  <br />
+  <br />
+  <div class="flex justify-content-center">
+    <p-button
+      [ngClass]="isMobile ? 'work-with-me-mobile' : 'work-with-me'"
+      label="Work with Me"
+      [routerLink]="'contact'"
+    />
+  </div>
+  }
 </div>
