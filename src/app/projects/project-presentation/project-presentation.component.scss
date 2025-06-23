@@ -51,3 +51,55 @@
     }
   }
 }
+
+.project-mobile {
+  .header {
+    width: 100%;
+    background: vars.$color3;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .presentation {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .images {
+    width: 100%;
+    padding: 20px 10px;
+    background: vars.$color2;
+
+    .cover-image {
+      width: fit-content;
+      margin: auto;
+
+      img {
+        width: 100%;
+        max-height: 1000px;
+        object-fit: contain;
+        border-radius: 50px;
+      }
+    }
+
+    .small-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 30px;
+      row-gap: 30px;
+      width: 100%;
+
+      .image {
+        width: 48%;
+      }
+    }
+  }
+}

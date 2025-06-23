@@ -1,4 +1,4 @@
-<div class="project">
+<div [ngClass]="{ project: !isMobile, 'project-mobile': isMobile }">
   <div class="header">
     <div class="title">{{ project.title }}</div>
     <div class="presentation">{{ project.description }}</div>
