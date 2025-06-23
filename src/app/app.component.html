@@ -1,4 +1,6 @@
 <app-navbar></app-navbar>
-<div [ngClass]="isMobile ? 'router-outlet-mobile' : 'router-outlet'">
+<div
+  [ngClass]="{ 'router-outlet-mobile': isMobile, 'router-outlet': !isMobile }"
+>
   <router-outlet></router-outlet>
 </div>

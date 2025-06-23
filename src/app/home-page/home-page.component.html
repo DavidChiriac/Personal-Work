@@ -1,4 +1,4 @@
-<div [ngClass]="isMobile ? 'home-page-mobile' : 'home-page'">
+<div [ngClass]="{ 'home-page-mobile': isMobile, 'home-page': !isMobile }">
   <div class="presentation">
     <div class="header">{{ presentation.header }}</div>
     <div class="description">{{ presentation.description }}</div>

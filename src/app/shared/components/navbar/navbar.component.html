@@ -1,4 +1,4 @@
-<div [ngClass]="isMobile ? 'navbar-mobile px-2' : 'navbar px-5'">
+<div [ngClass]="{ 'navbar-mobile px-2': isMobile, 'navbar px-5': !isMobile }">
   <h1 class="title" [routerLink]="''">Home</h1>
   <div class="navigation">
     <p-button
