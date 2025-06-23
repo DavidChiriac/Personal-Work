@@ -5,11 +5,21 @@
   </div>
   <div class="images">
     <div class="cover-image">
-      <img [src]="project.image" [alt]="project.title" />
+      <img
+        [src]="`assets/images/${project.slug}/${project.image}`"
+        [alt]="project.title"
+      />
     </div>
     <div class="small-images">
       @for (image of project.presentationImages; track $index) {
-      <img [src]="image" [alt]="project.title" />
+      <div class="image">
+        <p-image
+          [src]="`assets/images/${project.slug}/${image}`"
+          class="presentation-image"
+          [alt]="project.title"
+          [preview]="true"
+        />
+      </div>
       }
     </div>
   </div>

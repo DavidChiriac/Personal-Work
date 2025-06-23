@@ -16,8 +16,9 @@ interface IPresentation {
 })
 export class HomePageComponent {
   presentation: IPresentation = {
-    header: '',
-    description: '',
-    image: '',
+    header: "Hey, I'm David.",
+    description:
+      'I am a frontend developer, mainly focused on Angular, but I previously worked with React and Vue on personal projects',
+    image: 'assets/images/David Chiriac.jpg',
   };
 }

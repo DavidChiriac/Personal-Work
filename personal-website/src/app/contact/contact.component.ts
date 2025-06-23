@@ -13,5 +13,9 @@ interface IContact {
   styleUrl: './contact.component.scss',
 })
 export class ContactComponent {
-  contact!: IContact;
+  contact: IContact = {
+    email: 'chiriacdavid74@gmail.com',
+    location: 'Suceava',
+    linkedIn: 'https://www.linkedin.com/in/david-chiriac-85a321214/',
+  };
 }

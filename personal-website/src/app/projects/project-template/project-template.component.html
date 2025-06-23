@@ -10,12 +10,15 @@
     <br />
     <br />
     <p-button
-      [routerLink]="['/projects/' + project.title]"
+      [routerLink]="['/projects/' + project.slug]"
       class="view-project"
       [label]="'View Project'"
     />
   </div>
   <div class="image">
-    <img [src]="project.image" [alt]="project.title" />
+    <img
+      [src]="`assets/images/${project.slug}/${project.image}`"
+      [alt]="project.title"
+    />
   </div>
 </div>
