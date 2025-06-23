@@ -1,4 +1,4 @@
-<div class="contact">
+<div [ngClass]="{ contact: !isMobile, 'contact-mobile': isMobile }">
   <div class="header">Let's Work Together</div>
   <div class="details">
     <div class="details-container">

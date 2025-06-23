@@ -60,3 +60,49 @@
     }
   }
 }
+
+.contact-mobile {
+  border-top: 3px solid vars.$color3;
+  padding: 20px 10px;
+
+  .header {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .details {
+    background: vars.$color3;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    padding-bottom: 50px;
+
+    .details-container {
+      width: 100%;
+      padding: 30px;
+
+      div {
+        height: fit-content;
+        font-size: 1.3rem;
+        margin-top: 20px;
+
+        span {
+          font-size: 1.2rem;
+          color: rgb(0, 0, 0, 0.5);
+        }
+      }
+
+      div:last-child {
+        align-self: flex-start;
+
+        a {
+          color: black;
+
+          &:hover {
+            color: vars.$color4;
+          }
+        }
+      }
+    }
+  }
+}
