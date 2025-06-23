@@ -1,19 +1,29 @@
 <div
-  class="project"
-  [ngClass]="
-    index % 2 === 0 ? 'flex-row image-right' : 'flex-row-reverse image-left'
-  "
+  [ngClass]="{
+    'flex-row image-right': index % 2 === 0 && !isMobile,
+    'flex-row-reverse image-left': index % 2 === 1 && !isMobile,
+    'image-right': index % 2 === 0 && isMobile,
+    'image-left': index % 2 === 1 && isMobile,
+    'project': !isMobile,
+    'project-mobile': isMobile,
+  }"
 >
-  <div class="presentation">
+  <div
+    class="presentation"
+    [ngClass]="{ 'text-end': !isMobile && index % 2 === 1 }"
+  >
     <div class="header">{{ project.title }}</div>
     <div class="description">{{ project.description }}</div>
     <br />
     <br />
-    <p-button
-      [routerLink]="['/projects/' + project.slug]"
-      class="view-project"
-      [label]="'View Project'"
-    />
+    <div class="flex justify-content-center">
+      <p-button
+        [routerLink]="['/projects/' + project.slug]"
+        class="view-project"
+        [ngClass]="{ 'view-project-mobile': isMobile }"
+        [label]="'View Project'"
+      />
+    </div>
   </div>
   <div class="image">
     <img

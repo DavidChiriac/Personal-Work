@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "deploy-prod": "ng build --configuration production --base-href \"https://davidchiriac.github.io/Personal-Website/\" && npx angular-cli-ghpages --dir=dist/personal-website/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:personal-website": "node dist/personal-website/server/server.mjs"

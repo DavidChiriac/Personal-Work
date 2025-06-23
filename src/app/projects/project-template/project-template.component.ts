@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { IProject } from '../../shared/interfaces/project.interface';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { DeviceService } from '../../shared/services/device.service';
 
 @Component({
   selector: 'app-project-template',
@@ -13,4 +14,10 @@ import { RouterModule } from '@angular/router';
 export class ProjectTemplateComponent {
   @Input() project!: IProject;
   @Input() index!: number;
+
+  isMobile!: boolean;
+
+  constructor(private readonly deviceService: DeviceService) {
+    this.isMobile = deviceService.isMobile();
+  }
 }

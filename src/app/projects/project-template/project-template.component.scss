@@ -42,14 +42,53 @@
   }
 }
 
+.project-mobile {
+  width: 90%;
+  padding: 20px 10px;
+  overflow: hidden;
+  border: 1px solid vars.$color2;
+
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 30px;
+  margin: auto;
+
+  .presentation {
+    width: 100%;
+
+    .header {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .description {
+      margin-top: 1rem;
+      font-size: 1.3rem;
+    }
+  }
+
+  .image {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    img {
+      width: 70%;
+      border-radius: 50px;
+
+      object-fit: contain;
+    }
+  }
+}
+
 .image-right {
   background: vars.$color4;
 }
 
 .image-left {
   background: vars.$color3;
-
-  .presentation {
-    text-align: end;
-  }
 }

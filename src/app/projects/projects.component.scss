@@ -1,4 +1,19 @@
+@use "../shared/overrides/variables.scss" as vars;
+
 .projects {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.projects-mobile {
+  background: vars.$color1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   width: 100%;
   height: 100%;
   overflow: auto;

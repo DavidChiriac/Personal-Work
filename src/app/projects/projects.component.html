@@ -1,8 +1,9 @@
-<div class="projects">
+<div [ngClass]="{ projects: !isMobile, 'projects-mobile': isMobile }">
   @for (project of projects; track $index) {
   <app-project-template
     [project]="project"
     [index]="$index"
   ></app-project-template
   >}
+  <br />
 </div>
