@@ -16,6 +16,6 @@ export class AppComponent {
   isMobile!: boolean;
 
   constructor(private readonly deviceService: DeviceService) {
-    this.isMobile = deviceService.isMobile;
+    this.isMobile = deviceService.isMobile();
   }
 }
