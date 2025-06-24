@@ -1,22 +1,19 @@
 <div [ngClass]="{ project: !isMobile, 'project-mobile': isMobile }">
   <div class="header">
-    <div class="title">{{ project.title }}</div>
-    <div class="presentation">{{ project.description }}</div>
+    <div class="title">{{ project?.title }}</div>
+    <div class="presentation">{{ project?.description }}</div>
   </div>
   <div class="images">
     <div class="cover-image">
-      <img
-        [src]="`assets/images/${project.slug}/${project.image}`"
-        [alt]="project.title"
-      />
+      <img [src]="project?.imageUrl" [alt]="project?.title" />
     </div>
     <div class="small-images">
-      @for (image of project.presentationImages; track $index) {
+      @for (image of project?.presentationImagesUrl; track $index) {
       <div class="image">
         <p-image
-          [src]="`assets/images/${project.slug}/${image}`"
+          [src]="image"
           class="presentation-image"
-          [alt]="project.title"
+          [alt]="project?.title"
           [preview]="true"
         />
       </div>

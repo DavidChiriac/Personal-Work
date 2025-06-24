@@ -3,9 +3,6 @@ import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DeviceService } from '../shared/services/device.service';
 import { CommonModule } from '@angular/common';
-import { HomepageService } from './homepage.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SessionStorageService } from 'ngx-webstorage';
 
 interface IPresentation {
   header: string;
@@ -13,7 +10,6 @@ interface IPresentation {
   image: string;
 }
 
-@UntilDestroy()
 @Component({
   selector: 'app-home-page',
   imports: [CommonModule, ButtonModule, RouterModule],
@@ -30,37 +26,7 @@ export class HomePageComponent {
 
   isMobile!: boolean;
 
-  constructor(
-    private readonly deviceService: DeviceService,
-    private readonly homepageService: HomepageService,
-    private readonly sessionStorage: SessionStorageService
-  ) {
+  constructor(private readonly deviceService: DeviceService) {
     this.isMobile = deviceService.isMobile();
-
-    const homepage = sessionStorage.retrieve('homepage');
-    if (homepage) {
-      this.presentation = { ...homepage };
-    } else {
-      this.getHomepageData();
-    }
-  }
-
-  getHomepageData() {
-    this.homepageService
-      .getHomepage()
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        (homepage: {
-          data: { header: string; description: string; image: { url: string } };
-        }) => {
-          this.presentation = {
-            header: homepage?.data?.header,
-            description: homepage.data.description,
-            image: homepage.data.image.url,
-          };
-
-          this.sessionStorage.store('homepage', this.presentation);
-        }
-      );
   }
 }
