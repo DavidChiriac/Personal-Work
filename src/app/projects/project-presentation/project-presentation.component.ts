@@ -50,7 +50,6 @@ export class ProjectPresentationComponent implements OnInit {
       .getSingleProject(this.route.snapshot.params['id'])
       .pipe(untilDestroyed(this))
       .subscribe((project) => {
-        console.log(project);
         this.project = {
           ...project.data[0],
           imageUrl:
