@@ -1,4 +1,4 @@
 export const environment = {
-  prod: false,
+  prod: true,
   apiUrl: 'https://steadfast-canvas-fe3e6624ce.strapiapp.com',
 };
