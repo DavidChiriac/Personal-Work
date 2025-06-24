@@ -1,0 +1,12 @@
+@use './variables.scss' as vars;
+
+.p-itextarea{
+    min-height: 100px;
+    border: 1px solid vars.$night;
+    border-radius: 3px;
+
+    &:focus{
+        border: 1px solid vars.$avolta-purple;
+        box-shadow: none;
+    }
+}

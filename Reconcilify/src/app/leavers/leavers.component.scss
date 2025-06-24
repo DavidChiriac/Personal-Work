@@ -1,0 +1,32 @@
+@use "../shared/overrides/variables.scss" as vars;
+
+.leavers-content{
+    width: calc(100vw - 5rem);
+
+    .outlet-content{
+        height: calc(100vh - 4rem);
+        width: 100%;
+        background: vars.$gray-night-50;
+        overflow: auto;
+        position: relative;
+    }
+}
+
+.leaver-report-acknowledgement{
+    border-radius: 15px;
+    background: vars.$gray-night-100;
+    padding: 20px;
+    cursor: pointer;
+    
+    h4{
+        font-size: 1rem;
+    }
+
+    .icon{
+        font-size: 1.75rem;
+    }
+
+    &:hover{
+        background: vars.$green-lime-200;
+    }
+}

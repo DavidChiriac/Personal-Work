@@ -1,0 +1,169 @@
+@switch (col.field) { 
+    @case("status"){
+    <div [id]="col.header + '-header'" class="flex align-items-center">
+        <span [id]="col.header + '-header-name'">{{ col.header }}</span>
+        <p-columnFilter [id]="col.header + '-filter'"
+            field="isActive"
+            type="text"
+            [hideOnClear]="true"
+            matchMode="in"
+            display="menu"
+            [showMatchModes]="false"
+            [showOperator]="false"
+            [showAddButton]="false"
+            [pTooltip]="'Filter'"
+            tooltipPosition="top"
+        >
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect [id]="col.header + '-multiselect'"
+                    [ngModel]="value"
+                    [options]="statusFilters"
+                    optionLabel="label"
+                    optionValue="active"
+                    (onChange)="filter($event.value)"
+                    class="fnb-filter-multiselect"
+                >
+                    <ng-template let-item pTemplate="selectedItems">
+                        @if(item?.length === 1){
+                        {{ item[0].label }}
+                        } @else {
+                        {{ item?.length }} filters selected }
+                    </ng-template>
+                </p-multiSelect>
+            </ng-template>
+        </p-columnFilter>
+        <p-sortIcon field="isActive" />
+    </div>
+    } 
+        
+    @case("acknowledged"){
+    <div [id]="col.header + '-header'" class="flex align-items-center">
+        <span [id]="col.header + '-header-name'">{{ col.header }}</span>
+        <p-columnFilter [id]="col.header + '-filter'"
+            field="selectedAcknowledged"
+            type="text"
+            [hideOnClear]="true"
+            matchMode="in"
+            display="menu"
+            [showMatchModes]="false"
+            [showOperator]="false"
+            [showAddButton]="false"
+            [pTooltip]="'Filter'"
+            tooltipPosition="top"
+        >
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect [id]="col.header + '-multiselect'"
+                    [ngModel]="value"
+                    [options]="acknowledgeFilters"
+                    optionLabel="label"
+                    optionValue="status"
+                    (onChange)="filter($event.value)"
+                    class="fnb-filter-multiselect"
+                >
+                    <ng-template let-item pTemplate="selectedItems">
+                        @if(item?.length === 1){
+                        {{ item[0].label }}
+                        } @else {
+                        {{ item?.length }} filters selected }
+                    </ng-template>
+                </p-multiSelect>
+            </ng-template>
+        </p-columnFilter>
+        <p-sortIcon field="acknowledged" />
+    </div>
+    } 
+    @case("isBackdatedLeaver"){
+    <div [id]="col.header + '-header'" class="flex align-items-center">
+        <span [id]="col.header + '-header-name'">{{ col.header }}</span>
+        <p-columnFilter [id]="col.header + '-filter'"
+            field="selectedBackdatedLeaver"
+            type="text"
+            [hideOnClear]="true"
+            matchMode="in"
+            display="menu"
+            [showMatchModes]="false"
+            [showOperator]="false"
+            [showAddButton]="false"
+            [pTooltip]="'Filter'"
+            tooltipPosition="top"
+        >
+            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                <p-multiSelect [id]="col.header + '-multiselect'"
+                    [ngModel]="value"
+                    [options]="backdatedLeaverFilters"
+                    optionLabel="label"
+                    optionValue="value"
+                    (onChange)="filter($event.value)"
+                    class="fnb-filter-multiselect"
+                >
+                    <ng-template let-item pTemplate="selectedItems">
+                        @if(item?.length === 1){
+                        {{ item[0].label }}
+                        } @else {
+                        {{ item?.length }} filters selected }
+                    </ng-template>
+                </p-multiSelect>
+            </ng-template>
+        </p-columnFilter>
+        <p-sortIcon field="isBackdatedLeaver" />
+    </div>
+    } 
+    @default { 
+            <div class="flex gap-1 align-items-center">
+                <span [id]="col.field + '-header'">{{col.header}}</span>
+                @if(col.datepicker){
+                    @if(col.dateRange){
+                        <app-dynamic-selection-date-filtering [dynamicSelectionMode]="col.dynamicDateSelection ?? false" [col]="col"></app-dynamic-selection-date-filtering>
+                    } @else {
+                        <app-date-filtering [col]="col"></app-date-filtering>
+                    }
+                } @else if(col.filterable){
+                    <p-columnFilter [id]="col.field + '-filter'" [field]="col.filterField ?? col.field" type="text"
+                                    [hideOnClear]="true" [matchMode]="'contains'" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                    [pTooltip]="'Filter'" tooltipPosition="top">
+                            @if(col.filterMultiselect) {
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect  [id]="col.field + '-filter-search'" [ngModel]="value" [options]="tableFilters[col.field]"
+                                        (onChange)="filter($event.value)" class="fnb-filter-multiselect">
+                                        <ng-template let-item pTemplate="selectedItems">
+                                            @if(item?.length === 1){
+                                                {{item[0]}}
+                                            } @else {
+                                                {{item?.length}} filters selected
+                                            }
+                                        </ng-template>
+                                    </p-multiSelect>
+                                </ng-template>
+                            }
+                    </p-columnFilter>
+                }
+                
+                @if(requestParams){
+                    <span [id]="col.field + '-sort'"
+                        class="p-sortable-column-icon cursor-pointer"
+                        (click)="onSort(col.sortableField ?? col.field, $event)" onkeypress=""
+                        [pTooltip]="'Sort'" tooltipPosition="top">
+                        <i [id]="col.field + '-sort-icon'"
+                            [ngClass]="{
+                            'pi': true,
+                            'pi-sort-alt': requestParams.fieldToSort !== (col.sortableField ?? col.field),
+                            'pi-sort-amount-up': requestParams.fieldToSort === (col.sortableField ?? col.field) && requestParams.sortDirection === SortDirectionEnum.ASC,
+                            'pi-sort-amount-down': requestParams.fieldToSort === (col.sortableField ?? col.field) && requestParams.sortDirection === SortDirectionEnum.DESC
+                        }"></i>
+                    </span>
+                } @else {
+                    <p-sortIcon [id]="col.header + '-sort'" [field]="col.sortableField ?? col.field" />
+                }
+                
+                @if(!col.fixedFrozen){
+                    @if (col.frozen) {
+                            <i [id]="col.field + '-frozen-icon'" class="pi pi-lock lock-green cursor-pointer" (click)="toggleFrozeOnColumn(col)" onkeypress="" [pTooltip]="'Unfreeze column'" tooltipPosition="top"></i>
+                    } @else {
+                        @if(noOfFrozenColumns < 3){
+                            <i [id]="col.field + '-not-frozen-icon'" class="pi pi-lock-open cursor-pointer" (click)="toggleFrozeOnColumn(col, true)" onkeypress="" [pTooltip]="'Freeze column'" tooltipPosition="top"></i>
+                        }
+                    }
+                }
+            </div>
+    } 
+}

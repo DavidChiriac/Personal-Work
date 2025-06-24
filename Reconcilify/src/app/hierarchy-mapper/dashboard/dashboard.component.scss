@@ -1,0 +1,72 @@
+@use "../../shared/overrides/variables.scss" as vars;
+
+.total-products-panel{
+    padding: 1rem;
+    background: vars.$green-lime-500;
+    color: vars.$night;
+    font-size: 1.3rem;
+    width: fit-content;
+
+    .total-products-table{
+        td:first-child, th:first-child{
+            width: max-content;
+            padding-block: 3px;
+        }
+    }
+}
+
+.link-pannel{
+    height: 48%;
+}
+
+.dashboard-bottom{
+    margin-top: 8rem;
+}
+    
+@media only screen and (max-width: 1557px) {
+    .dashboard-bottom{
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+        margin-top: 2rem;
+
+        .classification-status-tracker, .distribution-chart{
+            width: 100%;
+        }
+    }
+}
+
+.classification-status-tracker, .distribution-chart{
+    min-width: 20rem;
+    background: vars.$avolta-white;
+    width: 50%;
+    box-shadow: 2px 2px vars.$gray-night-600;
+    border-radius: 10px;
+}
+
+.total-products{
+    padding: 2rem 1rem;
+    background: vars.$avolta-white;
+    border-radius: 10px;
+    border: 1px solid vars.$gray-night-900;
+    font-weight: 700;
+
+    .icon{
+        font-size: 50px;
+    }
+}
+
+.correctly-classified{
+    @extend .total-products;
+    color: vars.$green-lime-700;
+    border: 1px solid vars.$green-lime-700;
+}
+
+.classification-issues{
+    @extend .total-products;
+    color: vars.$red-heat-500;
+    border: 1px solid vars.$red-heat-500;
+}
+
+.compliance-score{
+    @extend .total-products;
+}

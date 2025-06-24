@@ -1,0 +1,14 @@
+.modal-background{
+    position: absolute;    
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    .background-opacity{
+        height: 100%;
+        width: 100%;
+        background: grey;
+        opacity: 0.5;
+    }
+}

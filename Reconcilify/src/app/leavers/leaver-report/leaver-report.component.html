@@ -1,0 +1,75 @@
+<div id="leaver-report-header" class="leaver-report mx-4 flex justify-content-between align-items-center">
+    <h2 id="leaver-report-title" class="my-0 w-3">Leaver Report</h2>
+    <app-table-mass-filters [globalFilters]="globalFilters" [selectedQuickFilter]="selectedQuickFilter" (selectMassFilter)="selectQuickFilter($event)"></app-table-mass-filters>
+    <div class="w-3 flex justify-content-end">
+    </div>
+</div>
+<p-toast/>
+
+<div id="leaver-report-table-container" class="leaver-report-table mx-1" [ngClass]="{'fixed': errorModalVisible || exportModalVisible}">
+<!-- fnb-table  -->
+    <p-table #dt id="leaver-report-table" [value]="tableData" [lazy]="true" (onLazyLoad)="onLazyLoad($event)" [paginator]="true" [selection]="true"
+    [loading]="loading" loadingIcon='pi pi-spin pi-spinner' dataKey="id"
+    [rows]="50" [totalRecords]="totalRecords" [rowsPerPageOptions]="[50, 100, 150]" [rowHover]="true" [scrollable]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'"
+    [(selection)]="selectedEntriesList" [selectAll]="allSelected"
+    (selectAllChange)="onSelectAllChange($event)" (onRowUnselect)="onRowUnselect($event)" (onRowSelect)="onRowSelect($event)"
+    [globalFilterFields]="filterNames">
+        <ng-template pTemplate="caption">
+            <div id="products-mapping-caption" class="flex justify-content-between">
+                <app-table-caption (clearFilters)="clearFilters()" (globalSearch)="globalSearch($event)" [emptyFilters]="emptyFilters"></app-table-caption>
+                <app-export-dropdown [loading]="loading" [tableDataLength]="tableData.length" [selectedEntriesLength]="selectedEntries.length" (export)="exportData($event)"></app-export-dropdown>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr id="leaver-report-table-header-row">
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("selection") {
+                            <th id="select-all" scope="col" [ngStyle]="col.style" class="px-0">
+                                <div class="flex justify-content-center">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </div>
+                            </th>                
+                        }
+                        @default {
+                            <th [id]="'header-' + col.field" scope="col" [ngStyle]="col.style">
+                                <app-table-header-cell [col]="col" [tableFilters]="tableFilters" [requestParams]="requestParams" [backdatedLeaverOptions]="tableFilters.isBackdatedLeaver" (sort)="onSort($event)"></app-table-header-cell>  
+                            </th>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-index="rowIndex">
+            <tr [id]="index + '-row'" [ngClass]="{'row-selected': row._selected}">
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("selection") {
+                            <td [id]="index + '-selection'" [ngStyle]="row.style" class="px-0">
+                                <div class="flex justify-content-center">
+                                    <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                                </div>
+                            </td>                
+                        }
+                        @default {
+                            <td #tdRef [id]="index + '-' + col.field" [ngStyle]="row.style">
+                                <app-table-cell [row]="row" [col]="col" [index]="index"></app-table-cell>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <div class="flex items-center justify-between">{{selectedEntries.length + '/' + totalRecords}} users selected</div>
+        </ng-template>
+    </p-table>
+
+<div #dropdownAnchor class="fnb-dropdown"></div>
+</div>
+
+<app-modals-component [display]="display" [errorMessage]="errorMessage" [errorModalVisible]="errorModalVisible" [exportModalVisible]="exportModalVisible" (toggleErrorModal)="toggleErrorModal()"></app-modals-component>

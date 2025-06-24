@@ -1,0 +1,78 @@
+<div class="dashboard">
+    <div class="kpis px-4 w-full">
+            <div id="acknowledgement-rate" class="acknowledgement-rate " (click)="navigateToTasks(true)" onkeydown="">
+                <div class="flex justify-content-between w-full">
+                    <div>
+                        <h1 id="acknowledgement-rate-value" class="mt-0 mb-1">{{data.acknowledgementRate+'%'}}</h1>
+                        <div>Acknowledgment Rate</div>
+                    </div>
+                    <div id="acknowledgement-rate-icon" class="icon flex align-items-center">
+                        <i class="fa-solid fa-star-half-stroke"></i>                
+                    </div>
+                </div>
+            </div>
+            <div id="acknowledgement-tasks" class="acknowledgement-tasks flex justify-content-between " (click)="navigateToTasks()" onkeydown="">
+                <div>
+                    <h1 id="acknowledgement-tasks-value" class="mt-0 mb-1">{{data.pendingAcknowledgementTasks | shortenNumber}}</h1>
+                    <div>Acknowledgment Task</div>
+                </div>
+                <div id="acknowledgement-tasks-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+            </div>
+            <div id="previous-day-leavers" class="previous-day-leavers flex justify-content-between " (click)="navigateToLeaverReport('day')" onkeydown="">
+                <div>
+                    <h1 id="previous-day-leavers-value" class="mt-0 mb-1">{{data.previousDayLeavers | shortenNumber}}</h1>
+                    <div>Previous Day Leavers</div>
+                </div>
+                <div id="previous-day-leavers-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-business-time"></i>
+                </div>
+            </div>
+            <div id="current-week-leavers" class="current-week-leavers flex justify-content-between " (click)="navigateToLeaverReport('week')" onkeydown="">
+                <div>
+                    <h1 id="current-week-leavers-value" class="mt-0 mb-1">{{data.currentWeekLeavers | shortenNumber}}</h1>
+                    <div>Current Week Leavers</div>
+                </div>
+                <div id="current-week-leavers-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-calendar-week"></i>
+                </div>
+            </div>
+            <div id="current-week-backdated-leavers" class="current-week-backdated-leavers flex justify-content-between " (click)="navigateToLeaverReport('backdated')" onkeydown="">
+                <div>
+                    <h1 id="current-week-backdated-leavers-value" class="mt-0 mb-1">{{data.currentWeekBackdatedLeavers | shortenNumber}}</h1>
+                    <div>Current Week Backdated Leavers</div>
+                </div>
+                <div id="current-week-leavers-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-user-clock"></i>
+                </div>
+            </div>
+            <div id="current-month-leavers" class="current-month-leavers flex justify-content-between " (click)="navigateToLeaverReport('month')" onkeydown="">
+                <div>
+                    <h1 id="current-month-leavers-value" class="mt-0 mb-1">{{data.currentMonthLeavers | shortenNumber}}</h1>
+                    <div>Current Month Leavers</div>
+                </div>
+                <div id="current-month-leavers-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+            </div>
+            <div id="YTD-leavers" class="YTD-leavers flex justify-content-between " (click)="navigateToLeaverReport('year')" onkeydown="">
+                <div>
+                    <h1 id="YTD-leavers-value" class="mt-0 mb-1">{{data.yearToDateLeavers | shortenNumber}}</h1>
+                    <div>YTD Leavers</div>
+                </div>
+                <div id="YTD-leavers-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+            </div>
+    </div>
+
+    <div class="flex gap-5 justify-content-between mb-3 mx-4 dashboard-bottom">
+        <div id="tasks-table" class="tasks-table overflow-auto leavers-tasks-table">
+            <app-tasks-table></app-tasks-table>
+        </div>
+        <div id="notifications-table" class="notifications-table overflow-auto leavers-notifications-table">
+            <app-notifications-table></app-notifications-table>
+        </div>
+    </div>
+</div>

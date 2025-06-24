@@ -1,0 +1,24 @@
+<div id="header">
+    <navbar [isLandingPage]="true"></navbar>
+</div>
+
+<div class="mx-4"><h1>Modules</h1></div>
+
+<div class="landing-page-content mx-4 flex justify-content-between gap-4">
+    <div id="module-cards-container" class="module-cards h-full pr-4 overflow-auto">
+        <div id="module-card-container" class="flex flex-column gap-3">
+            @for(card of modules; track card.title){
+                <app-module-card [moduleCardData]="card"></app-module-card>
+            }
+        </div>  
+    </div>
+    @if(quickLinks.length > 0){
+        <div id="quick-links-card" class="quick-links h-full overflow-auto">
+            <app-module-card [isQuickLinksCard]="true" [quickLinks]="quickLinks"></app-module-card>
+        </div>
+    }
+</div>
+
+<div id="footer">
+    <app-footer [landingPage]="true"></app-footer>
+</div>

@@ -1,0 +1,30 @@
+@if(errorModalVisible){
+    <app-modal [modalVisible]="errorModalVisible" (closeModal)="closeErrorModal()" [modalWidth]="'30'">
+        <div id="error-modal-container" class="flex flex-column align-items-center gap-3">
+            <div>
+                <h4 id="error-message" class="text-center my-1">{{errorMessage}}</h4>
+            </div>
+            <div class="w-fit-content">
+                <p-button id="close-error-modal-button" styleClass="grey-btn" [icon]="'pi pi-times-circle'" label="OK" (onClick)="closeErrorModal()">
+                </p-button>
+            </div>
+        </div>
+    </app-modal>
+}
+
+@if(exportModalVisible){
+    <app-modal [modalVisible]="exportModalVisible" [modalWidth]="'30'">
+        <div id="export-modal-header" class="flex align-items-center justify-content-center p-3 gap-3">
+            <p-progressSpinner ariaLabel="loading" strokeWidth="2" class="export-spinner"></p-progressSpinner>
+            <h4 class="text-center my-1">Preparing Excel</h4>
+        </div>
+        <div id="export-modal-message" class="w-full">
+            <p class="w-full text-center">
+                Exporting to Excel... Please wait!
+            </p>
+        </div>
+        <div id="export-modal-timer" class="w-full text-center">
+            {{display}}
+        </div>
+    </app-modal>
+}

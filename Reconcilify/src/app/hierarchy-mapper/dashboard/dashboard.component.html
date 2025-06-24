@@ -1,0 +1,48 @@
+<div class="px-4 pt-3 h-full overflow-auto w-full">
+    <div class="flex w-full justify-content-between mt-6 gap-5">
+            <div id="total-products" class="total-products flex justify-content-between w-3">
+                <div>
+                    <h1 id="total-products-value" class="mt-0 mb-1">{{totalData.totalProductsNumber | shortenNumber}}</h1>
+                    <div>Total Products</div>
+                </div>
+                <div id="total-products-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-cubes"></i>
+                </div>
+            </div>
+            <div id="correctly-classified" class="correctly-classified flex justify-content-between w-3">
+                <div>
+                    <h1 id="correctly-classified-value" class="mt-0 mb-1">{{(totalData.totalCorrectlyClassified) | shortenNumber}}</h1>
+                    <div>Correctly Classified</div>
+                </div>
+                <div id="correctly-classified-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-square-check"></i>                
+                </div>
+            </div>
+            <div id="classification-issues" class="classification-issues flex justify-content-between w-3">
+                <div>
+                    <h1 id="classification-issues-value" class="mt-0 mb-1">{{totalData.totalClassificationIssues | shortenNumber}}</h1>
+                    <div>Classification Issues</div>
+                </div>
+                <div class="icon flex align-items-center h-full">
+                    <i id="classification-issues-icon" class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+            </div>
+            <div id="compliance-score" class="compliance-score flex justify-content-between w-3">
+                <div>
+                    <h1 id="compliance-score-value" class="mt-0 mb-1">{{totalData.classificationStatusComplianceScore+'%'}}</h1>
+                    <div>Overall Compliance Score</div>
+                </div>
+                <div id="compliance-score-icon" class="icon flex align-items-center h-full">
+                    <i class="fa-solid fa-star-half-stroke"></i>                
+                </div>
+            </div>
+    </div>
+    <div class="flex gap-5 w-full justify-content-between gap-5 mb-3 dashboard-bottom">
+        <div id="distribution-chart" class="distribution-chart">
+            <app-distribution-chart [chartData]="chartData$ | async"></app-distribution-chart>
+        </div>
+        <div id="classification-status-tracker" class="classification-status-tracker">
+            <app-classification-status-tracker [data]="data" [totalData]="totalData"></app-classification-status-tracker>
+        </div>
+    </div>
+</div>

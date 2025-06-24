@@ -1,0 +1,5 @@
+@use "../../../shared/overrides/variables.scss" as vars;
+
+.red-text {
+    color: vars.$red-heat-500;
+}

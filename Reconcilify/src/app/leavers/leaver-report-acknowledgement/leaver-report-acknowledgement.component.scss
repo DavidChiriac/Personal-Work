@@ -1,0 +1,47 @@
+@use "../../shared/overrides/variables.scss" as vars;
+
+.quick-filters{
+    background: vars.$gray-night-300;
+
+    .records-number{
+        border-radius: 30px;
+        background: vars.$gray-night-500;
+        padding: 2px 7px;
+        color: vars.$white;
+        font-size: 0.75rem;
+    }
+
+    div {
+        cursor: pointer;
+        padding: 5px 10px;
+
+        &:hover{
+            background: vars.$green-lime-300;
+        }
+    }
+
+    .active {
+        background: vars.$green-lime-300;
+    }
+}
+
+.leaver-report-acknowledgement{
+    margin-block: 0.7rem;
+
+    h1{
+        margin-bottom: 0;
+    }
+}
+
+.leaver-report-acknowledgement-table{
+    height: calc(100% - 29px - 1.4rem);
+    width: calc(100vw - 5.5rem);
+
+    @media only screen and (max-width: 1825px) {
+        height: calc(100% - 58px - 1.4rem);
+    }
+
+    @media only screen and (max-width: 1200px) {
+        height: calc(100% - 87px - 1.4rem);
+    }
+}

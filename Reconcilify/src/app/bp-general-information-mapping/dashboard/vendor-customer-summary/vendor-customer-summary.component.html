@@ -1,0 +1,75 @@
+<p-panel class="dashboard-panel">
+    <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+            <i class="fa-solid fa-gauge mr-2"></i>
+            <h3>Vendor/Customers summary</h3>
+        </div>
+    </ng-template>
+
+    <div class="flex flex-column">
+        <div class="col">
+            <h4>Total Vendor Customers CFIN: <span class="ml-2">
+                    <a class="blue-data" (click)="redirectToCentralRepository()">
+                        {{ totalVendorCustomersCfin | number: '1.0-0' }}
+                    </a>
+                </span>
+            </h4>
+        </div>
+        <div class="col dashboard-summary-table mt-3">
+            <p-table [value]="summaryData">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">{{vcOrigin.sapCorp}}</th>
+                        <th scope="col">{{vcOrigin.sapGamma}}</th>
+                        <th scope="col">{{vcOrigin.sapAmica}}</th>
+                        <th scope="col">{{vcOrigin.peopleSoft}}</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+                    <tr>
+                        <td [ngClass]="{
+                            'mapped-status': row.status === vcStatus.mapped,
+                            'new-status': row.status === vcStatus.new,
+                            'approved-status': row.status === vcStatus.approved,
+                        }">
+                            {{ row.status }}
+                        </td>
+                        <td>
+                            <span>
+                                <a class="blue-data" (click)="redirectToCentralRepository(row, vcOrigin.sapCorp)"
+                                    [ngClass]="{'disable-link' : row.sapCorp === 0}">
+                                    {{ row.sapCorp | number: '1.0-0' }}
+                                </a>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <a class="blue-data" (click)="redirectToCentralRepository(row, vcOrigin.sapGamma)"
+                                    [ngClass]="{'disable-link' : row.sapGamma === 0}">
+                                    {{ row.sapGamma | number: '1.0-0' }}
+                                </a>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <a (click)="redirectToCentralRepository(row, vcOrigin.sapAmica)" class="blue-data"
+                                    [ngClass]="{'disable-link' : row.sapAmica === 0}">
+                                    {{ row.sapAmica | number: '1.0-0' }}
+                                </a>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <a class="blue-data" (click)="redirectToCentralRepository(row, vcOrigin.peopleSoft)"
+                                    [ngClass]="{'disable-link' : row.peopleSoft === 0}">
+                                    {{ row.peopleSoft | number: '1.0-0' }}
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</p-panel>

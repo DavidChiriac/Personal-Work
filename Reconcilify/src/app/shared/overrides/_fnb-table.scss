@@ -1,0 +1,283 @@
+@use "./variables.scss" as vars;
+
+.fnb-table {
+  .p-datatable {
+    overflow: auto;
+    height: 100%;
+
+    .p-sortable-column.p-highlight{
+      color: inherit;
+
+      .p-sortable-column-icon{
+        color: inherit;
+      }
+    }
+
+    .p-datatable-wrapper {
+      max-height: 92.2%;
+
+      @media only screen and (max-width: 1050px) {
+        max-height: 92%;
+      }
+
+      @media only screen and (max-width: 990px) {
+        max-height: 91.9%;
+      }
+    }
+
+    .p-datatable-tbody {
+      .row-selected {
+        background: vars.$green-lime-200;
+      }
+
+      td {
+        padding: 0 5px;
+
+        span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .copy-to-clipboard {
+          min-width: 18px;
+          visibility: hidden;
+          height: 14px;
+
+          .copy-to-clipboard-icon{
+            font-size: 14px;
+          }
+        }
+
+        &:hover {
+          .copy-to-clipboard {
+            visibility: visible;
+          }
+        }
+      }
+
+      .edit-mode {
+        background: vars.$gray-night-100;
+
+        .editable-cell {
+          background: vars.$green-lime-100;
+        }
+      }
+    }
+
+    .p-paginator-bottom {
+      border: 1px solid vars.$gray-night-50;
+      padding: 0;
+      background: vars.$gray-night-100;
+      justify-content: end;
+      font-size: 0.75rem;
+
+      span,
+      button {
+        height: fit-content;
+      }
+
+      span {
+        padding: 2px 5px;
+      }
+
+      .p-paginator-pages {
+        width: fit-content;
+        margin-inline: 20px;
+
+        .p-paginator-page {
+          min-width: 0;
+          border-radius: 0;
+          padding: 0 5px;
+        }
+      }
+
+      button.p-highlight {
+        background: vars.$green-lime-300;
+        color: vars.$night;
+      }
+
+      .p-paginator-element {
+        min-width: 0;
+      }
+
+      .p-paginator-left-content {
+        margin-left: 5px;
+      }
+    }
+  }
+
+  thead > tr > th {
+    background: vars.$gray-night-100;
+  }
+
+  td,
+  th {
+    border: 1px solid vars.$gray-night-50;
+    padding-block: 3px;
+    padding-inline: 5px;
+    font-size: 0.75rem;
+    width: max-content;
+
+    span{
+      white-space: nowrap;
+    }
+  }
+
+  .p-paginator .p-select {
+    height: fit-content;
+  }
+
+  .fnb-tag {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+
+    .p-tag {
+      width: 100%;
+      cursor: pointer;
+      padding-block: 0;
+    }
+
+    .p-tag-danger {
+      background: vars.$red-heat-200;
+      color: vars.$gray-night-500;
+    }
+
+    .p-tag-success {
+      background: vars.$green-lime-200;
+      color: vars.$gray-night-500;
+    }
+
+    .p-tag-secondary {
+      visibility: hidden;
+    }
+
+    .p-tag-warning {
+      background: vars.$gray-night-100;
+      color: vars.$gray-night-500;
+      cursor: initial;
+    }
+  }
+
+  .p-checkbox {
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+  }
+
+  .p-sortable-column-icon {
+    margin-left: 0;
+    height: 18px;
+  }
+
+  .p-column-filter-menu-button.p-column-filter-menu-button-active {
+    background: transparent;
+    color: vars.$green-lime-500;
+  }
+
+  .pi-sort-alt,
+  .pi-sort-amount-up,
+  .pi-sort-amount-down,
+  .pi-lock,
+  .pi-lock-open {
+    font-size: 16px;
+    height: 18px;
+  }
+}
+
+.p-datatable-header{
+  padding: 0.3rem 1rem 0.3rem 0;
+}
+
+.p-column-filter-overlay-menu{
+  min-width: 150px;
+  width: 150px;
+}
+
+.p-column-filter-constraints {
+  padding: 0;
+
+  .p-inputtext{
+    padding: 5px;
+  }
+
+  .p-column-filter-constraint {
+    padding: 10px;
+  }
+}
+
+.p-column-filter-buttonbar {
+  padding: 0 10px 10px;
+  .p-button {
+    border: none;
+    background: vars.$green-lime-300;
+    color: vars.$night;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  .p-button-outlined {
+    background: vars.$night;
+    color: white;
+  }
+}
+
+.admin-table{
+  // @extend .fnb-table;
+
+  .p-datatable{
+    .p-datatable-wrapper {
+      max-height: 91%;
+    }
+
+    .p-sortable-column{
+      .p-icon-wrapper{
+        display: flex;
+        height: 18px;
+
+        .p-sortable-column-icon{
+          height: 16px;
+        }
+      }
+    }
+  }
+}
+
+.global-hierarchies-table{
+  // @extend .fnb-table;
+
+  .p-datatable{
+    .p-datatable-wrapper {
+      max-height: 92.1%;
+    }
+  }
+}
+
+.classification-status-tracker{
+  .p-datatable.p-datatable-scrollable > .p-datatable-wrapper > .p-datatable-table > .p-datatable-thead, .p-datatable.p-datatable-scrollable > .p-datatable-wrapper > .p-datatable-table > .p-datatable-tfoot, .p-datatable.p-datatable-scrollable > .p-datatable-wrapper > .p-scroller-viewport > .p-scroller > .p-datatable-table > .p-datatable-thead, .p-datatable.p-datatable-scrollable > .p-datatable-wrapper > .p-scroller-viewport > .p-scroller > .p-datatable-table > .p-datatable-tfoot{
+    background-color: transparent;
+  }
+
+  .p-datatable {
+    .p-datatable-thead {
+      tr {
+        th{
+          background: none;
+          border: none;
+        }
+      }
+    }
+
+    .p-datatable-tbody > tr {
+      background: none;
+      color: vars.$night;
+      td {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
+        border: none;
+      }
+    }
+  }
+}

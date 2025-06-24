@@ -1,0 +1,12 @@
+<div class="flex gap-1 align-items-center">
+    <div #exportOptions id="export-options-container" class="position-relative"></div>
+    <button pButton id="excel-export-button" type="button" class="excel-export" [disabled]="loading" (click)="toggleExportDialog()" onkeypress="">
+        <i class="fas fa-file-excel"></i>
+    </button>
+    <p-dialog id="excel-export-dialog" styleClass="export-options" appClickOutside (clickOutside)="onOutsideClick($event)" [maskStyle]="{'position' : 'relative'}" [appendTo]="exportOptions" [(visible)]="exportDialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{width: '150px'}" [draggable]="false" [resizable]="false">
+        <ng-template pTemplate="content">
+            <button pButton id="export-all-button" type="button" class="export-button" label="Export all" [disabled]="tableDataLength === 0 || loading" (click)="exportData(true)" onkeypress=""></button>
+            <button pButton id="export-selected-button" type="button" class="export-button" label="Export selected" [disabled]="selectedEntriesLength === 0 || loading" (click)="exportData()" onkeypress=""></button>
+        </ng-template>
+    </p-dialog>   
+</div>

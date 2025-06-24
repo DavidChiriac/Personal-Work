@@ -1,0 +1,120 @@
+@use "./variables.scss" as vars;
+
+.p-dialog-header{
+    display: none;
+}
+
+
+.p-dialog{
+    .p-dialog-content{
+        border-radius: 6px;
+        padding: 2rem;
+        border: none;
+    }
+}
+
+.view-user.p-dialog{
+    position: absolute;
+    top: 20px;
+
+    .p-dialog-mask{
+        position: relative;
+    }
+
+    .p-dialog-header{
+        display: none;
+    }
+
+    .p-dialog-content{
+        height: fit-content;
+        padding: 0.8rem;
+        overflow-y: visible;
+        background: vars.$avolta-white;
+        box-shadow: 2px 2px;
+    }
+}
+
+.export-options.p-dialog{
+    position: absolute;
+    top: 12px;
+    left: -130px;
+
+    .p-dialog-mask{
+        position: relative;
+    }
+
+    .p-dialog-header{
+        display: none;
+    }
+
+    .p-dialog-content{
+        height: fit-content;
+        padding: 0;
+        overflow-y: visible;
+    }
+
+    .export-button{
+        background: none;
+        border: none;
+        color: vars.$night;
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        text-align: left;
+        width: 100%;
+        border-radius: 0;
+
+        &:hover{
+            background: vars.$green-lime-300;
+        }
+    }
+}
+
+.notifications.p-dialog{
+    @extend .view-user;
+    left: -180px;
+
+    .p-dialog-content{
+        min-height: fit-content;
+        overflow-y: auto;
+        background: vars.$avolta-white;
+        box-shadow: 5px 5px 5px 5px;
+        padding: 0.3rem;
+        min-width: 300px;
+    }
+}
+
+.administration-mask, .notifications-mask, .user-mask {
+    .p-dialog-mask{
+        position: absolute !important;
+    }
+}
+
+.administration.p-dialog{
+    @extend .view-user;
+
+    .p-dialog-content{
+        min-height: fit-content;
+        overflow: hidden;
+        background: vars.$avolta-white;
+        box-shadow: 5px 5px 5px 5px;
+        display: table;
+        padding: 0;
+        border-radius: 6px;
+
+        .p-button{
+            border-radius: 0;
+            width: 100%;
+            background: vars.$avolta-white;
+            color: vars.$gray-night-700;
+            border: none;
+
+            &:hover{
+                background: vars.$green-lime-300;
+            }
+        }
+
+        .active-route .p-button{
+            background: vars.$green-lime-300;
+        }
+    }
+}

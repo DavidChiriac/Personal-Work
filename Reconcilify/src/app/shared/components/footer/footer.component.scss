@@ -1,0 +1,35 @@
+@use '../../overrides/variables.scss' as vars;
+
+footer{
+    color: white;
+    padding-inline: 0.5rem;
+
+    img{
+        width: 30px;
+        height: 30px;
+    }
+
+    p{
+        margin: 0;
+        font-size: 0.8rem;
+    }
+}
+
+.vcm-footer {
+    background: vars.$night;
+    height: 50px;
+
+    .app-version {
+        color: vars.$gray-night-300;
+    }
+}
+
+.landing-page-footer {
+    background: vars.$green-lime-300;
+    height: 2rem;
+    color: vars.$night;
+
+    .app-version {
+        color: vars.$gray-night-500;
+    }
+}

@@ -1,0 +1,96 @@
+@use "./variables.scss" as vars;
+
+.p-select {
+  .p-select-trigger {
+    width: 2rem;
+  }
+
+  &:not(.p-disabled) {
+    &:hover {
+      border-color: vars.$night;
+    }
+
+    &.p-focus {
+      box-shadow: none;
+      border-color: vars.$night;
+    }
+  }
+}
+
+.p-select-overlay .p-select-list {
+  .p-select-option {
+    padding: 0.2rem 1rem;
+    font-size: 0.625rem;
+
+    .p-focus {
+      background: transparent;
+    }
+  }
+
+  .p-select-option-selected {
+    background: vars.$green-lime-200;
+    color: vars.$night;
+
+    &.p-focus {
+      background: vars.$green-lime-200;
+      color: inherit;
+    }
+  }
+}
+
+.p-select-list-container {
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.fnb-dropdown{
+  .p-select {
+    width: 100%;
+    height: 1.25rem;
+    border: none;
+    background: transparent;
+
+    .p-select-trigger {
+      width: 2rem;
+    }
+  
+    &:hover {
+      border-color: vars.$night;
+    }
+
+    &.p-focus {
+      box-shadow: none;
+      border-color: vars.$night;
+    }
+  }
+  
+  .p-select-overlay .p-select-list {
+    .p-select-option {
+      padding: 3px 5px;
+      font-size: 0.8rem;
+    
+      .p-focus {
+        background: transparent;
+      }
+    }
+
+    .p-select-option-selected {
+      background: vars.$green-lime-200;
+      color: vars.$night;
+  
+      &.p-focus {
+        background: vars.$green-lime-200;
+        color: inherit;
+      }
+    }
+  }
+
+  .p-select-label {
+    padding: 3px 0 3px 5px;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+  }
+}

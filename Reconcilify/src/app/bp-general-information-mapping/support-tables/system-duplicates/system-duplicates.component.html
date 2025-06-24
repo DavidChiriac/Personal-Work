@@ -1,0 +1,132 @@
+<div class="max-w-full">
+    <p-breadcrumb class="max-w-full" [model]="items" [home]="home"></p-breadcrumb>
+</div>
+
+<div class="mx-4">
+    <div class="mt-1 main-table system-duplicates" [ngClass]="{'fixed': deleteRecordVisible || isExportInProgress}">
+        <div class="flex justify-content-between flex-wrap">
+            <div class="flex align-items-center">
+                <div class="flex py-3 table-search">
+                    <input pInputText type="text" placeholder="Search" [(ngModel)]="globalSearchText" (keydown.enter)="searchWithFilters()" />
+                </div>
+                <p-button icon="fa-solid fa-magnifying-glass" class="cr-search-btn" pTooltip="Perform search"
+                    (click)="searchWithFilters()" [disabled]="loading" onKeyPress="">
+                </p-button>
+                <p-button icon="fa-solid fa-delete-left" class="ml-1 cr-delete-btn" pTooltip="Clear search text"
+                    (click)="clearGlobalSearch()" [disabled]="loading" onKeyPress="">
+                </p-button>
+                <p-button icon="fa-solid fa-download" class="ml-3 cr-export-btn"
+                    pTooltip="Export current grid view to Excel file" (click)="exportTableData()"
+                    [disabled]="isExportInProgress || loading" onKeyPress="">
+                </p-button>
+            </div>
+            <div class="flex align-items-center">
+                <button class="ml-4 grey-btn" pButton (click)="clearFilters()" [disabled]="emptyFilters || loading"
+                    icon="fa-solid fa-filter-circle-xmark" label="Clear Filters"
+                    pTooltip="Remove all filters set in place for the data grid">
+                </button>
+            </div>
+        </div>
+
+        <p-table [value]="tableData" [lazy]="true" (onLazyLoad)="searchWithFilters($event)"
+            [loading]="loading" loadingIcon='pi pi-spin pi-spinner' dataKey="id" [paginator]="true"
+            [rows]="20" [totalRecords]="totalRecords"
+            [rowsPerPageOptions]="[20, 50, 100]" [rowHover]="true" [scrollable]="true" styleClass="p-datatable-striped"
+            currentPageReportTemplate="{first}-{last} out of {totalRecords} records"
+            [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    @for (col of tableColumns; track col.field) {
+                        <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn
+                            [frozen]="col.frozen ? col.frozen : false" [pSortableColumn]="col.field"
+                            [pSortableColumnDisabled]="!col.sortable">
+                            {{ col.header}}
+                            @if (col.sortable) {
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                            }
+                        </th>
+                    }
+                </tr>
+                <tr>
+                    @for (col of tableColumns; track col.field) {
+                    <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn
+                        [frozen]="col.frozen ? col.frozen : false">
+                        @if (col.filterable) {
+                        @if (col.filterMultiselect)
+                        {
+                        <p-multiSelect [ngModel]="tableFilters[col.filterField ?? col.field]"
+                            (ngModelChange)="onMultiselectSelectionChange($event, col.filterField ?? col.field)"
+                            [options]="tableFilters[col.field]" placeholder="Filter" optionLabel="value" appendTo="body"
+                            class="table-multiselect" selectedItemsLabel="{0} selected"
+                            [maxSelectedLabels]="1">
+                        </p-multiSelect>
+                        }
+                        @if (!col.filterMultiselect) {
+                        @if(col.datepicker) {
+                        <div class="calendar-filter">
+                            <p-datepicker appendTo="body" [readonlyInput]="true" [showIcon]="true" dateFormat="yy-mm-dd"
+                                [firstDayOfWeek]="1" [selectOtherMonths]="true" placeholder="Filter"
+                                [(ngModel)]="tableFilters[col.filterField ?? col.field]" [showButtonBar]="true"
+                                (onSelect)="searchWithFilters()" (onClearClick)="searchWithFilters()">
+                            </p-datepicker>
+                        </div>
+                        } @else {
+                        <input pInputText type="text" class="table-input" [(ngModel)]="tableFilters[col.filterField ?? col.field]"
+                            placeholder="Search" (keydown.enter)="searchWithFilters()" /> 
+                        }
+                        }
+                        }
+                    </th>
+                    }
+                </tr>
+                <tr></tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-rowData>
+                <tr>
+                    @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                    @case ("delete") {
+                    <td pFrozenColumn [ngStyle]="col.style" [ngClass]="col.class">
+                        <button pButton type="button" icon="fa-solid fa-trash-can"
+                            pTooltip="Delete Record" tooltipPosition="bottom"
+                            class="p-button-rounded p-button-text delete-icon-btn"
+                            (click)="showDeleteDialog(rowData.id)">
+                        </button>
+                    </td>
+                    }
+                    @default {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style"
+                        [ngClass]="col.class" [pTooltip]="rowData[col.field]" [tooltipPosition]="'top'">{{
+                        rowData[col.field] }}
+                    </td>
+                    } } }
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+@if(deleteRecordVisible){
+<app-modal [modalVisible]="deleteRecordVisible" (closeModal)="closeDeleteDialog()" [modalWidth]="'30'">
+    <div>
+        <p class="font-bold">The selected record shall be deleted. Please confirm!</p>
+    </div>
+
+    <div class="flex justify-content-between mt-5">
+        <p-button styleClass="grey-btn" label="Close" (onClick)="closeDeleteDialog()"></p-button>
+        <p-button styleClass="green-btn" label="Confirm" (onClick)="deleteRow()"></p-button>
+    </div>
+</app-modal>
+}
+
+@if(isExportInProgress){
+<app-modal [modalVisible]="isExportInProgress" [modalWidth]="'30'">
+    <div class="flex flex-column align-items-center">
+        <h3 class="text-center mt-1">Export in progress</h3>
+        <p-progressSpinner ariaLabel="loading" strokeWidth="4" class="dashboard-spinner"></p-progressSpinner>
+        <h4 class="text-center mb-1">Please wait while your file is being downloaded</h4>
+    </div>
+</app-modal>
+}

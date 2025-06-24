@@ -1,0 +1,7 @@
+<div class="w-full h-full modal-background">
+    <div class="background-opacity"></div>
+    <p-dialog [(visible)]="modalVisible" [style]="{width: modalWidth + 'vw'}" class="confimation-dialog"
+        [autoZIndex]="true" [draggable]="false" [breakpoints]="{ '1199px': '65vw', '575px': '90vw' }">
+        <ng-content></ng-content>
+    </p-dialog>
+</div>

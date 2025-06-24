@@ -1,0 +1,28 @@
+@use '../../shared/overrides/variables.scss' as vars;
+
+.dropdown-cell {
+    padding: 0;
+}
+
+.table-cell{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.invalid{
+    border: 2px solid vars.$red-heat-500;
+    padding: 0 15px;
+}
+
+.user-group-management-table{
+    height: calc(100% - 1.4rem - 29px);
+}
+
+.fixed-width{
+    width: -webkit-fill-available;
+}
+
+.user-group-management{
+    padding-block: 0.7rem;
+}

@@ -1,0 +1,12 @@
+@use './variables.scss' as vars;
+
+.p-breadcrumb {
+    background-color: vars.$night;
+    border: none;
+    border-radius: 0;
+
+    .p-breadcrumb-item-link, .p-breadcrumb-item-icon, .p-breadcrumb-separator {
+        color: white;
+        font-weight: 700;
+    }
+}

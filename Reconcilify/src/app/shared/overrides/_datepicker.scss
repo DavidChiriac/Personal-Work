@@ -1,0 +1,164 @@
+@use "./variables.scss" as vars;
+
+.p-datepicker-dropdown{
+  background-color: vars.$night;
+  border-color: vars.$night;
+  color: vars.$gray-night-50;
+}
+
+.p-datepicker-panel {
+  .p-datepicker-header{
+    padding: 0.2rem;
+
+    .p-datepicker-title {
+      font-size: 0.82rem;
+    }
+
+    .p-datepicker-select-month:focus {
+      box-shadow: none;
+    }
+
+    .p-datepicker-select-year:focus {
+      box-shadow: none;
+    }
+
+    .p-datepicker-prev-button,
+      .p-datepicker-next-button {
+        color: vars.$avolta-night;
+        &:hover{
+          background: vars.$rowHoverBackground;
+        }
+    }
+  }
+
+  .p-datepicker-day-view{
+    margin-top: 0;
+
+    th, td {
+      font-size: 0.82rem;
+    }
+
+    td span {
+      &:hover {
+        background: vars.$gray-night-100;
+      }
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .p-datepicker-day-selected {
+        background: vars.$green-lime-400;
+        color: vars.$night;
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+  }
+
+  .p-datepicker-month-view{
+    font-size: 0.82rem;
+
+    .p-datepicker-month-selected{
+      background: vars.$green-lime-400;
+      color: vars.$avolta-night;
+    }
+  }
+
+  .p-datepicker-year-view{
+    font-size: 0.82rem;
+
+    .p-datepicker-year-selected{
+      background: vars.$green-lime-400;
+      color: vars.$avolta-night;
+    }
+  }
+
+  .p-datepicker-buttonbar {
+    padding: 0;
+
+    .p-button {
+      color: vars.$gray-night-900;
+      padding: 0.3rem 1.25rem;
+      font-size: 0.82rem;
+      margin-top: 0.4rem;
+      background: transparent;
+      border: none;
+
+      &:hover {
+        background: vars.$gray-night-100;
+      }
+    }
+  }
+}
+
+.calendar-filter {
+  .p-button {
+    color: vars.$gray-night-50;
+    background: vars.$gray-night-900;
+    border: vars.$gray-night-900;
+    height: 1.5rem;
+  }
+
+  .p-inputtext {
+    padding: 0.4rem 0.7rem;
+    height: 1.5rem;
+    width: -webkit-fill-available;
+    min-width: 1rem;
+    border-radius: 0.2rem;
+    font-size: 0.75rem;
+  }
+}
+
+.fnb-calendar-filter{
+  @extend .calendar-filter;
+
+  .p-button{
+    height: auto;
+    padding: 0.75rem;
+  }
+
+  .p-inputtext{
+    padding: 0.75rem;
+    height: auto;
+  }
+}
+
+.dynamic-selection-calendar.p-datepicker{
+  .p-datepicker-buttonbar{
+    button {
+      padding: 0.2rem;
+    }
+
+    span{
+      padding: 0 0.2rem;
+
+      &:hover{
+        cursor: default;
+        background: transparent;
+      }
+    }
+  }
+
+  .toggle-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle-wrapper button:focus {
+    box-shadow: none;
+  }
+
+  .toggle-wrapper button.selected {
+    cursor: default;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .toggle-wrapper span {
+      font-size: 1rem;
+      opacity: 0.7;
+      padding: 0;
+  }
+}

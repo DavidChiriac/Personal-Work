@@ -1,0 +1,155 @@
+<div id="group-management-header" class="mx-4 group-management">
+    <h2 id="group-management-title" class="my-0">Administration - Group Management</h2>
+</div>
+<div id="group-management-table-container" class="mx-1 group-management-table" [ngClass]="{'fixed fixed-width': errorModalVisible || statusChangeModalVisible}">
+    <p-table #dt id="group-management-table" [value]="tableData" [paginator]="true" dataKey="id"
+        [rows]="50" [rowsPerPageOptions]="[50, 100, 150]" [rowHover]="true" [scrollable]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'" class="admin-table"
+        [globalFilterFields]="['groupName', 'adGroupId', 'isActive', 'createdDate', 'createdBy', 'lastUpdatedDate', 'lastUpdatedBy']"
+        (onFilter)="checkEmptyFilters()" (onSort)="checkSort()">
+        
+        <ng-template pTemplate="caption">
+            <div id="group-management-caption-container" class="flex justify-content-between">
+                <app-table-caption [dt]="table" (clearFilters)="clearAll(dt)" [emptyFilters]="emptyFilters"></app-table-caption>
+                <p-button id="group-management-create-group-button" class="new-group-btn" (onClick)="createGroup()" [disabled]="editMode" [label]="'Create Group'"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr id="group-management-table-header-row">
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("edit") {
+                            <th id="header-edit-cell" scope="col" class="w-rem"></th>                
+                        }
+                        @default {
+                            <th [id]="col.header + '-header'" scope="col" [ngStyle]="col.style" [pSortableColumn]="col.sortableField ?? col.field">
+                                <app-table-header-cell [col]="col"></app-table-header-cell>
+                            </th>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-index="rowIndex">
+            <tr [pEditableRow]="row" [ngClass]="{'edit-mode': row.isEditing}">
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("edit") {
+                            <td [id]="index + '-edit'" [ngStyle]="col.style" class="p-0 w-3rem">
+                                <div class="flex justify-content-center gap-2">
+                                    @if(!row.isEditing){
+                                        <button
+                                        [id]="index + '-edit-button'"
+                                        pButton pRipple pInitEditableRow
+                                        type="button"
+                                        icon="pi pi-pencil"
+                                        class="edit-button"
+                                        (click)="enterEditMode(row, index)"
+                                        [disabled]="editMode"
+                                        text rounded severity="secondary"
+                                    ></button>
+                                    } @else {
+                                        <button [id]="index + '-cancel-changes-button'"
+                                        pButton pRipple pCancelEditableRow
+                                        type="button"
+                                        icon="pi pi-times"
+                                        class="edit-button close-button"
+                                        (click)="exitEditMode(index)"
+                                        tooltipPosition="top"
+                                        pTooltip="Cancel Edit"
+                                        text rounded severity="secondary"
+                                    ></button>
+                                        <button [id]="index + '-save-changes-button'"
+                                        pButton pRipple pSaveEditableRow
+                                        type="button"
+                                        icon="pi pi-save"
+                                        class="edit-button"
+                                        [ngClass]="{'save-button': editedGroup.groupName && editedGroup.adGroupId && 
+                                                                            !invalidGroupName && !invalidAdGroupId &&
+                                                                            (editedGroup.groupName !== oldGroup.groupName || editedGroup.adGroupId !== oldGroup.adGroupId)}"
+                                        (click)="saveChanges(index)"
+                                        [disabled]="editedGroup.groupName === '' || 
+                                                    editedGroup.adGroupId === '' || 
+                                                    invalidGroupName || 
+                                                    invalidAdGroupId ||
+                                                    (editedGroup.groupName === oldGroup.groupName && editedGroup.adGroupId === oldGroup.adGroupId)"
+                                        [tooltipPosition]="'top'"
+                                        [pTooltip]="invalidGroupName || invalidAdGroupId ? invalidMessage : ''"
+                                        text rounded severity="secondary"
+                                    ></button>
+                                    }
+                                </div>
+                            </td>                
+                        }
+                        @case('groupName') {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" [pTooltip]="row.groupName" class="input-cell" [ngClass]="{'invalid': invalidGroupName && row.isEditing, 'editable-cell': row.isEditing}">
+                                @if (row.isEditing) {
+                                    <input [id]="index + '-' + col.header + '-input'" pInputText type="text" [(ngModel)]="editedGroup.groupName" [maxLength]="99" class="fnb-inputtext" (ngModelChange)="validateGroupName()"/>
+                                } @else {
+                                    {{row.groupName}}
+                                }
+                            </td>
+                        }
+                        @case('adGroupId') {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" [pTooltip]="row.adGroupId" class="input-cell" [ngClass]="{'invalid': invalidAdGroupId && row.isEditing, 'editable-cell': row.isEditing}">
+                                @if (row.isEditing) {
+                                    <input [id]="index + '-' + col.header + '-input'" pInputText type="text" [(ngModel)]="editedGroup.adGroupId" [maxLength]="99" class="fnb-inputtext" (ngModelChange)="validateAdGroupId()"/>
+                                } @else {
+                                    {{row.adGroupId}}
+                                }
+                            </td>
+                        }
+                        @case('status') {
+                            <td [id]="index + '-status'" [ngStyle]="col.style" class="md:w-5rem xl:w-12rem lg:w-8rem">
+                                @if (!row.isEditing|| (row.isEditing && !newGroupCreation)) {
+                                    @if(row.isActive) {
+                                        <p-tag id="status" class="fnb-tag" severity="success" value="Active Group" onKeyPress="" (click)="showStatusToggleConfirmation(row, false)"/>
+                                    } @else {
+                                        <p-tag id="status" class="fnb-tag" severity="danger" value="Inactive Group" onKeyPress="" (click)="showStatusToggleConfirmation(row, true)"/>
+                                    }
+                                } @else {
+                                    <p-tag id="status" class="fnb-tag" severity="secondary" value="placeholder" onKeyPress=""></p-tag>
+                                }
+                            </td>
+                        }
+                        @default {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style">
+                                <app-table-cell [row]="row" [col]="col" [index]="index"></app-table-cell>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+@if(errorModalVisible){
+    <app-modal [modalVisible]="errorModalVisible" (closeModal)="toggleErrorModal()" [modalWidth]="'30'">
+        <div id="error-modal-container" class="flex flex-column align-items-center gap-3">
+            <div>
+                <h4 id="error-message" class="text-center my-1">{{errorMessage}}</h4>
+            </div>
+            <div class="w-fit-content">
+                <p-button id="error-modal-close-button" styleClass="grey-btn" [icon]="'pi pi-times-circle'" label="OK" (onClick)="toggleErrorModal()">
+                </p-button>
+            </div>
+        </div>
+    </app-modal>
+}
+
+@if(statusChangeModalVisible){
+    <app-modal [modalVisible]="statusChangeModalVisible" (closeModal)="hideStatusChangeConfirmation()" [modalWidth]="'30'">
+        <div>
+            <p id="status-change-message" class="font-bold">Are you sure you want to proceed with this status change?</p>
+        </div>
+        <div class="flex justify-content-between mt-5">
+            <p-button id="status-change-close" styleClass="grey-btn" [icon]="'pi pi-times-circle'"
+                label="Close" (onClick)="hideStatusChangeConfirmation()"></p-button>
+            <p-button id="status-change-approve" styleClass="green-btn" [icon]="'pi pi-thumbs-up'"
+                label="Approve" (onClick)="toggleGroupStatus()"></p-button>
+        </div>
+    </app-modal>
+}

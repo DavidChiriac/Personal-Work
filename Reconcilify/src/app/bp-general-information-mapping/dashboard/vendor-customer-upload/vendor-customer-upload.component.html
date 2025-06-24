@@ -1,0 +1,53 @@
+<p-panel class="dashboard-panel">
+    <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+            <i class="fa-solid fa-arrow-up-from-bracket mr-2"></i>
+            <h3>Vendor/Customers upload</h3>
+        </div>
+    </ng-template>
+
+    <div class="flex flex-wrap">
+        <div class="col-12 lg:col-6">
+            <p-fileUpload #fileUpload class="dashboard-upload" mode="advanced" [customUpload]="true"
+                accept=".xls, .xlsx, .xlsm" [maxFileSize]="15000000" [showUploadButton]="false"
+                [showCancelButton]="false" [disabled]="uploadInProgress" (onSelect)="uploadFile()">
+                <ng-template pTemplate="content">
+                    @if (fileUpload.files.length === 0) {
+                    <div class="flex flex-column">
+                        <div class="text-center	">
+                            <img src="../../../../assets/icons/upload-icon.svg" alt="upload icon">
+                            <h4>Drag files to upload</h4>
+                        </div>
+                    </div>
+                    }
+                </ng-template>
+            </p-fileUpload>
+
+            <button class="grey-btn dashboard-btn flex gap-2" pButton [disabled]="uploadInProgress" (click)="chooseFile()"
+                icon="fa-solid fa-cloud-arrow-up" label="Upload File"
+                pTooltip="Upload the Vendor/Customer template file">
+            </button>
+        </div>
+
+        <div class="col-12 lg:col-6 flex flex-column">
+            @if (uploadInProgress) {
+            <div class="col flex flex-column align-items-center justify-content-center">
+                <h4>Uploading</h4>
+                <p-progressSpinner ariaLabel="loading" strokeWidth="4" class="dashboard-spinner"></p-progressSpinner>
+            </div>
+            }
+
+            @if (!uploadInProgress && uploadStatus) {
+            <div class="col p-0">
+                <p-message [severity]="uploadStatus.severity" [text]="uploadStatus.detail"></p-message>
+            </div>
+            }
+            <div class="col p-0 flex align-items-end">
+                <button class="grey-btn dashboard-btn flex gap-2" pButton (click)="downloadTemplate()"
+                    icon="fa-solid fa-cloud-arrow-down" label="Download Template for upload"
+                    pTooltip="Download the latest Vendor/Customer template file">
+                </button>
+            </div>
+        </div>
+    </div>
+</p-panel>

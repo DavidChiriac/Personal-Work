@@ -1,0 +1,116 @@
+<p-menubar [ngClass]="isFnBModule || isLeaversModule ? 'fnb-header' : 'vcm-navbar'">
+    <ng-template pTemplate="start">
+        <div class="flex align-items-center h-100">
+            @if(isFnBModule){
+                <span class="module-title font-bold">FnB Hierarchy Mapper</span>
+            } @else if (isLeaversModule) {
+                <span class="module-title font-bold">Global Leavers Report</span>
+            } @else {
+                <img [src]="'assets/logos/logo.svg'" class="reconcilify-logo cursor-pointer" alt="logo" routerLink=""/>
+            }
+        </div>
+    </ng-template>
+    <ng-template pTemplate="end">
+        <div class="flex align-items-center pr-4" [ngClass]="{'gap-3': !isLandingPage && !isFnBModule && !isLeaversModule}">
+            @if(isLeaversModule){
+                <i class="fa-solid fa-pen-to-square cursor-pointer mr-3 tasks-icon" pBadge badgeStyleClass="select-none" [value]="tasksCount" (click)="toggleTasksPanel()" onkeypress=""></i>
+            }
+
+            @if(isFnBModule || isLeaversModule){
+                <div class="relative notifications-mask mr-3">
+                    <i #openNotifications class="pi pi-bell cursor-pointer notifications-icon" pBadge badgeStyleClass="select-none" [value]="notificationsCount" (click)="toggleNotificationsDialog()" onkeypress=""></i>
+                    <div #notificationsTag class="relative"></div>
+                    <p-dialog styleClass="notifications" appClickOutside (clickOutside)="onOutsideNotificationsClick($event, openNotifications)" [maskStyle]="{'position' : 'relative'}" [appendTo]="notificationsTag" [(visible)]="notificationsDialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{width: '200px'}" [draggable]="false" [resizable]="false">
+                        <ng-template pTemplate="content">
+                            <div class="notifications-container">
+                                @if(notificationsCount === 0){
+                                    <div class="w-full flex justify-content-end mb-2"><i class="pi pi-times cursor-pointer" (click)="toggleNotificationsDialog()" onkeypress=""></i></div>
+                                    <div class="w-full text-center mb-3">No notifications</div>
+                                } @else {
+                                    <div class="flex justify-content-between align-items-center my-2">
+                                        <h4 class="ml-2">Notifications</h4>
+                                        <div class="notifications-count">{{notificationsCount}}</div>
+                                    </div>
+                                    <p-scroller 
+                                        [items]="notifications"
+                                        [itemSize]="50"
+                                        [showLoader]="true"
+                                        [loading]="lazyLoading" 
+                                        [lazy]="true"
+                                        (onLazyLoad)="onLazyLoad($event)" 
+                                        styleClass="border-1 surface-border" 
+                                        [style]="{'width': '200px', 'height': '200px'}">
+                                            <ng-template pTemplate="item" let-item let-options="options">
+                                                <div class="flex gap-2 align-items-center notifications-list" [ngClass]="{'unread': !item.read}" (click)="navigate(item)" onkeydown="">
+                                                @if(!item.read){
+                                                    <div class="icon">
+                                                        <i class="pi pi-bell"></i>
+                                                    </div>
+                                                }
+                                                <div>
+                                                    <span class="font-bold white-space-normal">{{item.title}}</span>
+                                                    <span class="white-space-normal">{{' ' + item.description}}</span>
+                                                </div>
+                                            </div>
+                                            </ng-template>
+                                    </p-scroller>
+
+                                }
+                            </div>
+                        </ng-template>
+                    </p-dialog>
+                </div>
+            }
+
+            @if((isFnBModule || isLandingPage || isLeaversModule) && administrationPagesAvailable.length > 0){
+                <div class="relative administration-mask ml-3">
+                    <div #openAdministration class="pi pi-ellipsis-v cursor-pointer administration-button select-none" (click)="toggleAdministrationDialog()" onkeypress="">Administration</div>
+                    <div #administration class="relative"></div>
+                    <p-dialog styleClass="administration" appClickOutside (clickOutside)="onOutsideAdministrationDialogClick($event, openAdministration)" [maskStyle]="{'position' : 'relative'}" [appendTo]="administration" [(visible)]="administrationDialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{width: '200px'}" [draggable]="false" [resizable]="false">
+                        <ng-template pTemplate="content">
+                            <div class="flex flex-column">
+                                @for (page of administrationPagesAvailable; track page.url) {
+                                    <p-button [label]="page.label" [routerLink]="page.url" [routerLinkActive]="'active-route'"></p-button>
+                                }
+                            </div>
+                        </ng-template>
+                    </p-dialog>
+                </div>
+            }
+
+            @if (isLandingPage) {
+                <div class="relative user-mask">
+                    <div #viewUser class="relative"></div>
+                    <p class="name">Welcome back, {{user?.firstName}}!</p>
+                    <p-dialog styleClass="view-user" appClickOutside (clickOutside)="onOutsideUserDialogClick($event, openLandingPageUserDialog)" [maskStyle]="{'position' : 'relative'}" [appendTo]="viewUser" [(visible)]="userDialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{width: '200px'}" [draggable]="false" [resizable]="false">
+                        <ng-template pTemplate="content">
+                            <p class="name">{{user?.firstName}} {{user?.lastName}}</p>
+                            <div class="log-out mt-2" (click)="signOut()" onkeypress=""><i class="pi pi-sign-out mr-2"></i>sign out</div>
+                        </ng-template>
+                    </p-dialog></div>
+                    <i #openLandingPageUserDialog class="fa-regular fa-circle-user user-logged-in cursor-pointer pl-3" (click)="toggleUserDialog()" onkeydown=""></i>
+            } @else {
+                <div class="flex align-items-center gap-2 user">
+                    <div class="relative user-mask">
+                        <i #openUserDialog class="pi pi-angle-down cursor-pointer" (click)="toggleUserDialog()" onkeypress=""></i>
+                        <div #viewUser class="relative"></div>
+                        <p-dialog styleClass="view-user" appClickOutside (clickOutside)="onOutsideUserDialogClick($event, openUserDialog)" [maskStyle]="{'position' : 'relative'}" [appendTo]="viewUser" [(visible)]="userDialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{width: '200px'}" [draggable]="false" [resizable]="false">
+                            <ng-template pTemplate="content">
+                                <p class="name">{{user?.firstName}} {{user?.lastName}}</p>
+                                <div class="log-out mt-2" (click)="signOut()" onkeypress=""><i class="pi pi-sign-out mr-2"></i>sign out</div>
+                            </ng-template>
+                        </p-dialog></div>
+                    <div class="flex align-items-left">
+                        <i class="fa-regular fa-circle-user user-logged-in"></i>
+                    </div>
+                    <p class="name">{{user?.firstName}} {{user?.lastName}}</p>
+                </div>
+            }
+        </div>
+    </ng-template>
+</p-menubar>
+
+@if (!isLandingPage && !isFnBModule && !isLeaversModule) {
+    <p-menubar class="vcm-navbar-submenubar" [model]="items" [autoDisplay]="false">
+    </p-menubar>    
+}

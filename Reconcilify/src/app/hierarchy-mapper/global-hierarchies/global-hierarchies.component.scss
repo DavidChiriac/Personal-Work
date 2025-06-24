@@ -1,0 +1,23 @@
+@use "../../shared/overrides/variables.scss" as vars;
+
+.global-hierarchies-table{
+    height: calc(100% - 29px - 1.4rem);
+}
+
+.global-hierarchies{
+    margin-block: 0.7rem;
+}
+
+h2{
+    margin: 1rem 0;
+}
+
+.chip{
+    background: vars.$green-lime-200;
+    border-radius: 30px;
+    padding: 5px 10px;
+}
+
+.cell{
+    min-height: 1.1rem;
+}

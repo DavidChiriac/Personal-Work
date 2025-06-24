@@ -1,0 +1,80 @@
+@use "../../overrides/variables.scss" as vars;
+
+.reconcilify-logo{
+    height: 80px;
+    object-fit: contain;
+    width: fit-content;
+}
+
+.user-logged-in{
+    font-size: 32px;
+    color: vars.$gray-night-900;
+}
+
+h4, .name{
+    font-weight: 600;
+    margin: 0;
+}
+
+p{
+    margin: 0;
+}
+
+.log-out{
+    cursor: pointer;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.module-title {
+    height: 100%;
+    color: vars.$night;
+    display: block;
+    font-size: 1.7rem;
+    padding: 0;
+    padding-left: 0.67em;
+    font-weight: 300;
+}
+
+.fnb-header{
+    height: 4rem;
+}
+
+.tasks-icon, .notifications-icon{
+    font-size: 1.5rem;
+    color: vars.$avolta-night;
+}
+
+.administration-button, .user{
+    color: vars.$avolta-night;
+}
+
+.notifications-container{
+    padding: 0.1rem;
+
+    .notifications-count{
+        background: vars.$green-lime-300;
+        border-radius: 5px;
+        padding: 0.1rem 0.5rem;
+    }
+
+    .notifications-list{
+        padding: 0.25rem;
+        border-radius: 5px;
+        cursor: pointer;
+
+        .icon{
+            padding: 10px;
+        }
+
+        &:hover{
+            background: vars.$green-lime-50;
+        }
+    }
+
+    .unread{
+        background: vars.$green-lime-200;
+    }
+}

@@ -1,0 +1,10 @@
+<p-columnFilter [id]="col.header + '-filter'" [field]="col.filterField ?? col.field" [hideOnClear]="true" matchMode="in"
+    display="menu" [showMatchModes]="false" [showOperator]="false" 
+    [showAddButton]="false" [pTooltip]="'Filter'" tooltipPosition="top">
+    
+    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+        <p-datepicker [id]="col.header + '-calendar'" #calendar [ngModel]="value" [firstDayOfWeek]="1" [readonlyInput]="true" selectionMode="single"
+            (onSelect)="filter(calendar.value, col.filterField ?? col.field)" dateFormat="yy-mm-dd">
+        </p-datepicker>
+    </ng-template>
+</p-columnFilter>

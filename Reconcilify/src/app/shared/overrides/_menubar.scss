@@ -1,0 +1,316 @@
+@use "../overrides/variables.scss" as vars;
+
+.vcm-navbar {
+  .p-menubar {
+    background: vars.$green-lime;
+    border-radius: 3px;
+    border: none;
+    height: 80px;
+    font-family: "AvoltaDisplay-SemiBold", sans-serif !important;
+  
+    @media only screen and (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      height: 125px;
+      padding: 0.5rem;
+  
+      .p-menubar-start {
+        width: 100%;
+      }
+    }
+  }
+  
+  .p-menubar-start {
+    width: 60%;
+  }
+  
+  .mobile .p-menubar {
+    display: flex;
+    flex-direction: column;
+    height: 125px;
+    padding: 0.5rem;
+  
+    .p-menubar-start {
+      width: 100%;
+    }
+  }
+}
+
+.vcm-navbar-submenubar .p-menubar {
+  background: vars.$night;
+  padding: 0;
+  color: white;
+  border: none;
+  border-radius: 0;
+
+  .p-menubar-root-list {
+    padding: 0;
+    z-index: 2000;
+    gap: 0;
+
+    .p-menubar-item{
+      font-weight: 700;
+
+      .p-menubar-item-content {
+        background: vars.$night;
+        border-radius: 0;
+
+        .p-menubar-item-link {
+          font-size: 1rem;
+          color: vars.$avolta-white;
+          padding: 12px 20px;
+        }
+        
+        .p-menubar-item-link-active{
+          color: vars.$night !important;
+        }
+
+        :has(.p-menubar-item-link-active){
+          background-color: vars.$green-lime;
+
+          .p-menubar-item-link {
+            color: vars.$night !important;
+          } 
+        }
+      }
+    }
+
+    .p-menubar-item-active{
+      .p-menubar-item-content{
+        .p-menubar-item-link{
+          color: vars.$night;
+          background-color: vars.$green-lime;
+          font-weight: 700;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .p-menubar-root-list {
+      background: vars.$night;
+    }
+  }
+
+  .p-submenu-icon {
+    color: vars.$night;
+  }
+
+  .p-menubar-item {
+    .p-menubar-item-content:hover {
+      background: vars.$green-lime;
+      border-radius: 0;
+
+      .p-menubar-item-link {
+        color: vars.$night;
+      }
+    }
+
+    &:has(.p-menubar-item-link-active){
+      .p-menubar-item-content{
+        background: vars.$green-lime;
+
+        .p-menubar-item-link {
+          color: vars.$night;
+        }
+      }
+    }
+  }
+
+  .p-menubar-item-link-active {
+    background: vars.$green-lime;
+    color: vars.$night;
+
+    :host {
+      background: vars.$green-lime;
+    }
+  }
+
+  .p-focus>.p-menubar-item-content {
+    background: none;
+  }
+
+  .p-menubar-submenu{
+    background: vars.$green-lime;
+    padding: 0;
+    border: none;
+    z-index: 1000;
+  }
+}
+
+.fnb-navbar {
+  @media screen and (max-width: 960px) {
+    .p-menubar{
+      display: flex;
+
+      .p-menubar-button {
+        display: none;
+      }
+
+      .p-menubar-root-list{
+        background: vars.$night;
+
+        .p-menubar-item {
+          position: relative;
+        }
+
+        .p-menubar-root-list{
+          position: absolute;
+        }
+      }
+    }
+  }
+
+  .p-menubar{
+    height: calc(100vh - 4rem);
+    width: 5rem;
+    background: vars.$night;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    border-right: 2px solid vars.$green-lime-300;
+
+    .p-menubar-root-list{
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 4rem);
+      top: 0;
+      padding: 0;
+
+      .p-menubar-item{
+
+        .p-menubar-item-content{
+          font-size: 0.75rem;
+        }
+
+        .icon{
+          font-size: 28px;
+          color: vars.$avolta-white;
+        }
+
+        cursor: pointer;
+        width: 100%;
+
+        span {
+          color: white;
+        }
+
+        &:has(.p-active) {
+          background: vars.$green-lime-300;
+
+          span {
+            color: vars.$night;
+          }
+
+          .icon{
+            color: vars.$gray-night-900
+          }
+        }
+
+        &:nth-last-child(2){
+          margin-top: auto;
+        }
+
+        &:last-child:not(.p-menubar-item-active), &:nth-last-child(2):not(.p-menubar-item-active){
+          .p-menubar-item-content{
+            border-radius: 0;
+
+            .p-active{
+              .icon{
+                color: vars.$gray-night-900
+              }
+            }
+          }
+        }
+      }
+
+      .p-menubar-item:not(.p-highlight):has(.p-active) {
+        background: vars.$green-lime-300;
+      }
+      
+      & > .p-menubar-item:not(.p-highlight):not(.p-disabled) > .p-menubar-item-content:hover {
+        background: vars.$green-lime-300;
+        border-radius: 0;
+        
+        .icon{
+          color: vars.$gray-night-900
+        }
+
+        span{
+          color: vars.$night;
+        }
+      }
+
+      & > .p-menubar-item:not(.p-highlight):not(.p-disabled) > .p-menubar-item-content {
+        background: inherit;
+      }
+
+      .p-menubar-item-active > p-menubarsub{
+        .p-menubar-root-list {
+          top: 0;
+          left: 100%;
+          padding: 0;
+          transform-origin: top right;
+          width: max-content;
+
+          .p-menubar-item-content{
+            background: vars.$night;
+
+            span{
+              color: white;
+            }
+          }
+
+          .p-menubar-item-content:hover, .p-active{
+            background: vars.$green-lime-300;
+
+            span{
+              color: vars.$night;
+            }
+          }
+        }
+      }
+    }
+
+    .p-menubar-item.p-highlight > .p-menubar-item-content {
+      color: vars.$night;
+      background: vars.$green-lime-300;
+      border-radius: 0;
+
+      .icon{
+        color: vars.$gray-night-900
+      }
+
+      span{
+        color: vars.$night;
+      }
+    }
+  }
+}
+
+.fnb-header {
+  .p-menubar {
+    height: 4rem;
+    padding: 0;
+    border-radius: 0;
+    background: vars.$green-lime-300;
+    border: none;
+  }
+
+  .p-menubar-start {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.administration-button{
+  padding: 10px 10px;
+  margin-right: 6px;
+  border-radius: 5px;
+
+  &:hover{
+    background: vars.$green-lime-100;
+  }
+}

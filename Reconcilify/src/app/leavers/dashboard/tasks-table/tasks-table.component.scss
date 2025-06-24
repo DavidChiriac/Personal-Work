@@ -1,0 +1,7 @@
+.tasks-table {
+    height: calc(100% - 65px);
+
+    @media only screen and (max-width: 1300px) {
+        height: calc(100% - 78px);
+    }
+}

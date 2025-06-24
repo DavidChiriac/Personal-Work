@@ -1,0 +1,5 @@
+@use "../../overrides/variables.scss" as vars;
+
+.lock-green{
+    color: vars.$green-lime-300;
+}

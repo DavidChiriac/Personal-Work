@@ -1,0 +1,14 @@
+<div id="table-caption" class="flex justify-content-between align-items-center h-full">
+    <span id="table-global-search-container" class="h-full" [ngClass]="globalSearchText ? 'p-input-icon-right': 'p-input-icon-left'">
+        @if (globalSearchText) {
+            <i id="table-clear-global-search" class="pi pi-times" onkeypress="" (click)="clearGlobalSearchText()"></i>
+        } @else {
+            <i class="pi pi-search"></i>
+        }
+        <input id="table-global-search-input" type="text" class="h-full global-inputtext" pInputText placeholder="Search" 
+                (keydown.enter)="filterGlobal()" [(ngModel)]="globalSearchText"/>
+    </span>
+    <p-button id="table-clear-all" label="Clear All" class="fnb-clear-filters ml-4" 
+            pTooltip="Remove all active filters." tooltipPosition="top" 
+            [outlined]="true" icon="pi pi-filter-slash" (onClick)="clearAll()" [disabled]="emptyFilters"/>
+</div>

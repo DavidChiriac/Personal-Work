@@ -1,0 +1,8 @@
+@use "../../../shared/overrides/variables.scss" as vars;
+
+h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: vars.$night;
+  margin: 0;
+}

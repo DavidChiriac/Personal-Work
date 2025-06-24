@@ -1,0 +1,8 @@
+<div id="mass-filters" class="quick-filters flex align-items-center w-max m-auto">
+    @for (filter of globalFilters; track filter.label) {
+        <div [id]="'mass-filter-' + filter.label" class="flex align-items-center gap-5" [ngClass]="{'active': filter.label === selectedQuickFilter.label}" onkeypress="" (click)="selectQuickFilter(filter)">
+            <span [id]="'mass-filter-name-' + filter.label">{{filter.label}}</span>
+            <span [id]="'mass-filter-value-' + filter.label" class="records-number">{{filter.count | number}}</span>
+        </div>
+    }
+</div>

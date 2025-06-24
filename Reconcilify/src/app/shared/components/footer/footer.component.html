@@ -1,0 +1,11 @@
+<footer class="flex align-items-center" [ngClass]="landingPage ? 'landing-page-footer' : 'vcm-footer'">
+    <p>
+        @if(!landingPage){
+            <a (click)="goToUserGuide()" class="cursor-pointer">User Guide</a>
+        }
+    </p>
+    <div class="flex gap-1 align-items-center ml-auto">
+        <p>An Avolta Company | Dufry Reconcilify</p>
+        <p class="app-version ml-3">{{appVersion}}</p>
+    </div>
+<footer>

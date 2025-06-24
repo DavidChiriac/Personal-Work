@@ -1,0 +1,10 @@
+@use "../../../shared/overrides/variables.scss" as vars;
+
+.classification-status-tracker{
+    padding: 2rem;
+    padding-top: 0;
+}
+
+.border-right{
+    border-right: 1px solid vars.$night !important;
+}

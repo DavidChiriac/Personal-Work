@@ -1,0 +1,32 @@
+@use "./variables.scss" as vars;
+
+.p-checkbox-checked .p-checkbox-box{
+  background: vars.$avolta-white;
+  border-color: vars.$borderGrey;
+}
+
+.p-checkbox {
+  &:not(.p-checkbox-disabled) .p-checkbox-box {
+    &.p-focus {
+      box-shadow: none;
+      border-color: vars.$borderGrey;
+    }
+    &:hover {
+      border-color: vars.$borderGrey;
+    }
+  }
+
+  .p-checkbox-box {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 3px;
+
+    .p-icon {
+      color: vars.$night;
+    }
+  }
+
+  .p-checkbox-input:focus-visible + .p-checkbox-box{
+    outline: none;
+  }
+}

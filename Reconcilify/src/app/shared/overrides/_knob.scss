@@ -1,0 +1,12 @@
+.p-knob{
+    width: 70px;
+    height: 70px;
+
+    &:focus-visible{
+        outline: none;
+    }
+
+    svg:focus{
+        outline: none;
+    }
+}

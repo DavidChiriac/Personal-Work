@@ -1,0 +1,37 @@
+[
+    {
+        "categoryName": "POS Customers",
+        "options": [
+            {
+                "label": "Assign  New Central finance POS code",
+                "startCode": null
+            }
+        ]
+    },
+    {
+        "categoryName": "Intercompany Payables",
+        "options": [
+            {
+                "label": "Assign  New Central finance 90XXXXX code",
+                "startCode": 9000000
+            }, 
+            {
+                "label": "Assign  New Central finance 92XXXXX code",
+                "startCode": 9200000
+            }, 
+            {
+                "label": "Assign  New Central finance 98XXXXX code",
+                "startCode": 9800000
+            }
+        ]
+    },
+    {
+        "categoryName": "other",
+        "options": [
+            { 
+                "label": "Assign New Central finance code",
+                "startCode": null
+            }
+        ]
+    }
+]

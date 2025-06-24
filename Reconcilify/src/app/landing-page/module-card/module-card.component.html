@@ -1,0 +1,43 @@
+@if(isQuickLinksCard){
+    <div id="quick-links-container" class="quick-links-card p-5 pt-2 w-full">
+        <div id="quick-links-header" class="flex justify-content-between">
+            <h1 id="quick-links-title">Quick Links</h1>
+            <div id="quick-links-icon-container" class="module-icon">
+                <i id="quick-links-icon" class="fa-solid fa-book-atlas"></i>
+            </div>
+        </div>
+        <div id="links-container"  class="quick-links flex flex-column gap-2">
+            @for (quickLink of quickLinks; track $index) {
+                <div>
+                    <span [id]="quickLink.module + '-module-quick-links'" class="font-bold">{{quickLink.module}}</span>
+                    @for (link of quickLink.links; track $index) {
+                        <div [id]="link.label" (click)="navigate(link)" onkeypress="" class="mb-2 ml-4 cursor-pointer underline">{{link.label}}</div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+} @else {
+    <div [id]="moduleCardData.title + '-container'" class="module-card p-5 pt-2 w-full">
+        <div [id]="moduleCardData.title + '-header'" class="flex justify-content-between">
+            <div>
+                <h1 [id]="moduleCardData.title + '-title'">{{moduleCardData.title}}</h1>
+            </div>
+            <div [id]="moduleCardData.title + '-icon'" class="module-icon">
+                @if(moduleCardData.fortawesomeicon){
+                    <i [class]="moduleCardData.icon"></i>
+                } @else {
+                    <img [src]="moduleCardData.icon" alt="module icon"/>
+                }
+            </div>
+        </div>
+        <div [id]="moduleCardData.title + '-description'" class="description mb-4">{{moduleCardData.description}}</div>
+
+        <p-button [id]="moduleCardData.title + '-access-button'" (onClick)="navigate()" class="module-card-button" [disabled]="moduleCardData.disabled">
+            <div class="flex gap-1 align-items-center">
+                <p [id]="moduleCardData.title + '-access-button-label'" class="button-label">{{moduleCardData.buttonLabel}}</p>
+                <i class="pi pi-arrow-up-right"></i>
+            </div>
+        </p-button>
+    </div>
+}

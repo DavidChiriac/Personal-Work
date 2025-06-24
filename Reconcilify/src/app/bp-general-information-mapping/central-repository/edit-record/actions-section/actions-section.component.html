@@ -1,0 +1,38 @@
+@if(currentRecord){
+<div class="flex flex-column md:flex-row gap-4 align-items-center pt-2 pb-2">
+    <div class="flex gap-2 align-items-center font-bold">
+        <p-button styleClass="btn-previous-next" [icon]="'pi pi-angle-double-left'"
+            [disabled]="editMode || !previousRecord" (onClick)="goToPreviousRecord()"
+            pTooltip="Previous Record" tooltipPosition="bottom"></p-button>
+        <span>Record View {{'(' + currentRecordIndexInList + '/' + totalNumberOfRecordsInList + ')'}}</span>
+        <p-button styleClass="btn-previous-next" [icon]="'pi pi-angle-double-right'"
+            [disabled]="editMode || !nextRecord" (onClick)="goToNextRecord()" pTooltip="Next Record"
+            tooltipPosition="bottom"></p-button>
+    </div>
+
+    <div>
+        <div class="flex gap-3 font-bold">
+            <span>Status: <span
+                    [ngClass]="{'red': currentRecord.status === vcStatus.new, 'text-green': currentRecord.status === vcStatus.approved, 'blue': currentRecord.status === vcStatus.mapped}">{{currentRecord.status
+                    || 'No status' | uppercase}}</span></span>
+            <span>Matching: <span
+                    [ngClass]="currentRecord.matching?.toLowerCase() === 'duplicate' ? 'red' : 'blue'">{{currentRecord.matching
+                    || 'No matching status' | uppercase}}</span></span>
+        </div>
+    </div>
+
+    <div class="md:ml-auto flex gap-3 buttons-container">
+        <button class="ml-4 grey-btn" pButton (click)="clearFilters()" [disabled]="editMode || emptyFilters"
+                icon="fa-solid fa-filter-circle-xmark" label="Clear Filters"
+                pTooltip="Remove all filters set in place for the data grid">
+            </button>
+        <p-button styleClass="green-btn" [icon]="currentRecord.status !== vcStatus.new ? '' : 'pi pi-thumbs-up'"
+            (onClick)="approve()" pTooltip="Approve Record" tooltipPosition="bottom"
+            [label]="currentRecord.status !== vcStatus.new ? 'Approved' : 'Approve'"
+            [disabled]="!currentRecord.cfinCode || editMode || !validCfin || currentRecord.status !== vcStatus.new || !currentRecord.accountGroup || !currentRecord.bpGrouping || !currentRecord.category"></p-button>
+        <p-button styleClass="grey-btn" [icon]="'pi pi-times-circle'" (onClick)="closeRecordView()"
+            pTooltip="Exit Edit Window" tooltipPosition="bottom"
+            label="Close" [disabled]="editMode"></p-button>
+    </div>
+</div>
+}

@@ -1,0 +1,13 @@
+@use "./variables.scss" as vars;
+
+.p-drawer-right {
+  position: absolute;
+  color: vars.$gray-night-500;
+  width: 25rem;
+}
+
+.p-drawer-mask {
+  position: absolute;
+  width: 0;
+  height: 0;
+}

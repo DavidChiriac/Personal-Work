@@ -1,0 +1,53 @@
+@if(loading){
+    <div class="mt-5 flex flex-column align-items-center">
+        <p-progressSpinner ariaLabel="loading" strokeWidth="4" class="dashboard-spinner"></p-progressSpinner>
+    </div>
+} @else if(currentRecord) {
+<div class="h-full w-full flex flex-column justify-content-between"
+    [ngClass]="{'fixed': approveModalVisible || errorModalVisible}">
+    <app-actions-section class="px-4" (approved)="showApproveDialog()" (isLoading)="isLoading($event)" [editMode]="editMode" [emptyFilters]="emptyFilters"
+        [currentRecord]="currentRecord" [validCfin]="cfinIsValid" (nextPreviousIds)="saveNextPreviousIds($event)"></app-actions-section>
+    <div class="duplicates-table overflow-hidden mb-auto"><app-duplicates-table (isEditing)="getEditMode($event)" (isLoading)="isLoading($event)" (approved)="showApproveDialog($event)" 
+            (filtersAreEmpty)="filtersAreEmpty($event)" (cfinValidity)="validateCfin($event)"
+            [currentRecord]="currentRecord" [tableData]="duplicates" [totalRecords]="totalDuplicates"
+            (isSaving)="saveChanges($event)"></app-duplicates-table></div>
+    <div class="font-bold mb-3 mt-3 px-4 instructions">Duplicates of the current Vendor/Customer:&nbsp;&nbsp;&nbsp;<span
+            class="red">&#40;In Red: Duplicate values</span>,&nbsp;<span class="text-green">In Green: Unique
+            values)</span></div>
+</div>
+
+@if(approveModalVisible){
+<app-modal [modalVisible]="approveModalVisible" (closeModal)="closeApproveModal()">
+    <div>
+        <p class="font-bold">Are you sure you want to proceed with this approval?</p>
+    </div>
+    <div class="flex gap-3 mt-4">
+        <p class="font-bold comment-label">
+            Comment:
+        </p>
+        <textarea pTextarea class="w-full" [(ngModel)]="approveComment" rows="5" cols="30"
+            [placeholder]="'Please provide a comment if necessary'"></textarea>
+    </div>
+    <div class="flex justify-content-between mt-5">
+        <p-button styleClass="grey-btn" [icon]="'pi pi-times-circle'"
+            label="Close" (onClick)="canApproveFunction()"></p-button>
+        <p-button styleClass="green-btn" [icon]="'pi pi-thumbs-up'"
+            label="Approve" (onClick)="canApproveFunction(true)"></p-button>
+    </div>
+</app-modal>
+}
+
+@if(errorModalVisible){
+<app-modal [modalVisible]="errorModalVisible" (closeModal)="toggleErrorModal()" [modalWidth]="'28'">
+    <div class="flex flex-column align-items-center gap-3">
+        <div>
+            <h4 class="text-center my-1">There was an error saving the changes</h4>
+        </div>
+        <div class="w-fit-content">
+            <p-button styleClass="grey-btn" [icon]="'pi pi-times-circle'" label="OK" (onClick)="toggleErrorModal()">
+            </p-button>
+        </div>
+    </div>
+</app-modal>
+}
+}

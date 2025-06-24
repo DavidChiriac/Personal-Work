@@ -1,0 +1,78 @@
+<div class="h-full">
+  <div class="flex justify-content-between align-items-center">
+    <h2 class="m-0 pt-3 mb-4">Notifications</h2>
+    <p-select
+      [options]="[
+        { value: -1, label: 'Newest' },
+        { value: 1, label: 'Oldest' }
+      ]"
+      optionValue="value"
+      [(ngModel)]="createdOnSorting"
+      (onChange)="creationDateSorting()"
+    ></p-select>
+  </div>
+  <div class="notifications-table">
+    <p-table
+      #dt
+      [value]="notifications"
+      dataKey="id"
+      [scrollable]="true"
+      [paginator]="true"
+      [totalRecords]="numberOfNotifications"
+      [rowHover]="true"
+      [rowsPerPageOptions]="[20, 50, 100]"
+      [rows]="20"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [paginatorDropdownAppendTo]="'body'"
+      [lazy]="true"
+      (onLazyLoad)="onLazyLoad($event)"
+      sortField="createdOn"
+      [sortOrder]="-1"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th id="notification-type" pSortableColumn="notificationType">
+            Notification Type
+            <p-sortIcon id="notification-type-sort" field="notificationType" />
+          </th>
+          <th id="description" pSortableColumn="notification.title">
+            Description
+            <p-sortIcon id="description" field="notification.title" />
+          </th>
+          <th id="action" pSortableColumn="action">Action</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td class="w-3 text-left" [id]="row.type">
+            {{ row.type }}
+          </td>
+          <td
+            class="w-7 font-bold"
+            [id]="'notification-description-' + row.title"
+            [pTooltip]="row.title + ' ' + row.description"
+            tooltipPosition="top"
+          >
+            {{ row.title }}
+          </td>
+          <td class="w-2" [id]="'notification-action-' + row.title">
+            <div class="flex gap-2 mx-2 justify-content-between">
+              <p-button
+                icon="pi pi-eye"
+                class="see-notification"
+                (onClick)="seeNotification(row)"
+              ></p-button>
+              <p-button
+                label="Mark as read"
+                class="mark-as-read"
+                (onClick)="markAsRead(row)"
+              ></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

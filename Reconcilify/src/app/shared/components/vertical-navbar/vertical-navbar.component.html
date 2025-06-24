@@ -1,0 +1,17 @@
+<div id="left-navbar-fnb" class="navbar">
+    <div id="fnb-recon-logo" class="recon-logo">
+        <img src="/assets/logos/recon-logo.png" alt="recon logo" routerLink="" class="cursor-pointer"/>
+    </div> 
+    <p-menubar id="fnb-navbar" class="fnb-navbar" [model]="navbar">
+        <ng-template pTemplate="body" let-tab>
+            @if(tab?.label){
+                <div [id]="tab?.label" class="flex flex-column align-items-center p-2 pb-3 text-center" [routerLink]="tab?.routerLink" (click)="!tab?.routerLink && navigate(tab)" onkeypress="" [routerLinkActive]="'p-active'">
+                    @if(tab?.customIcon){
+                        <i [id]="tab?.label + '-icon'" [class]="tab?.customIcon + ' icon'"></i>
+                    }
+                    <span [id]="tab?.label + '-label'">{{tab?.label}}</span>
+                </div>
+            }
+        </ng-template>
+    </p-menubar> 
+</div>

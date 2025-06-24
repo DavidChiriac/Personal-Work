@@ -1,0 +1,153 @@
+@use "./variables.scss" as vars;
+
+.p-multiselect {
+  display: flex;
+  .p-multiselect-label {
+    padding: 0.2rem 0 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    border-width: 0 0 2px 0;
+    border-radius: 0.2rem;
+  }
+
+  .p-multiselect-trigger {
+    width: 2rem;
+  }
+  &.p-focus {
+    border-color: transparent;
+  }
+  &:not(.p-disabled) {
+    &:hover {
+      border-color: vars.$night;
+    }
+    &.p-focus {
+      box-shadow: none;
+    }
+  }
+}
+
+.p-multiselect-overlay {
+  .p-multiselect-header {
+    padding: 0.2rem 0.5rem;
+    background: vars.$gridHeader;
+
+    .p-multiselect-filter-container .p-inputtext {
+      padding: 0.4rem 2rem 0.4rem 0.7rem;
+      height: 1.7rem;
+      border-radius: 0.2rem;
+      font-size: 0.75rem;
+
+      &:hover {
+        border-color: vars.$gray-night-200;
+      }
+
+      &:enabled:focus {
+        border-color: vars.$night;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .p-multiselect-list {
+    padding: 0;
+    .p-multiselect-option {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      background: vars.$avolta-white;
+
+      &:hover {
+        background: vars.$rowHoverBackground;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .p-multiselect-option-selected {
+      background: vars.$green-lime-200;
+      color: vars.$night;
+    }
+  }
+
+  .p-multiselect-items-wrapper {
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      background-color: vars.$white;
+    }
+
+    &::-webkit-scrollbar {
+      height: 9px;
+      width: 9px;
+      background-color: vars.$white;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+      background-color: vars.$gray-night-400;
+    }
+  }
+
+  .p-multiselect-empty-message {
+    font-size: 0.75rem;
+  }
+}
+
+.p-multiselect-items-wrapper {
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.p-overlay {
+  margin-top: 0.313rem;
+}
+
+.fnb-filter-multiselect {
+  .p-multiselect {
+    border: 1px solid vars.$night;
+
+    .p-multiselect-clear-icon {
+      margin: -8px -15px 0;
+    }
+
+    .p-multiselect-label {
+      padding: 5px;
+      font-size: 0.8rem;
+    }
+  }
+
+  .p-multiselect-overlay {
+    .p-multiselect-header{
+      .p-checkbox{
+        display: flex;
+        align-items: center;
+      }
+
+      .p-multiselect-filter-icon {
+        display: none;
+      }
+
+      .p-multiselect-filter-container .p-inputtext {
+        padding: 0.4rem;
+      }
+
+      .p-multiselect-close{
+        display: flex;
+        justify-content: end;
+        width: fit-content;
+      }
+    }
+
+    .p-multiselect-list .p-multiselect-option {
+      font-size: 13px;
+
+      .p-checkbox {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

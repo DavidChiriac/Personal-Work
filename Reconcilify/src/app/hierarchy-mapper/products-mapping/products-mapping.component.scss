@@ -1,0 +1,38 @@
+@use "../../shared/overrides/variables.scss" as vars;
+
+.frozen-header{
+    background: vars.$gray-night-300;
+}
+
+.products-mapping{
+    margin-block: 0.7rem;
+
+    h1{
+        margin-bottom: 0;
+    }
+}
+
+.products-mapping-table{
+    height: calc(100% - 29px - 1.4rem);
+
+    @media only screen and (max-width: 1050px) {
+        height: calc(100% - 48px - 1.4rem);
+    }
+
+    @media only screen and (max-width: 990px) {
+        height: calc(100% - 58px - 1.4rem);
+    }
+
+    .dropdown-cell{
+        padding: 0;
+    }
+}
+
+.input-cell{
+    padding-block: 0;
+}
+
+.invalid{
+    border: 2px solid vars.$red-heat-500;
+    padding: 0 15px;
+}

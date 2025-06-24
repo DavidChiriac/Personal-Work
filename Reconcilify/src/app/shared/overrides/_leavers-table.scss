@@ -1,0 +1,25 @@
+@use './fnb-table';
+
+.leavers-tasks-table{
+    @extend .fnb-table;
+
+    .p-datatable{
+        .p-datatable-tbody{
+            td{
+                height: 35px;
+            }
+        }
+    }
+}
+
+.leavers-notifications-table{
+    @extend .fnb-table;
+
+    .p-datatable{
+        .p-datatable-tbody{
+            td{
+                height: 35px;
+            }
+        }
+    }
+}

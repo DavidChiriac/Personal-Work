@@ -1,0 +1,30 @@
+@use './variables.scss' as vars;
+
+.p-tag{
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.dashboard-danger{
+    .p-tag{
+        width: 100%;
+        background: vars.$red-heat-400;
+        color: vars.$avolta-white;
+        padding: 7px 20px;
+        font-size: 15px;
+        font-weight: 400;
+    }
+}
+
+.dashboard-outlined{
+    .p-tag{
+        width: 100%;
+        background: transparent;
+        border: 1px solid vars.$red-heat;
+        font-size: 15px;
+        color: vars.$gray-night-900;
+        padding: 7px 20px;
+        font-weight: 400;
+    }
+}

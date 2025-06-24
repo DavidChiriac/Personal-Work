@@ -1,0 +1,376 @@
+@use "./variables.scss" as vars;
+
+.p-button:focus {
+  box-shadow: none;
+}
+
+.p-button-label {
+  font-weight: 400;
+}
+
+.p-button.p-button-icon-only{
+  padding: .75rem 0;
+  width: 3rem;
+}
+
+.login .p-button {
+  background-color: vars.$avolta-purple;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+}
+
+.grey-btn,
+.red-btn,
+.green-btn {
+  &.p-button {
+    padding: 0.5rem 1rem;
+    height: 2.1rem;
+    font-size: 0.813rem;
+    border-radius: 0.2rem;
+  }
+}
+
+.grey-btn {
+  &.p-button {
+    color: vars.$gray-night-50;
+    background: vars.$gray-night-900;
+    border: vars.$gray-night-900;
+
+    &:hover {
+      background: vars.$gray-night-950;
+    }
+
+    &:disabled {
+      background: vars.$gray-night-200;
+      color: vars.$gray-night-900;
+    }
+  }
+
+  .fa-regular {
+    font-size: 1.1rem;
+  }
+}
+
+.green-btn {
+  &.p-button {
+    color: vars.$green-lime-900;
+    background: vars.$green-lime-300;
+    border: vars.$green-lime-300;
+
+    &:hover {
+      background: vars.$green-lime-400;
+    }
+
+    &:disabled {
+      background: vars.$green-lime-200;
+      color: vars.$green-lime-900;
+    }
+  }
+
+  .fa-regular {
+    font-size: 1.1rem;
+  }
+}
+
+.red-btn {
+  &.p-button {
+    color: vars.$night;
+    background: vars.$red-heat;
+    border: none;
+
+    &:disabled {
+      color: vars.$night;
+    }
+  }
+
+  .fa-regular {
+    font-size: 1.1rem;
+  }
+}
+
+.edit-icon-btn,
+.delete-icon-btn {
+  &.p-button.p-button-text {
+    padding: 0;
+    height: 2.063rem;
+    width: fit-content;
+    font-size: 1rem;
+
+    &:not(:disabled):active {
+      background: transparent;
+    }
+  }
+
+  &:hover{
+    background: transparent;
+  }
+}
+
+.edit-icon-btn {
+  &.p-button.p-button-text {
+    color: vars.$gray-night-900;
+
+    &:hover {
+      color: vars.$gray-night-950;
+    }
+  }
+}
+
+.delete-icon-btn {
+  &.p-button.p-button-text {
+    color: vars.$red-heat-500;
+
+    &:hover {
+      color: vars.$red-heat-600;
+    }
+  }
+}
+
+.cr-search-btn,
+.cr-delete-btn,
+.cr-export-btn {
+  .p-button {
+    height: 2.063rem;
+    border-radius: 0.2rem;
+    color: vars.$gray-night-50;
+    background: vars.$gray-night-900;
+    border: vars.$gray-night-900;
+
+    &:hover {
+      background: vars.$gray-night-950;
+    }
+
+    &:disabled {
+      background: vars.$gray-night-200;
+      color: vars.$gray-night-900;
+    }
+  }
+}
+
+.p-tooltip {
+  font-size: 0.688rem;
+}
+
+.btn-previous-next.p-button {
+  background-color: transparent;
+  color: vars.$night;
+  border: none;
+  border-radius: 6px;
+  padding: 0.2rem 0.5rem;
+
+  &:hover {
+    background-color: vars.$green-lime;
+  }
+}
+
+.cfin-button .p-button {
+  background: vars.$green-lime-200;
+  color: vars.$green-lime-900;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.dashboard-btn {
+  width: 100%;
+  margin-top: 1.25rem;
+
+  &.p-button {
+    display: block;
+  }
+}
+
+.status-toggle-btn {
+  .p-button {
+    padding: 0.5rem 1rem;
+    height: 2.1rem;
+    font-size: 0.813rem;
+    border-radius: 0;
+    background: vars.$gray-night-100;
+    border: vars.$gray-night-100;
+    color: vars.$night;
+
+    &:hover {
+      background: vars.$gray-night-200;
+    }
+
+    .p-badge {
+      background-color: vars.$night;
+      color: vars.$white;
+    }
+  }
+
+  &.new-btn {
+    .p-button {
+      border-top-left-radius: 0.2rem;
+      border-bottom-left-radius: 0.2rem;
+    }
+  }
+
+  &.mapped-btn {
+    .p-button {
+      border-top-right-radius: 0.2rem;
+      border-bottom-right-radius: 0.2rem;
+    }
+  }
+
+  &.active-status {
+    .p-button {
+      color: vars.$green-lime-900;
+      background: vars.$green-lime-300;
+      border: vars.$green-lime-300;
+
+      &:hover {
+        background: vars.$green-lime-400;
+      }
+    }
+  }
+}
+
+.transparent-button {
+  .p-button {
+    background: transparent;
+    border: none;
+  }
+}
+
+.module-card-button {
+  .p-button {
+    background: transparent;
+    border-radius: 40px;
+    color: vars.$night;
+    border: 1px solid vars.$night;
+    padding: 10px 20px;
+
+    .button-label {
+      margin: 0;
+    }
+  }
+}
+
+.clear-filters {
+  .p-button {
+    background: vars.$gray-night-200;
+    padding: 4px;
+    flex: 1;
+    border: 2px solid vars.$gray-night-400;
+    border-radius: 0;
+    color: vars.$night;
+  }
+}
+
+.fnb-clear-filters {
+  .p-button {
+    background: transparent;
+    padding: 1px;
+    flex: 1;
+    border: 1px solid vars.$gray-night-100;
+    border-radius: 3px;
+    color: vars.$night;
+  }
+}
+
+.edit-button {
+  pointer-events: auto;
+  &.p-button.p-button-icon-only.p-button-rounded {
+    height: fit-content;
+    width: fit-content;
+    padding: 0;
+    border-radius: 0;
+
+    &:hover {
+      background: inherit;
+    }
+  }
+}
+
+.new-group-btn, .new-user-btn {
+  .p-button {
+    background: vars.$green-lime-500;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100%;
+
+    .p-button-label {
+      font-weight: 400;
+    }
+
+    &:hover {
+      background: vars.$green-lime-50;
+      color: vars.$night;
+    }
+  }
+}
+
+.mark-as-read{
+  @extend .new-user-btn;
+  .p-button{
+    padding: 7px 10px;
+  }
+}
+
+.see-notification{
+  @extend .mark-as-read;
+  .p-button{
+    background: vars.$gray-night-500;
+  }
+}
+
+.acknowledge {
+  @extend .mark-as-read;
+  width: 100%;
+
+  .p-button{
+    color: vars.$gray-night-500;
+    background: vars.$green-lime-300;
+    padding: 4px 10px;
+
+    .p-button-label{
+      padding-inline: 5px;
+      font-size: 12px;
+    }
+  }
+}
+
+.acknowledged {
+  @extend .acknowledge;
+
+  .p-button{
+    background: vars.$green-lime-100;
+    font-style: italic;
+  }
+}
+
+.admin-clear-filters{
+  .p-button{
+    padding: 5px 10px;
+  }
+}
+
+.p-column-filter-menu-button {
+  width: fit-content;
+  height: fit-content;
+  border-radius: 0;
+}
+
+.excel-export {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: vars.$night;
+  font-size: 1.5rem;
+  border-radius: 0;
+  width: fit-content;
+  height: 1.5rem;
+
+  img{
+    width: 100%;
+    object-fit: contain;
+  }
+}

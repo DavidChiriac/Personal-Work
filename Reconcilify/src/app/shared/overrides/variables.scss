@@ -1,0 +1,154 @@
+$night: #373737;
+$borderGrey: #828281;
+$white: #fff;
+$rowSelectText: #395611;
+$rowSelectBackground: #defd99;
+$rowHoverText: #262626;
+$rowHoverBackground: #e7e7e7;
+$gridHeader: #f6f6f6;
+$gridAlternateRow: #FCFCFC;
+
+
+/* Main Colors of Avolta color palette*/
+$avolta-purple: #8F53F0;
+$sand-color: #F5F3ED;
+$avolta-white: #FFFFFF;
+$avolta-night: #373737;
+$green-lime: #C5F85A;
+$green-leaf: #30D7BA;
+$blue-sky: #25B2E3;
+$blue-sea: #2B61E9;
+$red-heat: #E54C5C;
+$orange-sun: #ED8A40;
+$yellow-golden: #FFE468;
+$hudson-blue: #3457A4;
+
+/* Avolta Purple Color Scale */
+$avolta-purple-50: #f6f3ff;
+$avolta-purple-100: #eeeafd;
+$avolta-purple-200: #e1d7fd;
+$avolta-purple-300: #cab7fb;
+$avolta-purple-400: #b18ef7;
+$avolta-purple-500: #8f53f0;
+$avolta-purple-600: #8a40e7;
+$avolta-purple-700: #7b2ed3;
+$avolta-purple-800: #6726b1;
+$avolta-purple-900: #562191;
+$avolta-purple-950: #351362;
+
+/* Avolta Green Lime Color Scale */
+$green-lime-50: #f8ffe6;
+$green-lime-100: #effec9;
+$green-lime-200: #defd99;
+$green-lime-300: #c5f85a;
+$green-lime-400: #adee2d;
+$green-lime-500: #8fd40e;
+$green-lime-600: #6daa06;
+$green-lime-700: #53810a;
+$green-lime-800: #43650f;
+$green-lime-900: #395611;
+$green-lime-950: #1c3003;
+
+/* Avolta Green Leaf Color Scale */
+$green-leaf-50: #f0fdf9;
+$green-leaf-100: #cbfcef;
+$green-leaf-200: #98f7e0;
+$green-leaf-300: #5cecce;
+$green-leaf-400: #30d7ba;
+$green-leaf-500: #12baa0;
+$green-leaf-600: #0b9682;
+$green-leaf-700: #0e776a;
+$green-leaf-800: #105f56;
+$green-leaf-900: #124f48;
+$green-leaf-950: #03302c;
+
+/* Avolta Blue Sky Color Scale */
+$blue-sky-50: #f1fafe;
+$blue-sky-100: #e2f3fc;
+$blue-sky-200: #bee8f9;
+$blue-sky-300: #85d6f4;
+$blue-sky-400: #44c1ec;
+$blue-sky-500: #25b2e3;
+$blue-sky-600: #0f89ba;
+$blue-sky-700: #0d6d97;
+$blue-sky-800: #0f5d7d;
+$blue-sky-900: #124d68;
+$blue-sky-950: #0c3145;
+
+/* Avolta Blue Sea Color Scale */
+$blue-sea-50: #eff6ff;
+$blue-sea-100: #dbe9fe;
+$blue-sea-200: #c0d9fd;
+$blue-sea-300: #94c2fc;
+$blue-sea-400: #62a1f8;
+$blue-sea-500: #3d7ef4;
+$blue-sea-600: #2b61e9;
+$blue-sea-700: #1f4ad6;
+$blue-sea-800: #203dad;
+$blue-sea-900: #1f3889;
+$blue-sea-950: #182353;
+
+/* Avolta Red Heat Color Scale */
+$red-heat-50: #fef2f2;
+$red-heat-100: #fde6e6;
+$red-heat-200: #fad1d3;
+$red-heat-300: #f6abaf;
+$red-heat-400: #f07c85;
+$red-heat-500: #e54c5c;
+$red-heat-600: #d12d46;
+$red-heat-700: #b02039;
+$red-heat-800: #941d36;
+$red-heat-900: #7e1d35;
+$red-heat-950: #460b18;
+
+/* Avolta Orange Sun Color Scale */
+$orange-sun-50: #fef7ee;
+$orange-sun-100: #fcecd8;
+$orange-sun-200: #f8d5b0;
+$orange-sun-300: #f4b77d;
+$orange-sun-400: #ed8a40;
+$orange-sun-500: #e97226;
+$orange-sun-600: #db591b;
+$orange-sun-700: #b54219;
+$orange-sun-800: #91361b;
+$orange-sun-900: #752f19;
+$orange-sun-950: #3f150b;
+
+/* Avolta Yellow Golden Color Scale */
+$yellow-golden-50: #fefbe8;
+$yellow-golden-100: #fff5c2;
+$yellow-golden-200: #ffe468;
+$yellow-golden-300: #ffd645;
+$yellow-golden-400: #fcbf13;
+$yellow-golden-500: #eca706;
+$yellow-golden-600: #cc7f02;
+$yellow-golden-700: #a25906;
+$yellow-golden-800: #86460d;
+$yellow-golden-900: #723911;
+$yellow-golden-950: #431c05;
+
+/* Avolta Gray Night Color Scale */
+$gray-night-50: #f6f6f6;
+$gray-night-100: #e7e7e7;
+$gray-night-200: #d1d1d1;
+$gray-night-300: #b0b0b0;
+$gray-night-400: #888888;
+$gray-night-500: #6d6d6d;
+$gray-night-600: #5d5d5d;
+$gray-night-700: #4f4f4f;
+$gray-night-800: #454545;
+$gray-night-900: #373737;
+$gray-night-950: #262626;
+
+/* Avolta Hudson blue Color Scale */
+$hudson-blue-50: #f1f7fd;
+$hudson-blue-100: #e0edf9;
+$hudson-blue-200: #c7e0f6;
+$hudson-blue-300: #a1ccef;
+$hudson-blue-400: #75b0e5;
+$hudson-blue-500: #5493dd;
+$hudson-blue-600: #3f78d1;
+$hudson-blue-700: #3665bf;
+$hudson-blue-800: #3457a4;
+$hudson-blue-900: #2c477c;
+$hudson-blue-950: #1f2d4c;

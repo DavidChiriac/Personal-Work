@@ -1,0 +1,36 @@
+<div class="classification-status-tracker overflow-auto h-full w-full">
+    <h2 class="m-0 pt-3">Classification Status</h2>
+    <p-table [value]="data" dataKey="systemCode" [scrollable]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th id="percent"></th>
+                <th id="source"></th>
+                <th id="issues" class="text-center font-italic">Issues</th>
+                <th id="missing" class="text-center font-italic">Missing Level</th>
+                <th id="incorrect" class="text-center font-italic">Incorrect</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row>
+            <tr>
+                <td class="w-1 p-0 py-1" [id]="'compliance-score-' + row.systemName">
+                    <p-knob [ngModel]="row?.classificationStatusComplianceScore"
+                    [readonly]="true"
+                    valueTemplate="{value}%" 
+                    size="70"
+                    valueColor="var(--gray-night-900)"/>
+                </td>
+                <td class="font-bold w-5 border-right text-left" [id]="row.systemName">{{row.systemName}}</td>
+                <td class="w-2 border-right" [id]="'total-classification-issues-' + row.systemName">
+                        <p-tag class="dashboard-danger" [ngClass]="row.totalClassificationIssues > 0 ? 'cursor-pointer' : ''" (click)="row.totalClassificationIssues > 0 && navigate('', row?.systemName)" onkeypress="">{{row.totalClassificationIssues | number}}</p-tag>
+                </td>
+                <td class="w-2 border-right" [id]="'missing-classification-' + row.systemName">
+                        <p-tag class="dashboard-outlined" [ngClass]="row.missingClassification > 0 ? 'cursor-pointer' : ''"  (click)="row.missingClassification > 0 && navigate('missing', row?.systemName)" onkeypress="">{{row.missingClassification | number}}</p-tag>
+                </td>
+                <td class="w-2"  [id]="'incorrect-classification-' + row.systemName">
+                        <p-tag class="dashboard-outlined" [ngClass]="row.incorrectClassification > 0 ? 'cursor-pointer' : ''"  (click)="row.incorrectClassification > 0 && navigate('incorrect', row?.systemName)" onkeypress="">{{row.incorrectClassification | number}}</p-tag>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

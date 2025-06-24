@@ -1,0 +1,31 @@
+@use "../../../shared/overrides/variables.scss" as vars;
+
+h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: vars.$night;
+  margin: 0;
+}
+
+.disable-link {
+  cursor: none;
+  pointer-events: none;
+}
+
+.blue-data {
+  color: vars.$blue-sea-400;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.approved-status {
+  color: vars.$blue-sea-600;
+}
+
+.mapped-status {
+  color: vars.$green-lime-600;
+}
+
+.new-status {
+  color: vars.$red-heat-600;
+}

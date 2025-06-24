@@ -1,0 +1,17 @@
+<p-columnFilter #filter [id]="col.header + '-filter'" [field]="col.filterField ?? col.field" [hideOnClear]="true" [matchMode]="'between'"
+    display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" [pTooltip]="'Filter'" tooltipPosition="top">
+    
+    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+        @if(dynamicSelectionMode){
+            <p-datepicker [id]="col.header + '-calendar'" panelStyleClass="dynamic-selection-calendar" #calendar [ngModel]="value" [firstDayOfWeek]="1" [showWeek]="col.showWeek" [readonlyInput]="true" [selectionMode]="selectionMode"
+                (onSelect)="filter(selectionMode === 'single' ? calendar.value : formatDateFilters(calendar.value), col.filterField ?? col.field)" calendarModeToggle (mode)="changeSelectionMode($event)"
+                [showButtonBar]="true" [clearButtonStyleClass]="'hidden'" dateFormat="yy-mm-dd" appendTo="body">
+            </p-datepicker>
+        } @else {
+            <p-datepicker [id]="col.header + '-calendar'" #calendar [ngModel]="value" [firstDayOfWeek]="1" [showWeek]="col.showWeek" [readonlyInput]="true" [selectionMode]="'range'"
+                (onSelect)="filter(formatDateFilters(calendar.value), col.filterField ?? col.field)"
+                [showButtonBar]="false" dateFormat="yy-mm-dd" appendTo="body">
+            </p-datepicker>
+        }
+    </ng-template>
+</p-columnFilter>

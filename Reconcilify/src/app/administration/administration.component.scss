@@ -1,0 +1,8 @@
+@use '../shared/overrides/variables' as vars;
+
+.outlet-content{
+    height: calc(100vh - 80px);
+    width: 100%;
+    background: vars.$gray-night-50;
+    overflow: auto;
+}

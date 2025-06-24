@@ -1,0 +1,35 @@
+@use "../../shared/overrides/variables.scss" as vars;
+
+.module-card{
+    background: vars.$green-lime-300;
+    border-radius: 10px;
+    min-height: 200px;
+
+    .description {
+        font-size: 1.5rem;
+    }
+}
+
+.quick-links-card{
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid vars.$night;
+    min-height: 200px;
+
+    .quick-links{
+        font-size: 1.5rem;
+    }
+}
+
+.module-icon{
+    height: 4rem;
+    width: 4rem;
+    margin-block: 0.67em;
+    img{
+        width: 4rem;
+        object-fit: contain;
+    }
+    i{
+        font-size: 4rem; /* Ensures it fills the div */
+    }
+}

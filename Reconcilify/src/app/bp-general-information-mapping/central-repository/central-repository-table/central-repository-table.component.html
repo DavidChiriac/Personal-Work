@@ -1,0 +1,266 @@
+<div class="mt-3 main-table" [ngClass]="{'fixed': deleteRecordVisible || isExportInProgress || errorModalVisible || approveModalVisible || massDeleteModalVisible}">
+    <div class="flex justify-content-between flex-wrap">
+        <div class="flex align-items-center">
+            <div class="flex py-3 table-search">
+                <input pInputText type="text" placeholder="Search" [(ngModel)]="globalSearchText" (keydown.enter)="onLazyLoad(null, true)" />
+            </div>
+            <p-button icon="fa-solid fa-magnifying-glass" class="ml-1 cr-search-btn" pTooltip="Perform search"
+                (click)="onLazyLoad(null, true)" [disabled]="loading" onKeyPress="">
+            </p-button>
+            <p-button icon="fa-solid fa-delete-left" class="ml-1 cr-delete-btn" pTooltip="Clear search text"
+                (click)="clearGlobalSearch()" [disabled]="loading" onKeyPress="">
+            </p-button>
+            <p-button icon="fa-solid fa-download" class="ml-3 cr-export-btn"
+                pTooltip="Export current grid view to Excel file" (click)="exportTableData()"
+                [disabled]="isExportInProgress || loading" onKeyPress="">
+            </p-button>
+        </div>
+        <div class="flex align-items-center">
+            <p-buttonGroup>
+                <p-button class="status-toggle-btn new-btn" [ngClass]="{'active-status' : toggleStatus.newWithoutCfin.selected}"
+                    label="New without CFIN" [badge]="toggleStatus.newWithoutCfin.badge" (click)="showByStatus(vendorCustomerStatus.new, false)"
+                    onKeyPress="" [disabled]="loading">
+                </p-button>
+                <p-button class="status-toggle-btn" [ngClass]="{'active-status' : toggleStatus.newWithCfin.selected}"
+                    label="New with CFIN" [badge]="toggleStatus.newWithCfin.badge" (click)="showByStatus(vendorCustomerStatus.new, true)"
+                    onKeyPress="" [disabled]="loading">
+                </p-button>
+                <p-button class="status-toggle-btn" [ngClass]="{'active-status' : toggleStatus.approved.selected}"
+                    label="Approved" [badge]="toggleStatus.approved.badge"
+                    (click)="showByStatus(vendorCustomerStatus.approved)" onKeyPress="" [disabled]="loading">
+                </p-button>
+                <p-button class="status-toggle-btn mapped-btn"
+                    [ngClass]="{'active-status' : toggleStatus.mapped.selected}" label="Mapped"
+                    [badge]="toggleStatus.mapped.badge" (click)="showByStatus(vendorCustomerStatus.mapped)"
+                    onKeyPress="" [disabled]="loading">
+                </p-button>
+            </p-buttonGroup>
+        </div>
+        <div class="flex align-items-center">
+            <button class="ml-4 grey-btn" pButton (click)="clearFilters()" [disabled]="emptyFilters || loading"
+                icon="fa-solid fa-filter-circle-xmark" label="Clear Filters"
+                pTooltip="Remove all filters set in place for the data grid">
+            </button>
+        </div>
+    </div>
+
+    <p-table #tableRef [value]="tableData" [lazy]="true" [lazyLoadOnInit]="false" (onLazyLoad)="onLazyLoad($event)"
+        [loading]="loading" loadingIcon='pi pi-spin pi-spinner' dataKey="id" [(selection)]="selectedRows"
+        (onRowSelect)="onRowSelect($event)" [selectAll]="allSelected" (selectAllChange)="onSelectAllChange($event)"
+        (onRowUnselect)="onRowUnselect($event)" [paginator]="true" [rows]="rowsPerPage" [first]="first" [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[10, 20, 50]" [rowHover]="true" [scrollable]="true" styleClass="p-datatable-striped"
+        [scrollHeight]="tableHeight + 'px'" currentPageReportTemplate="{first}-{last} out of {totalRecords} records"
+        [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'">
+
+        <ng-template pTemplate="header">
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                @switch (col.field) {
+                @case ("selection") {
+                <th pFrozenColumn scope="col"><p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                }
+                @default {
+                <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn
+                    [frozen]="col.frozen ? col.frozen : false" [pSortableColumn]="col.field"
+                    [pSortableColumnDisabled]="!col.sortable">
+                    {{ col.header}}
+                    @if (col.sortable) {
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                    }
+                </th>
+                } } }
+            </tr>
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn
+                    [frozen]="col.frozen ? col.frozen : false">
+                    @if (col.filterable) {
+                    @if (col.filterMultiselect)
+                    {
+                    <p-multiSelect [ngModel]="tableFilters[col.filterField ?? col.field]" [loading]="filtersLoading"
+                        (ngModelChange)="onMultiselectSelectionChange($event, col.filterField ?? col.field)"
+                        [options]="tableFilters[col.field]" placeholder="Filter" optionLabel="value" appendTo="body"
+                        class="table-multiselect" (onChange)="onLazyLoad(null, true)" selectedItemsLabel="{0} selected"
+                        [maxSelectedLabels]="1">
+                    </p-multiSelect>
+                    }
+                    @if (!col.filterMultiselect) {
+                    @if(col.datepicker) {
+                    <div class="calendar-filter">
+                        <p-datepicker appendTo="body" [readonlyInput]="true" [showIcon]="true" dateFormat="yy-mm-dd"
+                            [firstDayOfWeek]="1" [selectOtherMonths]="true" placeholder="Filter"
+                            [(ngModel)]="tableFilters[col.filterField ?? col.field]" [showButtonBar]="true"
+                            (onSelect)="onLazyLoad(null, true)" (onClearClick)="onLazyLoad(null, true)">
+                        </p-datepicker>
+                    </div>
+                    } @else {
+                    <input pInputText type="text" class="table-input" [(ngModel)]="tableFilters[col.filterField ?? col.field]"
+                        placeholder="Search" (keydown.enter)="onLazyLoad(null, true)" />
+                    }
+                    }
+                    }
+                </th>
+                }
+            </tr>
+            <tr></tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+            <tr [ngClass]="{'row-selected' : rowData._selected }">
+                @for (col of tableColumns; track col.field) {
+                @switch (col.field) {
+                @case ("selection") {
+                <td pFrozenColumn [ngStyle]="col.style" [ngClass]="col.class">
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                }
+                @case ("edit") {
+                <td pFrozenColumn [ngStyle]="col.style" [ngClass]="col.class">
+                    <button pButton type="button" icon="fa-solid fa-pen"
+                        [ngClass]="rowData.status?.toLowerCase() === 'new' ? '' : ' hidden'" pTooltip="Edit Record"
+                        tooltipPosition="bottom" class="p-button-rounded p-button-text edit-icon-btn"
+                        (click)="editRow(rowData.id, i)">
+                    </button>
+                </td>
+                }
+                @case ("delete") {
+                <td pFrozenColumn [ngStyle]="col.style" [ngClass]="col.class">
+                    <button pButton type="button" icon="fa-solid fa-trash-can"
+                        [ngClass]="rowData.status?.toLowerCase() === 'new' ? '' : ' hidden'" pTooltip="Delete Record"
+                        tooltipPosition="bottom" class="p-button-rounded p-button-text delete-icon-btn"
+                        (click)="showDeleteDialog(rowData.id)">
+                    </button>
+                </td>
+                }
+                @case ("status") {
+                <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style"
+                    [ngClass]="{'red-text' : rowData[col.field] === 'New' }" [pTooltip]="rowData[col.field]" [tooltipPosition]="'top'">{{
+                    rowData[col.field] | titlecase }}
+                </td>
+                }
+                @case ("matching") {
+                <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style"
+                    [ngClass]="{'red-text' : rowData[col.field] === 'Duplicate' }" [pTooltip]="rowData[col.field]" [tooltipPosition]="'top'">{{
+                    rowData[col.field] }}
+                </td>
+                }
+                @default {
+                <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style"
+                    [ngClass]="col.class" [pTooltip]="rowData[col.field]" [tooltipPosition]="'top'">{{
+                    rowData[col.field] }}
+                </td>
+                } } }
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <div>
+        <div class="flex gap-2">
+            <div class="inline-block" pTooltip="Export selected data for Central Finance">
+                <button class="green-btn" pButton (click)="exportCfin()"
+                    [disabled]="selectedRowsList.length === 0 || isExportCfinInProgress || loading || !canExportForCfin"
+                    icon="fa-regular fa-file-excel" label="Export for CFIN">
+                </button>
+            </div>
+            <div class="inline-block" pTooltip="Mass Approve the selected records">
+                <button class="green-btn" pButton (click)="openMassApproveModal()"
+                    [disabled]="selectedRowsList.length === 0 || isExportCfinInProgress || loading || !canMassApprove"
+                    icon="pi pi-thumbs-up" label="Mass Approve">
+                </button>
+            </div>
+            <div class="inline-block" pTooltip="Mass Delete the selected records">
+                <button class="red-btn" pButton (click)="openMassDeleteModal()"
+                    [disabled]="selectedRowsList.length === 0 || isExportCfinInProgress || loading || !canMassDelete"
+                    icon="fa-solid fa-trash-can" label="Mass Delete">
+                </button>
+            </div>
+        </div>
+        @if (isAnyCfinInvalid && canMassApprove) {
+            <span class="red-text">Invalid CFIN code for one or more selected reords. Please review!</span>
+        }
+    </div>
+</div>
+
+@if(deleteRecordVisible){
+<app-modal [modalVisible]="deleteRecordVisible" (closeModal)="closeDeleteDialog()" [modalWidth]="'30'">
+    @if(isDeleting) {
+        <div class="mt-5 flex flex-column align-items-center">
+            <p-progressSpinner ariaLabel="loading" strokeWidth="4" class="dashboard-spinner"></p-progressSpinner>
+        </div>
+    } @else {
+        <div>
+            <p class="font-bold">The selected record shall be deleted. Please confirm!</p>
+        </div>
+    
+        <div class="flex justify-content-between mt-5">
+            <p-button styleClass="grey-btn" label="Close" (onClick)="closeDeleteDialog()"></p-button>
+            <p-button styleClass="green-btn" label="Confirm" (onClick)="deleteRow()"></p-button>
+        </div>
+    }
+</app-modal>
+}
+
+@if(massDeleteModalVisible){
+<app-modal [modalVisible]="massDeleteModalVisible" (closeModal)="closeDeleteDialog()" [modalWidth]="'30'">
+    @if(isDeleting) {
+        <div class="mt-5 flex flex-column align-items-center">
+            <p-progressSpinner ariaLabel="loading" strokeWidth="4" class="dashboard-spinner"></p-progressSpinner>
+        </div>
+    } @else {
+        <div>
+            <p class="font-bold">The selected records shall be deleted. Please confirm!</p>
+        </div>
+    
+        <div class="flex justify-content-between mt-5">
+            <p-button styleClass="grey-btn" label="Close" (onClick)="closeDeleteDialog()"></p-button>
+            <p-button styleClass="green-btn" label="Confirm" (onClick)="massDelete()"></p-button>
+        </div>
+    }
+</app-modal>
+}
+
+@if(isExportInProgress){
+<app-modal [modalVisible]="isExportInProgress" [modalWidth]="'30'">
+    <div class="flex flex-column align-items-center">
+        <h3 class="text-center mt-1">Export in progress</h3>
+        <p-progressSpinner ariaLabel="loading" strokeWidth="4" class="dashboard-spinner"></p-progressSpinner>
+        <h4 class="text-center mb-1">Please wait while your file is being downloaded</h4>
+    </div>
+</app-modal>
+}
+
+@if(errorModalVisible){
+<app-modal [modalVisible]="errorModalVisible" (closeModal)="toggleErrorModal()" [modalWidth]="'30'">
+    <div class="flex flex-column align-items-center gap-3">
+        <div>
+            <h4 class="text-center my-1">{{errorMessage}}</h4>
+        </div>
+        <div class="w-fit-content">
+            <p-button styleClass="grey-btn" [icon]="'pi pi-times-circle'" label="OK" (onClick)="toggleErrorModal()">
+            </p-button>
+        </div>
+    </div>
+</app-modal>
+}
+
+@if(approveModalVisible){
+    <app-modal [modalVisible]="approveModalVisible" (closeModal)="closeApproveModal()">
+        <div>
+            <p class="font-bold">Are you sure you want to proceed with this approval?</p>
+        </div>
+        <div class="flex gap-3 mt-4">
+            <p class="font-bold comment-label">
+                Comment:
+            </p>
+            <textarea pTextarea class="w-full" [(ngModel)]="approveComment" rows="5" cols="30"
+                [placeholder]="'Please provide a comment if necessary'"></textarea>
+        </div>
+        <div class="flex justify-content-between mt-5">
+            <p-button styleClass="grey-btn" [icon]="'pi pi-times-circle'"
+                label="Close" (onClick)="closeApproveModal()"></p-button>
+            <p-button styleClass="green-btn" [icon]="'pi pi-thumbs-up'"
+                label="Approve" (onClick)="massApprove()"></p-button>
+        </div>
+    </app-modal>
+}

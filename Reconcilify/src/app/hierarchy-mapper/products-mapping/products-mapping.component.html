@@ -1,0 +1,249 @@
+<div id="products-mapping-header" class="products-mapping mx-4 flex justify-content-between align-items-center">
+    <h2 id="products-mapping-title" class="my-0 w-3">Products Mapping</h2>
+    <app-table-mass-filters [globalFilters]="globalFilters" [selectedQuickFilter]="selectedQuickFilter" (selectMassFilter)="selectQuickFilter($event)"></app-table-mass-filters>
+    <div class="w-3 flex justify-content-end">
+    </div>
+</div>
+<p-toast/>
+
+<div id="products-mapping-table-container" class="fnb-table products-mapping-table mx-1" [ngClass]="{'fixed': errorModalVisible || exportModalVisible}">
+    <p-table #dt id="products-mapping-table" [value]="tableData" [lazy]="true" (onLazyLoad)="onLazyLoad($event)" [paginator]="true" [selection]="true"
+    [loading]="loading" loadingIcon='pi pi-spin pi-spinner' dataKey="id"
+    [rows]="50" [totalRecords]="totalRecords" [rowsPerPageOptions]="[50, 100, 150]" [rowHover]="true" [scrollable]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'"
+    [editMode]="'row'" [(selection)]="selectedEntriesList" [selectAll]="allSelected"
+    (selectAllChange)="onSelectAllChange($event)" (onRowUnselect)="onRowUnselect($event)" (onRowSelect)="onRowSelect($event)"
+    [globalFilterFields]="filterNames">
+        <ng-template pTemplate="caption">
+            <div id="products-mapping-caption" class="flex justify-content-between">
+                <app-table-caption (clearFilters)="clearFilters()" (globalSearch)="onLazyLoad($event)" [emptyFilters]="emptyFilters"></app-table-caption>
+                <app-export-dropdown [loading]="loading" [tableDataLength]="tableData.length" [selectedEntriesLength]="selectedEntries.length" (export)="exportData($event)"></app-export-dropdown>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr id="products-mapping-table-header-row">
+                @for (col of newOrderTableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("selection") {
+                            <th pFrozenColumn id="select-all" scope="col" [ngStyle]="col.style" class="px-0" [ngClass]="{'frozen-header': col.frozen}">
+                                <div class="flex justify-content-center">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </div>
+                            </th>                
+                        }
+                        @case ("edit") {
+                            @if(userCanEdit){
+                                <th pFrozenColumn id="header-edit-cell" scope="col" [ngStyle]="col.style" [ngClass]="{'frozen-header': col.frozen}"></th>                
+                            }
+                        }
+                        @default {
+                            <th [id]="'header-' + col.field" scope="col" [ngStyle]="col.style" pFrozenColumn [frozen]="col.frozen ?? false || col.fixedFrozen ?? false" [ngClass]="{'frozen-header': col.frozen}">
+                                <app-table-header-cell [col]="col" [tableFilters]="tableFilters" [requestParams]="requestParams" (sort)="onSort($event)" [noOfFrozenColumns]="noOfFrozenColumns" (freezeColumn)="toggleFrozeOnColumn($event)"></app-table-header-cell>  
+                            </th>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-editing="editing" let-index="rowIndex">
+            <tr [id]="index + '-row'" [pEditableRow]="row" [ngClass]="{'edit-mode' : editing, 'row-selected': row._selected}">
+                @for (col of newOrderTableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("selection") {
+                            <td pFrozenColumn [id]="index + '-selection'" [ngStyle]="row.style" class="px-0">
+                                <div class="flex justify-content-center">
+                                    <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                                </div>
+                            </td>                
+                        }
+                        @case ("edit") {
+                            @if(userCanEdit){
+                                <td [id]="index + '-edit'" pFrozenColumn [ngStyle]="row.style" class="p-0">
+                                    <div class="flex justify-content-center gap-2">
+                                        @if(!editing){
+                                            <button
+                                            [id]="index + '-edit-button'"
+                                            pButton pRipple pInitEditableRow
+                                            type="button"
+                                            icon="pi pi-pencil"
+                                            class="edit-button"
+                                            (click)="enterEditMode(row)"
+                                            [pTooltip]="'Edit'"
+                                            tooltipPosition="top"
+                                            [disabled]="editMode"
+                                            text rounded severity="secondary"
+                                        ></button>
+                                        } @else {
+                                            <button [id]="index + '-save-button'"
+                                            pButton pRipple pSaveEditableRow
+                                            type="button"
+                                            icon="pi pi-check"
+                                            class="edit-button"
+                                            [ngClass]="{'save-button': editedEntry.proposedCategoryName.code && editedEntry.proposedCategoryName.name &&
+                                                                                editedEntry.proposedGroupName.code && editedEntry.proposedGroupName.name &&
+                                                                                editedEntry.proposedSubgroupName.code && editedEntry.proposedSubgroupName.name}"
+                                            [pTooltip]="(!editedEntry.proposedCategoryName.code || !editedEntry.proposedCategoryName.name ||
+                                                        !editedEntry.proposedGroupName.code || !editedEntry.proposedGroupName.name ||
+                                                        !editedEntry.proposedSubgroupName.code || !editedEntry.proposedSubgroupName.name) ? 'One or more fields are empty' : 'Save changes'"
+                                            tooltipPosition="top"
+                                            (click)="saveChanges(index)"
+                                            [disabled]="!editedEntry.proposedCategoryName.code || !editedEntry.proposedCategoryName.name ||
+                                                        !editedEntry.proposedGroupName.code || !editedEntry.proposedGroupName.name ||
+                                                        !editedEntry.proposedSubgroupName.code || !editedEntry.proposedSubgroupName.name"
+                                            text rounded severity="secondary"
+                                        ></button>
+                                        <button [id]="index + '-cancel-changes'"
+                                            pButton pRipple pCancelEditableRow
+                                            type="button"
+                                            icon="pi pi-times"
+                                            class="edit-button close-button"
+                                            [pTooltip]="'Cancel changes'"
+                                            tooltipPosition="top"
+                                            (click)="exitEditMode(index)"
+                                            text rounded severity="secondary"
+                                        ></button>
+                                        }
+                                    </div>
+                                </td>  
+                            }              
+                        }
+                        @case ('comment') {
+                            <td #commentRef [id]="index + '-' + col.field" [ngStyle]="col.style" pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngClass]="{'input-cell editable-cell': editing}">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input [id]="index + '-' + col.field + '-input'" class="fnb-inputtext" [(ngModel)]="editedEntry.comment" [maxlength]="99"/>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        <div [id]="index + '-' + col.field + '-container'" class="w-full h-full flex justify-content-between">
+                                            <span [id]="index + '-' + col.field + '-value'" [pTooltip]="row[col.field]">{{row[col.field]}}</span>
+                                            <span class="copy-to-clipboard">
+                                                @if ((col.hasCodeAndName && row[col.field].code && row[col.field].name) || (!col.hasCodeAndName && row[col.field])) {
+                                                    @defer (on hover(commentRef)) {
+                                                    <app-copy-cell [content]="row[col.field]"/>
+                                                    }
+                                                }
+                                            </span>
+                                        </div>
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                        }
+                        @case ('validationStatus') {
+                            <td [id]="index + '-' + col.field" [ngStyle]="row.style" pFrozenColumn [frozen]="true">
+                                <div [id]="index + '-' + col.field + '-container'" class="w-full h-full">
+                                    @switch(row.validationStatus){
+                                        @case (statusEnum[1]) {
+                                            <p-tag [id]="index + '-' + col.field + '-tag'" class="fnb-tag" severity="warning" value="Pending"></p-tag>
+                                        }
+                                        @case (statusEnum[3]) {
+                                            <p-tag [id]="index + '-' + col.field + '-tag'" class="fnb-tag" severity="success" value="Valid"></p-tag>
+                                        }
+                                        @default {
+                                            <p-tag [id]="index + '-' + col.field + '-tag'" class="fnb-tag" severity="danger" value="Invalid"></p-tag>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        }
+                        @default {
+                            @if(['proposedCategoryName', 'proposedGroupName', 'proposedSubgroupName'].includes(col.field)){
+                                <td #tdProposedRef [id]="index + '-' + col.field" [ngStyle]="row.style" pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngClass]="{'dropdown-cell editable-cell': editing}">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            @switch (col.field) {
+                                                @case ('proposedCategoryName') {
+                                                    <p-select [id]="index + '-' + col.field + '-dropdown'" [options]="categoryOptions" [optionLabel]="'name'" class="fnb-dropdown" [appendTo]="dropdownAnchor" 
+                                                        [(ngModel)]="editedEntry.proposedCategoryName" (onChange)="onProposedCategoryChange($event)" 
+                                                        [disabled]="categoryOptions.length === 0">
+                                                        <ng-template pTemplate="selectedItem">
+                                                            @if(editedEntry.proposedCategoryName){
+                                                                <span [id]="index + '-' + col.field + '-selected-item'">
+                                                                    {{ editedEntry.proposedCategoryName.code }} - {{ editedEntry.proposedCategoryName.name }}
+                                                                </span>
+                                                            }
+                                                        </ng-template>
+                                                        <ng-template pTemplate="item" let-item>
+                                                            <span [id]="index + '-' + col.field + '-option'">{{ item.code }} - {{ item.name }}</span>
+                                                        </ng-template>
+                                                    </p-select>
+                                                }
+                                                @case ('proposedGroupName') {
+                                                    <p-select [id]="index + '-' + col.field + '-dropdown'" [options]="groupOptions" [optionLabel]="'name'" class="fnb-dropdown" [appendTo]="dropdownAnchor" 
+                                                        [(ngModel)]="editedEntry.proposedGroupName" (onChange)="onProposedGroupChange($event)" 
+                                                        [disabled]="groupOptions.length === 0">
+                                                        <ng-template pTemplate="selectedItem">
+                                                            @if(editedEntry.proposedGroupName){
+                                                                <span [id]="index + '-' + col.field + '-selected-item'">
+                                                                    {{ editedEntry.proposedGroupName.code }} - {{ editedEntry.proposedGroupName.name }}
+                                                                </span>
+                                                            }
+                                                        </ng-template>
+                                                        <ng-template pTemplate="item" let-item>
+                                                            <span [id]="index + '-' + col.field + '-option'">{{ item.code }} - {{ item.name }}</span>
+                                                        </ng-template>
+                                                    </p-select>
+                                                }
+                                                @default {
+                                                    <p-select [id]="index + '-' + col.field + '-dropdown'" [options]="subGroupOptions" [optionLabel]="'name'" class="fnb-dropdown" [appendTo]="dropdownAnchor" 
+                                                        [(ngModel)]="editedEntry.proposedSubgroupName" (onChange)="onProposedSubgroupChange($event)" 
+                                                        [disabled]="subGroupOptions.length === 0">
+                                                        <ng-template pTemplate="selectedItem">
+                                                            @if(editedEntry.proposedSubgroupName){
+                                                                <span [id]="index + '-' + col.field + '-selected-item'">
+                                                                    {{ editedEntry.proposedSubgroupName.code }} - {{ editedEntry.proposedSubgroupName.name }}
+                                                                </span>
+                                                            }
+                                                        </ng-template>
+                                                        <ng-template pTemplate="item" let-item>
+                                                            <span [id]="index + '-' + col.field + '-option'">{{ item.code }} - {{ item.name }}</span>
+                                                        </ng-template>
+                                                    </p-select>
+                                                }
+                                            }
+                                            
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            <div [id]="index + '-' + col.field + '-container'" class="w-full h-full flex justify-content-between">
+                                                <span [id]="index + '-' + col.field + '-value'" [pTooltip]="row[col.field] | nameCode">{{row[col.field] | nameCode}}</span>
+                                                <span class="copy-to-clipboard">
+                                                    @if ((col.hasCodeAndName && row[col.field].code && row[col.field].name) || (!col.hasCodeAndName && row[col.field])) {
+                                                        @defer (on hover(tdProposedRef)) {
+                                                        <app-copy-cell [content]="row[col.field] | nameCode"/>
+                                                        }
+                                                    }
+                                                </span>
+                                            </div>
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                            } @else {
+                                <td #tdRef [id]="index + '-' + col.field" [ngStyle]="row.style" pFrozenColumn [frozen]="col.frozen ?? false || col.fixedFrozen ?? false">
+                                    <div [id]="index + '-' + col.field + '-container'" class="w-full h-full flex justify-content-between">
+                                        <span [id]="index + '-' + col.field + '-value'" [pTooltip]="row[col.field] | nameCode">{{row[col.field] | nameCode}}</span>
+                                        <span class="copy-to-clipboard">
+                                            @if ((col.hasCodeAndName && row[col.field].code && row[col.field].name) || (!col.hasCodeAndName && row[col.field])) {
+                                                @defer (on hover(tdRef)) {
+                                                <app-copy-cell [content]="row[col.field] | nameCode"/>
+                                                }
+                                            }
+                                        </span>                                
+                                    </div>
+                                </td>
+                            }
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <div class="flex items-center justify-between">{{selectedEntries.length + '/' + totalRecords}} selected items</div>
+        </ng-template>
+    </p-table>
+
+<div #dropdownAnchor class="fnb-dropdown"></div>
+</div>
+
+<app-modals-component [display]="display" [errorMessage]="errorMessage" [errorModalVisible]="errorModalVisible" [exportModalVisible]="exportModalVisible" (toggleErrorModal)="toggleErrorModal()"></app-modals-component>

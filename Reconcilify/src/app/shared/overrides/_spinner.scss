@@ -1,0 +1,38 @@
+@use "./variables.scss" as vars;
+
+.dashboard-spinner {
+  .p-progressspinner-circle {
+    animation: dashboardSpinner 3s ease-in-out infinite;
+  }
+}
+
+@keyframes dashboardSpinner {
+  0% {
+    stroke: vars.$avolta-purple;
+  }
+
+  100% {
+    stroke: vars.$avolta-purple;
+  }
+}
+
+.export-spinner {
+  .p-progressspinner-circle {
+    animation: exportSpinner 3s ease-in-out infinite;
+  }
+  
+  .p-progressspinner{
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@keyframes exportSpinner {
+  0% {
+    stroke: vars.$avolta-purple;
+  }
+
+  100% {
+    stroke: vars.$avolta-purple;
+  }
+}

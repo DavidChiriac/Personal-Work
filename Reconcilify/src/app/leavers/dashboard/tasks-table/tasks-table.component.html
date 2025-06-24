@@ -1,0 +1,45 @@
+<div class="h-full">
+  <h2 class="m-0 pt-3 mb-4">Pending Leaver Report Acknowledgment Tasks</h2>
+  <div class="tasks-table">
+    <p-table
+      #dt
+      [value]="tasks"
+      dataKey="id"
+      [scrollable]="true"
+      [paginator]="true"
+      [totalRecords]="tasks.length"
+      [rowHover]="true"
+      [rowsPerPageOptions]="[20, 50, 100]"
+      [rows]="20"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [paginatorDropdownAppendTo]="'body'"
+      sortField="pendingAcknowledgementTasks"
+      [sortOrder]="-1"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th id="assignee" pSortableColumn="userName">
+            Assignee
+            <p-sortIcon id="assignee-sort" field="userName" />
+          </th>
+          <th id="pending-tasks" pSortableColumn="pendingAcknowledgementTasks">
+            Pending Tasks
+            <p-sortIcon id="pending-tasks" field="pendingAcknowledgementTasks" />
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td class="w-8" [id]="row.userName" [pTooltip]="row.userEmail" tooltipPosition="top">
+            {{ row.userName }}
+          </td>
+          <td class="w-4" [id]="'pending-tasks-' + row.userName">
+            {{ row.pendingAcknowledgementTasks }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

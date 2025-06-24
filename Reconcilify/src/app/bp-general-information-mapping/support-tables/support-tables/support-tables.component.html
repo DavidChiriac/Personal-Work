@@ -1,0 +1,84 @@
+<div class="max-w-full">
+    <p-breadcrumb class="max-w-full" [model]="items" [home]="home"></p-breadcrumb>
+</div>
+
+<div class="mt-5 mx-4 main-table">
+    <p-table #tableRef [value]="tableData" [lazy]="true" [lazyLoadOnInit]="false" (onLazyLoad)="onLazyLoad($event)"
+        dataKey="id"
+        [paginator]="true"
+        [loading]="loading"
+        [rows]="20" [totalRecords]="totalRecords" [rowsPerPageOptions]="[20, 50, 100]" [rowHover]="true"
+        [paginator]="tableType !== 'cfin-by-category'"
+        [scrollable]="true" styleClass="p-datatable-striped" [scrollHeight]="tableHeight + 'px'"
+        currentPageReportTemplate="{first}-{last} out of {totalRecords} records" [showCurrentPageReport]="true"
+        [paginatorDropdownAppendTo]="paginatorAnchor">
+        <ng-template pTemplate="header">
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                @switch (col.field) {
+                @default {
+                <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn [frozen]="col.frozen ? col.frozen : false"
+                    [pSortableColumn]="col.filterField" [pSortableColumnDisabled]="!col.sortable">
+                    {{ col.header}}
+                    @if (col.sortable) {
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                    }
+                </th>
+                } } }
+            </tr>
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn
+                    [frozen]="col.frozen ? col.frozen : false">
+                    @if (col.filterable) {
+                    @if (col.filterMultiselect)
+                    {
+                    <p-multiSelect [ngModel]="tableFilters[col.filterField ?? col.field]"
+                        (ngModelChange)="onMultiselectSelectionChange($event)"
+                        [options]="tableFilters[col.field]" placeholder="Filter" optionLabel="value" appendTo="body"
+                        class="table-multiselect" (onChange)="onLazyLoad(undefined, true)"
+                        selectedItemsLabel="{0} selected"
+                        [maxSelectedLabels]="1">
+                    </p-multiSelect>
+                    }
+                    @if (!col.filterMultiselect) {
+                    <input pInputText [type]="col.inputType" class="table-input" [(ngModel)]="tableFilters[col.filterField ?? col.field]"
+                        placeholder="Search" (keydown.enter)="onLazyLoad(undefined, true)" />
+                    }
+                    }
+                </th>
+                }
+            </tr>
+            <tr></tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData>
+            <tr [ngClass]="{'row-selected' : rowData._selected }">
+                @for (col of tableColumns; track col.field) {
+                @switch (col.field) {
+                @case ("category") {
+                <td pFrozenColumn [ngStyle]="col.style">{{
+                    rowData[col.field] }}
+                </td>
+                }
+                @case ("vendorCustomerName") {
+                <td pFrozenColumn [ngStyle]="col.style">{{
+                    rowData[col.field] }}
+                </td>
+                }
+                @case ("cfinCount") {
+                <td pFrozenColumn [ngStyle]="col.style">{{
+                    rowData[col.field] | number: '1.0-0' }}
+                </td>
+                }
+                @default {
+                <td pFrozenColumn [ngStyle]="col.style"
+                    [ngClass]="col.class">{{
+                    rowData[col.field] }}
+                </td>
+                } } }
+            </tr>
+        </ng-template>
+    </p-table>
+    <div #paginatorAnchor></div>
+</div>

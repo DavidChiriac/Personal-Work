@@ -1,0 +1,9 @@
+@use "../../../shared/overrides/variables.scss" as vars;
+
+.dashboard-section {
+  flex-grow: 1;
+  flex-basis: 0;
+  border: 1px solid vars.$gray-night-200;
+  border-radius: 6px;
+  padding-top: 0;
+}

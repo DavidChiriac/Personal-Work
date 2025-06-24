@@ -1,0 +1,44 @@
+@use "./variables.scss" as vars;
+
+.p-inputtext {
+  border-radius: 0.2rem;
+
+  &:hover {
+    border-color: vars.$gray-night-200;
+  }
+
+  &:enabled:focus {
+    border-color: vars.$gray-night-400;
+    box-shadow: none;
+  }
+}
+
+.table-search {
+  .p-inputtext {
+    padding: 0.4rem 0.7rem;
+    height: 2.1rem;
+    font-size: 0.75rem;
+    min-width: 12rem;
+  }
+}
+
+.table-input.p-inputtext {
+  padding: 0.4rem 0.7rem;
+  height: 1.5rem;
+  width: -webkit-fill-available;
+  border-radius: 0.2rem;
+  font-size: 0.75rem;
+}
+
+.fnb-inputtext{
+  padding: 0;
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 13px;
+  outline: none;
+}
+
+.global-inputtext{
+  padding-block: 1px;
+}

@@ -1,0 +1,61 @@
+@use "./variables.scss" as vars;
+
+.dashboard-upload {
+  .p-fileupload {
+    .p-fileupload-buttonbar {
+      display: none;
+    }
+
+    .p-fileupload-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: vars.$gray-night-50;
+      border: 3px dashed vars.$gray-night-100;
+      height: 18rem;
+
+      .p-progressbar {
+        display: none;
+      }
+
+      .p-fileupload-file-list{
+        width: 100%;
+
+        .p-fileupload-file{
+          word-break: break-word;
+
+          .p-fileupload-file-actions{
+            display: none;
+          }
+        }
+      }
+    }
+
+    .p-fileupload-header{
+      display: none;
+    }
+
+    .p-fileupload-row {
+      > div {
+        padding: 0.5rem;
+        width: auto;
+        font-weight: 500;
+      }
+
+      > div:first-child,
+      :nth-child(3),
+      :nth-child(4) {
+        display: none;
+      }
+    }
+  }
+
+  .p-button {
+    background: transparent;
+    border-color: vars.$avolta-purple;
+  }
+
+  .p-icon-wrapper {
+    color: vars.$avolta-purple;
+  }
+}

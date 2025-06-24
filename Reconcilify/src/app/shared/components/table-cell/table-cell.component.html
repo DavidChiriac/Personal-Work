@@ -1,0 +1,85 @@
+@switch (col.field) {
+    @case ("edit") {
+        @if (editMode){
+            @if(index === 0) {
+                <div class="flex justify-content-center gap-2">
+                    @if(!editMode){
+                        <button [id]="index + '-edit'"
+                        pButton pRipple pInitEditableRow
+                        type="button"
+                        icon="pi pi-pencil"
+                        class="edit-button"
+                        (click)="enterEditModeTrigger()"
+                        text rounded severity="secondary"
+                    ></button>
+                    } @else {
+                        <button [id]="index + '-cancel-changes'"
+                        pButton pRipple pCancelEditableRow
+                        type="button"
+                        icon="pi pi-times"
+                        class="edit-button close-button close-button"
+                        (click)="exitEditModeTrigger()"
+                        text rounded severity="secondary"
+                    ></button>
+                        <button [id]="index + '-save-changes'"
+                        pButton pRipple pSaveEditableRow
+                        type="button"
+                        icon="pi pi-save"
+                        class="edit-button"
+                        [ngClass]="{'save-button': canSave}"
+                        (click)="createMappingTrigger()"
+                        [disabled]="disabled"
+                        text rounded severity="secondary"
+                    ></button>
+                    }
+                </div>
+            }
+        }
+    }
+    @case('status') {
+        @if(!editMode || index !== 0) {
+            @if(row.isActive) {
+                <p-tag id="status" class="fnb-tag" severity="success" value="Active" onkeypress="" (click)="showStatusChangeModalTrigger(index, false)"/>
+            } @else {
+                <p-tag id="status" class="fnb-tag" severity="danger" value="Inactive" onkeypress="" (click)="canClickInactive && showStatusChangeModalTrigger(index, true)"/>
+            }
+        }
+    }
+    @case('isBackdatedLeaver') {
+        @if(row[col.field] && row[col.field] === true) {
+            Yes
+        } @else {
+            No
+        }
+    }
+    @default {
+        @if(col.datepicker && row[col.field]){
+            <div #dateRef [id]="index + '-' + col.field + '-container'" class="w-full h-full flex justify-content-between">
+                <span [id]="index + '-' + col.field + '-value'" [pTooltip]="row[col.field]">
+                    {{row[col.field] | date:'yyyy-MM-dd'}}
+                    @if(row[col.field + 'Time']){
+                        {{' ' + row[col.field+'Time']}}
+                    }
+                </span>
+                @if (row[col.field]) {
+                    <span class="copy-to-clipboard">
+                        @defer (on hover(dateRef)) {
+                            <app-copy-cell [content]="row[col.field]"/>
+                        }
+                    </span>   
+                }
+            </div>
+        } @else {
+            <div #tdRef [id]="index + '-' + col.field + '-container'" class="w-full h-full flex justify-content-between">
+                <span [id]="index + '-' + col.field + '-value'" [pTooltip]="row[col.field]">{{row[col.field]}}</span>
+                @if (row[col.field]) {
+                    <span class="copy-to-clipboard">
+                        @defer (on hover(tdRef)) {
+                            <app-copy-cell [content]="row[col.field]"/>
+                        }
+                    </span>   
+                }
+            </div>
+        }
+    }
+}

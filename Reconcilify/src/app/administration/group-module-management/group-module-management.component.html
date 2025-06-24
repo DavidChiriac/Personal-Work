@@ -1,0 +1,167 @@
+<div id="group-module-management-header" class="mx-4 group-module-management">
+    <h2 id="group-module-management-title" class="my-0">Administration - Module Management</h2>
+</div>
+<div id="group-module-management-table-container" class="mx-1 group-management-table" [ngClass]="{'fixed fixed-width': statusChangeModalVisible || errorModalVisible}">
+    <p-table #dt id="group-module-management-table" [value]="tableData" [paginator]="true" dataKey="id"
+    [rows]="50" [rowsPerPageOptions]="[50, 100, 150]" [rowHover]="true" [scrollable]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'"
+    [editMode]="'row'" class="admin-table"
+    [globalFilterFields]="['group.name', 'module.name', 'isActive', 'createdOn', 'createdBy', 'lastUpdatedOn', 'lastUpdatedBy']"
+    (onFilter)="checkEmptyFilters()" (onSort)="checkSort()">
+        <ng-template pTemplate="caption">
+            <div id="group-module-management-caption-container" class="flex justify-content-between">
+                <app-table-caption [dt]="table" (clearFilters)="clearAll(dt)" [emptyFilters]="emptyFilters"></app-table-caption>
+                <p-button id="group-module-management-assign-new" class="new-group-btn" (onClick)="assignNew()" [disabled]="editMode" [label]="'Assign Group'"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-row let-index="rowIndex">
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("edit") {
+                            @if (editMode) {
+                                <th id="edit-header" scope="col" [ngStyle]="col.style" [pSortableColumn]="col.field"></th>
+                            }              
+                        }
+                        @case ("groupName") {
+                            <th [id]="index + '-' + col.header" scope="col" [ngStyle]="col.style" pSortableColumn="group.name">
+                                <div class="flex align-items-center">
+                                    <span [id]="index + '-' + col.header + '-name'">{{col.header}}</span>
+                                    <p-columnFilter [id]="index + '-' + col.header + '-filter'" [field]="'group'" type="text" [hideOnClear]="true" matchMode="in" display="menu"
+                                                    [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                                    [pTooltip]="'Filter'" tooltipPosition="top">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-multiSelect [id]="index + '-' + col.header + '-multiselect'" [ngModel]="value" [options]="groupNamesInTableData" optionLabel="name"
+                                                (onChange)="filter($event.value)" class="fnb-filter-multiselect">
+                                                <ng-template let-item pTemplate="selectedItems">
+                                                    @if(item?.length === 1){
+                                                        {{item[0].name}}
+                                                    } @else {
+                                                        {{item?.length}} filters selected
+                                                    }
+                                                </ng-template>
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                    <p-sortIcon [id]="index + '-' + col.header + '-sort'" field="group.name" />
+                                </div>
+                            </th>
+                        }
+                        @case ("module") {
+                            <th [id]="index + '-' + col.header" scope="col" [ngStyle]="col.style" pSortableColumn="module.name">
+                                <div class="flex align-items-center">
+                                    <span [id]="index + '-' + col.header + '-name'">{{col.header}}</span>
+                                    <p-columnFilter [id]="index + '-' + col.header + '-filter'" [field]="'module'" type="text" [hideOnClear]="true" matchMode="in" display="menu" 
+                                                    [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                                    [pTooltip]="'Filter'" tooltipPosition="top">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-multiSelect [id]="index + '-' + col.header + '-multiselect'" [ngModel]="value" [options]="modulesInTableData" optionLabel="name"
+                                                (onChange)="filter($event.value)" class="fnb-filter-multiselect">
+                                                <ng-template let-item pTemplate="selectedItems">
+                                                    @if(item?.length === 1){
+                                                        {{item[0].name}}
+                                                    } @else {
+                                                        {{item?.length}} filters selected
+                                                    }
+                                                </ng-template>
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                    <p-sortIcon [id]="index + '-' + col.header + '-sort'" field="module.name" />
+                                </div>
+                            </th>
+                        }
+                        @default {
+                            <th [id]="index + '-' + col.header" scope="col" [ngStyle]="col.style" [pSortableColumn]="col.field === 'status' ? 'isActive' : col.sortableField ?? col.field">
+                                <app-table-header-cell [col]="col"></app-table-header-cell>
+                            </th>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-index="rowIndex">
+            <tr [pEditableRow]="row" [ngClass]="{'edit-mode': editMode && index === 0}">
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ('edit') {
+                            @if(editMode){
+                                <td [id]="index + '-' + col.field" [ngStyle]="row.style" class="p-0 w-3rem">
+                                    <app-table-cell [col]="col" [editMode]="editMode" [index]="index" [row]="row" 
+                                                [disabled]="!editedGroupModuleMapping.group || !editedGroupModuleMapping.module" 
+                                                [canSave]="!!editedGroupModuleMapping.group && !!editedGroupModuleMapping.module"
+                                                (enterEditMode)="enterEditMode()" (exitEditMode)="exitEditMode()"
+                                                (showStatusChangeModal)="showStatusChangeModal($event)"
+                                                (createMapping)="createGroupModuleMapping()"></app-table-cell>
+                                </td>
+                            }
+                        }
+                        @case('groupName') {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" class="table-cell" [pTooltip]="row.group?.name" [ngClass]="{'dropdown-cell editable-cell': editMode && index === 0}">
+                                @if (editMode && index === 0) {
+                                    <p-select [id]="index + '-' + col.header + '-dropdown'" [options]="groupNames" [(ngModel)]="editedGroupModuleMapping.group" [optionLabel]="'name'" class="fnb-dropdown" [appendTo]="'body'"></p-select>
+                                } @else {
+                                    {{row.group?.name}}
+                                }
+                            </td>
+                        }
+                        @case('module') {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" class="table-cell" [pTooltip]="row.module?.name" [ngClass]="{'dropdown-cell editable-cell': editMode && index === 0}">
+                                @if (editMode && index === 0) {
+                                    <p-select [id]="index + '-' + col.header + '-dropdown'" [options]="moduleNames" [(ngModel)]="editedGroupModuleMapping.module" [optionLabel]="'name'" class="fnb-dropdown" [appendTo]="'body'"></p-select>
+                                } @else {
+                                    {{row.module?.name}}
+                                }
+                            </td>
+                        }
+                        @case('status') {
+                            <td [id]="index + '-status'" [ngStyle]="col.style" class="md:w-5rem lg:w-10rem">
+                                <app-table-cell [col]="col" [editMode]="editMode" [index]="index" [row]="row" 
+                                            [disabled]="!editedGroupModuleMapping.group || !editedGroupModuleMapping.module" 
+                                            [canSave]="!!editedGroupModuleMapping.group && !!editedGroupModuleMapping.module"
+                                            (enterEditMode)="enterEditMode()" (exitEditMode)="exitEditMode()"
+                                            (showStatusChangeModal)="showStatusChangeModal(row)"
+                                            (createMapping)="createGroupModuleMapping()"></app-table-cell>
+                            </td>
+                        }
+                        @default {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style">
+                                <app-table-cell [row]="row" [col]="col" [index]="index"></app-table-cell>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+@if(statusChangeModalVisible){
+    <app-modal [modalVisible]="statusChangeModalVisible" (closeModal)="hideStatusChangeConfirmation()" [modalWidth]="'30'">
+        <div>
+            <p id="status-change-message" class="font-bold">Are you sure you want to proceed with this status change?</p>
+        </div>
+        <div class="flex justify-content-between mt-5">
+            <p-button id="status-change-close" styleClass="grey-btn" [icon]="'pi pi-times-circle'"
+                label="Close" (onClick)="hideStatusChangeConfirmation()"></p-button>
+            <p-button id="status-change-approve" styleClass="green-btn" [icon]="'pi pi-thumbs-up'"
+                label="Approve" (onClick)="toggleMappingStatus()"></p-button>
+        </div>
+    </app-modal>
+}
+
+@if(errorModalVisible){
+    <app-modal [modalVisible]="errorModalVisible" (closeModal)="toggleErrorModal()" [modalWidth]="'30'">
+        <div id="error-modal-container" class="flex flex-column align-items-center gap-3">
+            <div>
+                <h4 id="error-message" class="text-center my-1">{{errorMessage}}</h4>
+            </div>
+            <div class="w-fit-content">
+                <p-button id="error-modal-close-button" styleClass="grey-btn" [icon]="'pi pi-times-circle'" label="OK" (onClick)="toggleErrorModal()">
+                </p-button>
+            </div>
+        </div>
+    </app-modal>
+}

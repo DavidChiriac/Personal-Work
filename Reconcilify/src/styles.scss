@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use "primeicons/primeicons.css";
+@use "./app/shared/overrides/variables.scss" as vars;
+
+body {
+    color: vars.$night;
+    margin: 0;
+    font-family: 'AvoltaSans-Regular', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "AvoltaDisplay-SemiBold", sans-serif;
+}
+
+.p-component,
+span,
+button {
+    font-family: "AvoltaSans-Regular", sans-serif;
+}
+
+::-webkit-scrollbar {
+    background-color: white;
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar-thumb {
+    background: vars.$gray-night-400;
+    border-radius: 20px;
+    width: 10px;
+}
+
+.red {
+    color: vars.$red-heat;
+}
+
+.text-green {
+    color: vars.$green-lime-600;
+}
+
+.blue {
+    color: vars.$hudson-blue-500;
+}
+
+.green {
+    color: vars.$green-lime-600;
+}
+
+.purple {
+    color: vars.$avolta-purple-500;
+}
+
+.save-button:hover{
+    color: vars.$green-lime-400;
+}
+
+.close-button:hover{
+    color: vars.$red-heat-400;
+}
+
+:root {
+    --green-lime-200: #{vars.$green-lime-200};
+    --green-lime-400: #{vars.$green-lime-400};
+    --green-lime-600: #{vars.$green-lime-600};
+    --green-lime-800: #{vars.$green-lime-800};
+    --gray-night-900: #{vars.$gray-night-900};
+    --avolta-white: #{vars.$avolta-white};
+}

@@ -1,0 +1,198 @@
+@if(currentRecord){
+<div class="duplicates-table px-4 pt-4" #duplicatesTable>
+    <p-table #dt [value]="tableData" dataKey="id"
+        [paginator]="hasPaginator()" [rows]="20"
+        [totalRecords]="totalRecords" [scrollable]="true" [scrollDirection]="'both'"
+        [rowsPerPageOptions]="[5, 10, 20, 50]" currentPageReportTemplate="{first}-{last} out of {totalRecords} records"
+        [showCurrentPageReport]="true"
+        [paginatorDropdownAppendTo]="paginatorAnchor"
+        [frozenValue]="[1]"
+        >
+        <ng-template pTemplate="header">
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                    <th scope="col" [ngStyle]="col.style" pFrozenColumn
+                    [frozen]="col.frozen ? col.frozen : false" [pSortableColumn]="col.field">
+                    {{ col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+                }
+            </tr>
+            @if(tableFilters){
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                <th scope="col" [ngStyle]="col.style" [ngClass]="col.class" pFrozenColumn
+                    [frozen]="col.frozen ? col.frozen : false">
+                    @if (col.filterable) {
+                    @if (col.filterMultiselect)
+                    {
+                    <p-multiSelect [ngModel]="tableFilters[col.filterField ?? col.field]"
+                        (ngModelChange)="onMultiselectSelectionChange($event, col.filterField ?? col.field)"
+                        [options]="tableFilters[col.field]" placeholder="Filter" optionLabel="value" appendTo="body"
+                        class="table-multiselect" selectedItemsLabel="{0} selected"
+                        [maxSelectedLabels]="1">
+                    </p-multiSelect>
+                    }
+                    @if (!col.filterMultiselect) {
+                    @if(col.datepicker) {
+                    <div class="calendar-filter">
+                        <p-datepicker appendTo="body" [readonlyInput]="true" [showIcon]="true" dateFormat="yy-mm-dd"
+                            [firstDayOfWeek]="1" [selectOtherMonths]="true" placeholder="Filter"
+                            [(ngModel)]="tableFilters[col.filterField ?? col.field]" [showButtonBar]="true"
+                            (onSelect)="searchWithFilters()" (onClearClick)="searchWithFilters()">
+                        </p-datepicker>
+                    </div>
+                    } @else {
+                    <input pInputText type="text" class="table-input" [(ngModel)]="tableFilters[col.filterField ?? col.field]"
+                        placeholder="Search" (keydown.enter)="searchWithFilters()" />
+                    }
+                    }
+                    }
+                </th>
+                }
+            </tr>
+            }
+            <tr></tr>
+        </ng-template>
+
+        <ng-template pTemplate="frozenbody">
+            <tr [ngClass]="{'grey-background': editMode}">
+                @for (col of tableColumns; track col.field) {
+                @switch (col.field) {
+                @case ("vendorCustomerCode") {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="editedRecord[col.field]">
+                        <div class="flex justify-content-between align-items-center w-full">
+                        @if(editMode){
+                        <span class="flex gap-2">
+                            <i class="pi pi-check" [ngClass]="{'green cursor-pointer': validCfin}" (click)="validCfin && saveChanges()" [pTooltip]="validCfin ? 'Save Changes' : 'Invalid CFIN code, please review!'" tooltipPosition="bottom"
+                                onKeyPress="">
+                            </i>
+                            <i class="pi pi-thumbs-up" [ngClass]="{'purple cursor-pointer': validCfin && editedRecord.category && editedRecord.bpGrouping && editedRecord.accountGroup}" (click)="(validCfin && editedRecord.category && editedRecord.bpGrouping && editedRecord.accountGroup) && saveAndApprove()" [pTooltip]="(validCfin && editedRecord.category && editedRecord.bpGrouping && editedRecord.accountGroup) ? 'Save Changes and Approve ' : 'Invalid CFIN code, please review!'" tooltipPosition="bottom"
+                                onKeyPress="">
+                            </i>
+                            <i class="pi pi-times red cursor-pointer" (click)="toggleEditMode(false)" pTooltip="Cancel Changes"
+                                tooltipPosition="bottom" onKeyPress="">
+                            </i>
+                        </span>
+                        } @else {
+                        @if(currentRecord.status === vcStatus.new){
+                        <i class="fa-solid fa-pen cursor-pointer float-start pencil" (click)="toggleEditMode(true)"
+                            pTooltip="Edit Record" tooltipPosition="bottom" alt="edit icon" onKeyPress=""></i>
+                        }
+                        }
+                        <span class="ml-auto">{{currentRecord.vendorCustomerCode}}</span>
+                        </div>
+                    </td>
+                }
+                @case ('cfinCode') {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="editedRecord[col.field]?.toString()">
+                        @if(currentRecord.status === vcStatus.new && (currentRecord.category || editedRecord.category)){
+                        <p-select [appendTo]="cfinDropdown" class="cfin-select"
+                            [editable]="true"
+                            [(ngModel)]="editedRecord.cfinCode"
+                            [placeholder]="editedRecord.cfinCode?.toString()"
+                            [ngClass]="{'invalid-cfin': !validCfin && editedRecord.cfinCode}"
+                            class="edit-table-dropdown cfin-select"
+                            #cfinSelection
+                            (onFocus)="showOptions()"
+                            (onChange)="validateCfin()">
+                            <ng-template pTemplate="item">
+                                <span>{{editedRecord.cfinCode ? editedRecord.cfinCode : currentRecord.cfinCode}}</span>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <div class="flex flex-column">
+                                    @for(option of cfinButtons; track option){
+                                        <p-button [label]="option.label" class="cfin-button" (onClick)="getNewCfinCode(option.startCode)"></p-button>
+                                    }
+                                </div>
+                            </ng-template>
+                        </p-select>
+                        @if(!validCfin && editedRecord.cfinCode){
+                            <p class="red">Invalid CFIN code, please review! <br/>
+                                The CFIN code for the selected Category value shall start with {{validFirstCharacter}} </p>
+                        }
+                        } @else {
+                            {{editedRecord ? editedRecord.cfinCode : currentRecord.cfinCode}}
+                        }
+                    </td>
+                }
+                @case ('category') {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="editedRecord[col.field]">
+                        @if(editMode){
+                        <p-select [appendTo]="duplicatesTable" class="edit-table-dropdown" [options]="categories"
+                            [(ngModel)]="editedRecord.category" (onChange)="setDropdownsOptions(true,true)"/>
+                        } @else {
+                        {{currentRecord.category}}
+                        }
+                    </td>
+                }
+                @case ('bpGrouping') {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="editedRecord[col.field]">
+                        @if(editMode){
+                        <p-select [appendTo]="duplicatesTable" class="edit-table-dropdown" [options]="bpGroupes"
+                            [(ngModel)]="editedRecord.bpGrouping" (onChange)="setDropdownsOptions(true, false)"/>
+                        } @else {
+                        {{currentRecord.bpGrouping}}
+                        }
+                    </td>
+                }
+                @case ('accountGroup') {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="editedRecord[col.field]">
+                        @if(editMode){
+                        <p-select [appendTo]="duplicatesTable" class="edit-table-dropdown" [options]="accountGroupes"
+                            [(ngModel)]="editedRecord.accountGroup" (onChange)="setDropdownsOptions(false, true)"></p-select>
+                        } @else {
+                        {{currentRecord.accountGroup}}
+                        }
+                    </td>
+                }
+                @default {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="editedRecord[col.field]?.toString()">
+                        @if(col.editable && editMode){
+                            <input pInputText [(ngModel)]="editedRecord[col.field]" />
+                        } @else {
+                            {{currentRecord[col.field]}}
+                        }
+                    </td>
+                } } }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-rowData>
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                @switch (col.field) {
+                @case ("vendorCustomerCode") {
+                    <td pFrozenColumn [ngStyle]="{ 'min-width': '5rem', 'max-width': '10rem'}" [pTooltip]="rowData[col.field]">
+                        <div class="flex justify-content-between align-items-center">
+                            @if(currentRecord.status === vcStatus.new){
+                                <i class="pi pi-link cursor-pointer float-start" (click)="copyCfinCode(rowData.cfinCode)"
+                                    pTooltip="Link this record for CFIN CODE" tooltipPosition="bottom" onKeyPress="">
+                                </i>
+                            }
+                            <span class="ml-auto" [ngClass]="{'red': rowData.combinedKeyDuplicate === vcMatching.duplicate}">{{rowData.vendorCustomerCode}}</span>
+                        </div>
+                    </td>
+                }
+                @default {
+                    <td pFrozenColumn [frozen]="col.frozen ? col.frozen : false" [ngStyle]="col.style" [pTooltip]="rowData[col.field]"
+                        [ngClass]="{'red':
+                                            ((['name1', 'name2']).includes(col.field) && rowData.isNameDuplicate === vcMatching.duplicate)
+                                            || (col.field === 'street' && rowData.isStreetDuplicate === vcMatching.duplicate)
+                                            || (col.field === 'vatTaxComparable' && rowData.isVatTaxDuplicate === vcMatching.duplicate)
+                                            || ['origin', 'vendor', 'customer'].includes(col.field) && rowData.combinedKeyDuplicate === vcMatching.duplicate,
+                                    'text-green':
+                                            ((['name1', 'name2']).includes(col.field) && rowData.isNameDuplicate === vcMatching.unique)
+                                            || (col.field === 'street' && rowData.isStreetDuplicate === vcMatching.unique)
+                                            || (col.field === 'vatTaxComparable' && rowData.isVatTaxDuplicate === vcMatching.unique)}">
+                        {{rowData[col.field]}}
+                    </td>
+                } } }
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <div #cfinDropdown class="cfin-dropdown-panel"></div>
+    <div #paginatorAnchor class="paginator-dropdown"></div>
+</div>
+}

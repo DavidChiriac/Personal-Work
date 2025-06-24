@@ -1,0 +1,111 @@
+<div id="global-hierarchies-header" class="global-hierarchies mx-4 flex align-items-center justify-content-between">
+    <h2 id="global-hierarchies-title" class="my-0">Global Hierarchies</h2>
+</div>
+<p-toast/>
+<div id="global-hierarchies-table-container" class="mx-1 global-hierarchies-table" [ngClass]="{'fixed': errorModalVisible}">
+    <p-table #dt id="global-hierarchies-table" [value]="tableData" [paginator]="true" dataKey="id" [loading]="loading"
+        [rows]="50" [rowsPerPageOptions]="[50, 100, 150]" [rowHover]="true" [scrollable]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'" class="global-hierarchies-table" (onFilter)="checkEmptyFilters()"
+        [globalFilterFields]="['selectedCategory.name', 'selectedGroup.name', 'selectedSubgroup.name', 'globalCategoryName.code', 'globalCategoryName.name', 'globalGroupName.code', 'globalGroupName.name', 'globalSubgroupName.code', 'globalSubgroupName.name']">
+
+        <ng-template pTemplate="caption">
+            <div id="global-hierarchies-table-caption" class="flex justify-content-between">
+                <div>
+                    <span id="global-hierarchies-global-search-container" class="h-full" [ngClass]="globalSearchText ? 'p-input-icon-right': 'p-input-icon-left'">
+                        @if (globalSearchText) {
+                            <i id="global-hierarchies-global-search-clear-text" class="pi pi-times" onkeypress="" (click)="clearGlobalSearchText()"></i>
+                        } @else {
+                            <i class="pi pi-search"></i>
+                        }
+                        <input id="global-hierarchies-global-search-input" type="text" class="h-full global-inputtext" pInputText placeholder="Search" 
+                                (input)="globalSearch()" [(ngModel)]="globalSearchText"/>
+                    </span>
+                    <p-button id="global-hierarchies-clear-all-button" label="Clear All" pTooltip="Remove all active filters." tooltipPosition="top" class="fnb-clear-filters px-2" [outlined]="true" icon="pi pi-filter-slash" (onClick)="clearAll(dt)" [disabled]="emptyFilters"/>
+                </div>
+                <button id="global-hierarchies-export-button" pButton type="button" class="excel-export cursor-pointer" (click)="exportTableData()" onkeypress="">
+                    <i class="fas fa-file-excel"></i>
+                </button>
+            </div>
+
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr id="global-hierarchies-table-header-row">
+                @for (col of tableColumns; track col.field) {
+                    <th [id]="col.header + '-header'" scope="col" class="w-4">
+                        <div class="flex align-items-center gap-1">
+                            <span [id]="col.header + '-header-name'">{{col.header}}</span>
+                            <p-columnFilter [id]="col.header + '-filter'" [field]="col.field" matchMode="in" display="menu"
+                                            [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                            [pTooltip]="'Filter'" tooltipPosition="top">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect [id]="col.header + '-filter-search'" [ngModel]="value" [options]="tableFilters[col.field]" 
+                                        filterBy="name,code" (onChange)="filter($event.value)" class="fnb-filter-multiselect">
+                                        <ng-template let-item pTemplate="selectedItems">
+                                            @if(item){
+                                                @if(item?.length === 1){
+                                                    <span [id]="col.header + '-selected-items'">{{ item[0] | nameCode }} </span>
+                                                } @else {
+                                                    <span [id]="col.header + '-selected-items'">{{item?.length}} filters selected</span>
+                                                }
+                                            } @else {
+                                                <span [id]="col.header + '-selected-items'">empty</span>
+                                            }
+                                        </ng-template>
+                                        <ng-template let-option pTemplate="item" let-index>
+                                                <span [id]="col.header + '-option-' + index">{{ option | nameCode}}</span>
+                                        </ng-template>
+                                    </p-multiSelect>
+                                </ng-template>
+                            </p-columnFilter>
+                            <span [id]="col.header + '-sort'"
+                                class="p-sortable-column-icon cursor-pointer"
+                                (click)="onSort(col.field, $event)" onkeypress=""
+                                [pTooltip]="'Sort'" tooltipPosition="top">
+                                <i  [id]="col.header + '-sort-icon'"
+                                    [ngClass]="{
+                                    'pi': true,
+                                    'pi-sort-alt': requestParams.fieldToSort !== col.field,
+                                    'pi-sort-amount-up': requestParams.fieldToSort === col.field && requestParams.sortDirection === SortDirectionEnum.ASC,
+                                    'pi-sort-amount-down': requestParams.fieldToSort === col.field && requestParams.sortDirection === SortDirectionEnum.DESC
+                                }"></i>
+                            </span>
+                        </div>
+                    </th>
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-index="rowIndex">
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                    <td #tdRef [id]="index + '-' + col.header" class="w-4">
+                        <div [id]="index + '-' + col.header + '-container'" class="w-full h-full flex justify-content-between cell">
+                            <span [id]="index + '-' + col.header + '-value'">{{row[col.field] | nameCode}}</span>
+                            <span class="copy-to-clipboard">
+                                @defer (on hover(tdRef)) {
+                                    <app-copy-cell [content]="row[col.field] | nameCode"></app-copy-cell>
+                                }
+                            </span>                                        
+                        </div>
+                    </td>
+                }
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+@if(errorModalVisible){
+    <app-modal [modalVisible]="errorModalVisible" (closeModal)="toggleErrorModal()" [modalWidth]="'30'">
+        <div id="error-modal-container" class="flex flex-column align-items-center gap-3">
+            <div>
+                <h4 id="error-message" class="text-center my-1">{{errorMessage}}</h4>
+            </div>
+            <div class="w-fit-content">
+                <p-button id="error-modal-close-button" styleClass="grey-btn" [icon]="'pi pi-times-circle'" label="OK" (onClick)="toggleErrorModal()">
+                </p-button>
+            </div>
+        </div>
+    </app-modal>
+}

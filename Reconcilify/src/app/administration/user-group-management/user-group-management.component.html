@@ -1,0 +1,173 @@
+<div id="user-group-management-header" class="mx-4 user-group-management">
+    <h2 id="user-group-management-title" class="my-0">Administration - User Management</h2>
+</div>
+<div id="user-group-management-table-container" class="mx-1 group-management-table" [ngClass]="{'fixed fixed-width': statusChangeModalVisible || errorModalVisible}">
+    <p-table #dt id="user-group-management-table" [value]="tableData" [paginator]="true" dataKey="id" [selection]="true"
+    [rows]="50" [totalRecords]="totalRecords" [rowsPerPageOptions]="[50, 100, 150]" [rowHover]="true" [scrollable]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true" [paginatorDropdownAppendTo]="'body'" [loading]="loading"
+    [editMode]="'row'" class="admin-table" [(selection)]="selectedEntriesList" [selectAll]="allSelected"
+    (selectAllChange)="onSelectAllChange($event)" (onRowUnselect)="onRowUnselect($event)" (onRowSelect)="onRowSelect($event)"
+    [globalFilterFields]="filterNames"
+    (onLazyLoad)="onLazyLoad($event)" [lazy]="true">
+        <ng-template pTemplate="caption">
+            <div id="user-group-management-caption-container" class="flex justify-content-between">
+                <app-table-caption (clearFilters)="clearFilters()" (globalSearch)="onLazyLoad($event)" [emptyFilters]="emptyFilters"></app-table-caption>
+                <div class="flex gap-1 align-items-center">
+                    <p-button id="user-group-management-assign-new" class="new-user-btn" (onClick)="assignNew()" [disabled]="editMode" [label]="'Assign User'"></p-button>
+                    <app-export-dropdown [loading]="loading" [tableDataLength]="tableData.length" [selectedEntriesLength]="selectedEntries.length" (export)="exportData($event)"></app-export-dropdown>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-row let-index="rowIndex">
+            <tr>
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ("edit") {
+                            @if (editMode) {
+                                <th id="edit-header" scope="col" [ngStyle]="col.style"></th>
+                            }              
+                        }
+                        @case ("selection") {
+                            <th id="selection-header" scope="col" [ngStyle]="col.style"><div class="flex justify-content-center"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></div></th>
+                        }
+                        @case ("groupName") {
+                            <th [id]="index + '-' + col.header" scope="col" [ngStyle]="col.style" [pSortableColumn]="col.sortableField ?? col.field">
+                                <div class="flex align-items-center">
+                                    <span [id]="index + '-' + col.header + '-name'">{{col.header}}</span>
+                                    <p-columnFilter [id]="index + '-' + col.header + '-filter'" [field]="col.filterField ?? col.field" type="text" [hideOnClear]="true" matchMode="in" display="menu"
+                                                    [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
+                                                    [pTooltip]="'Filter'" tooltipPosition="top">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-multiSelect [id]="index + '-' + col.header + '-multiselect'" [ngModel]="value" [options]="groupNamesFilters"
+                                                (onChange)="filter($event.value)" class="fnb-filter-multiselect">
+                                                <ng-template let-item pTemplate="selectedItems">
+                                                    @if(item?.length === 1){
+                                                        {{item[0].name}}
+                                                    } @else {
+                                                        {{item?.length}} filters selected
+                                                    }
+                                                </ng-template>
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                    <p-sortIcon [id]="index + '-' + col.header + '-sort'" [field]="col.sortableField ?? col.field" />
+                                </div>
+                            </th>
+                        }
+                        @default {
+                            <th [id]="index + '-' + col.header" scope="col" [ngStyle]="col.style" [pSortableColumn]="col.sortableField ?? col.field">
+                                <app-table-header-cell [col]="col" [statusOptions]="statusFilters" [requestParams]="requestParams" [tableFilters]="tableFilters" (sort)="onSort($event)"></app-table-header-cell>
+                            </th>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row let-index="rowIndex">
+            <tr [pEditableRow]="row" [ngClass]="{'edit-mode': editMode && index === 0, 'row-selected': row._selected}">
+                @for (col of tableColumns; track col.field) {
+                    @switch (col.field) {
+                        @case ('edit') {
+                            @if(editMode){
+                                <td [id]="index + '-' + col.field" [ngStyle]="col.style" class="p-0 w-3rem">
+                                    <app-table-cell [col]="col" [editMode]="editMode" [index]="index" [row]="row" 
+                                    [disabled]="!editedUserGroupMapping.group || !editedUserGroupMapping.email || !validEmail" 
+                                    [canSave]="!!editedUserGroupMapping.group && !!editedUserGroupMapping.email && validEmail"
+                                    (enterEditMode)="enterEditMode()" (exitEditMode)="exitEditMode()"
+                                    (showStatusChangeModal)="showStatusChangeModal($event)"
+                                    (createMapping)="createUserGroupMapping()"></app-table-cell> 
+                                </td>
+                            }
+                        }
+                        @case ("selection") {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" class="table-cell"><div class="flex justify-content-center"><p-tableCheckbox [value]="row"></p-tableCheckbox></div></td>
+                        }
+                        @case('groupName') {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" class="table-cell" [pTooltip]="row.group?.name" [ngClass]="{'dropdown-cell editable-cell': editMode && index === 0}">
+                                @if (editMode && index === 0) {
+                                    <p-select [id]="index + '-' + col.header + '-dropdown'" [options]="groupNames" [(ngModel)]="editedUserGroupMapping.group" [optionLabel]="'name'" class="fnb-dropdown" [appendTo]="'body'"></p-select>
+                                } @else {
+                                    {{row.group?.name}}
+                                }
+                            </td>
+                        }
+                        @case('email') {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style" class="table-cell" [pTooltip]="row.email" [ngClass]="{'input-cell editable-cell': editMode && index === 0, 'invalid': editMode && !validEmail && index === 0}">
+                                @if (editMode && index === 0) {
+                                    <input [id]="index + '-' + col.header + '-input'" pInputText type="text" [(ngModel)]="editedUserGroupMapping.email" [maxLength]="99" class="fnb-inputtext" (ngModelChange)="validateEmail()"/>
+                                } @else {
+                                    {{row.email}}
+                                }
+                            </td>
+                        }
+                        @case('status') {
+                            <td [id]="index + '-status'" [ngStyle]="col.style" class="md:w-5rem lg:w-10rem">
+                                <app-table-cell [col]="col" [editMode]="editMode" [index]="index" [row]="row" [canClickInactive]="false"
+                                                [disabled]="!editedUserGroupMapping.group || !editedUserGroupMapping.email || !validEmail" 
+                                                [canSave]="!!editedUserGroupMapping.group && !!editedUserGroupMapping.email && validEmail"
+                                                (enterEditMode)="enterEditMode()" (exitEditMode)="exitEditMode()"
+                                                (showStatusChangeModal)="showStatusChangeModal($event)"
+                                                (createMapping)="createUserGroupMapping()">
+                                </app-table-cell>
+                            </td>
+                        }
+                        @default {
+                            <td [id]="index + '-' + col.header" [ngStyle]="col.style">
+                                <app-table-cell [row]="row" [col]="col" [index]="index"></app-table-cell>
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="paginatorleft">
+            <div class="flex items-center justify-between">{{selectedEntries.length + '/' + totalRecords}} users selected</div>
+        </ng-template>
+    </p-table>
+</div>
+
+@if(statusChangeModalVisible){
+    <app-modal [modalVisible]="statusChangeModalVisible" (closeModal)="hideStatusChangeConfirmation()" [modalWidth]="'30'">
+        <div>
+            <p id="status-change-message" class="font-bold">Are you sure you want to proceed with this delete?</p>
+        </div>
+        <div class="flex justify-content-between mt-5">
+            <p-button id="status-change-close" styleClass="grey-btn" [icon]="'pi pi-times-circle'"
+                label="Close" (onClick)="hideStatusChangeConfirmation()"></p-button>
+            <p-button id="status-change-approve" styleClass="green-btn" [icon]="'pi pi-thumbs-up'"
+                label="Approve" (onClick)="approveStatusChange()"></p-button>
+        </div>
+    </app-modal>
+}
+
+@if(errorModalVisible){
+    <app-modal [modalVisible]="errorModalVisible" (closeModal)="toggleErrorModal()" [modalWidth]="'30'">
+        <div>
+            <p id="status-change-message" class="font-bold">{{errorMessage}}</p>
+        </div>
+        <div class="flex justify-content-between mt-5">
+            <p-button id="status-change-close" styleClass="grey-btn" [icon]="'pi pi-times-circle'"
+                label="Close" (onClick)="toggleErrorModal()"></p-button>
+        </div>
+    </app-modal>
+}
+
+@if(exportModalVisible){
+    <app-modal [modalVisible]="exportModalVisible" [modalWidth]="'30'">
+        <div id="export-modal-header" class="flex align-items-center justify-content-center p-3 gap-3">
+            <p-progressSpinner ariaLabel="loading" strokeWidth="2" class="export-spinner"></p-progressSpinner>
+            <h4 class="text-center my-1">Preparing Excel</h4>
+        </div>
+        <div id="export-modal-message" class="w-full">
+            <p class="w-full text-center">
+                Exporting to Excel... Please wait!
+            </p>
+        </div>
+        <div id="export-modal-timer" class="w-full text-center">
+            {{display}}
+        </div>
+    </app-modal>
+}
