@@ -12,7 +12,7 @@ export class ProjectsService {
 
   getProjects(): Observable<{ data: IProject[] }> {
     return this.http.get<{ data: IProject[] }>(
-      environment.apiUrl + `/api/projects?populate=*`
+      environment.apiUrl + `/api/projects?sort=createdAt:desc&populate=*`
     );
   }
 
