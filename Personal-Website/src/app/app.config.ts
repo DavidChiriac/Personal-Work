@@ -12,7 +12,6 @@ import Aura from '@primeng/themes/aura';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   provideNgxWebstorage,
-  SessionStorageService,
   withNgxWebstorageConfig,
   withSessionStorage,
 } from 'ngx-webstorage';
