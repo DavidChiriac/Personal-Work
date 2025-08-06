@@ -1,7 +1,13 @@
 <div [ngClass]="{ project: !isMobile, 'project-mobile': isMobile }">
   <div class="header">
     <div class="title">{{ project?.title }}</div>
-    <div class="presentation">{{ project?.description }}</div>
+    <div class="presentation">
+      <div>{{ project?.description }}</div>
+      @if(project?.url){
+        <br/>
+        <a [href]="project?.url" target="_blank">View Project</a>
+      }
+    </div>
   </div>
   <div class="images">
     <div class="cover-image">
